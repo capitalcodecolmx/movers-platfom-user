@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Obtener usuario actual
   const getCurrentUser = async () => {
+    console.log('getCurrentUser: Starting...');
     try {
       const { data: { session }, error } = await supabase.auth.getSession();
       
@@ -51,6 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error('Error getting current user:', error);
       setUser(null);
     } finally {
+      console.log('getCurrentUser: Setting loading to false');
       setIsLoading(false);
     }
   };
@@ -127,7 +129,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Escuchar cambios de autenticación
   useEffect(() => {
-    getCurrentUser();
+    console.log('AuthProvider: Initializing auth...');
+    
+    // Función para obtener usuario inicial
+    const initAuth = async () => {
+      await getCurrentUser();
+    };
+    
+    initAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -137,8 +146,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     );
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return () => {
+      console.log('AuthProvider: Cleaning up auth listener');
+      subscription.unsubscribe();
+    };
+  }, []); // Dependencias vacías para que solo se ejecute una vez
 
   const value: AuthContextType = {
     user,
