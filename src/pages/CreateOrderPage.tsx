@@ -37,8 +37,6 @@ interface OrderData {
   // Paso 3: Direcciones y mapa
   pickupAddress: any;
   deliveryAddress: any;
-  pickupContact: any;
-  deliveryContact: any;
   pickupDate: string;
   pickupTime: string;
   deliveryDate: string;
@@ -46,8 +44,12 @@ interface OrderData {
   distance: number;
   estimatedCost: number;
   route: any;
+  
+  // Paso 4: Contactos y prioridad
   senderInfo: any;
   recipientInfo: any;
+  priority: string;
+  priorityData: any;
 }
 
 const CreateOrderPage: React.FC = () => {
@@ -70,8 +72,6 @@ const CreateOrderPage: React.FC = () => {
     vehicleType: '',
     pickupAddress: null,
     deliveryAddress: null,
-    pickupContact: null,
-    deliveryContact: null,
     pickupDate: '',
     pickupTime: '',
     deliveryDate: '',
@@ -81,41 +81,48 @@ const CreateOrderPage: React.FC = () => {
     route: null,
     senderInfo: null,
     recipientInfo: null,
+    priority: '',
+    priorityData: null,
   });
 
   const steps = [
     {
       number: 1,
-      title: 'Detalles del Paquete',
-      description: 'Información sobre lo que vas a enviar',
+      title: 'Tipo de Servicio',
+      description: 'Elige tu tipo de servicio',
       icon: Package,
       color: 'bg-blue-500',
     },
     {
       number: 2,
-      title: 'Vehículo Recomendado',
-      description: 'Selecciona el vehículo ideal',
+      title: 'Tipo de Unidad',
+      description: 'Selecciona la unidad adecuada',
       icon: Truck,
       color: 'bg-blue-500',
     },
     {
       number: 3,
-      title: 'Ruta del Envío',
-      description: 'Origen, destino y cálculo de distancia',
+      title: 'Origen y Destino',
+      description: 'Especifica las direcciones',
       icon: MapPin,
       color: 'bg-blue-500',
     },
     {
       number: 4,
-      title: 'Contactos',
-      description: 'Quien entrega y quien recibe',
+      title: 'Prioridad de Envío',
+      description: 'Selecciona la prioridad',
       icon: Users,
       color: 'bg-blue-500',
     },
   ];
 
   const updateOrderData = (data: Partial<OrderData>) => {
-    setOrderData(prev => ({ ...prev, ...data }));
+    console.log('CreateOrderPage - Updating data:', data);
+    setOrderData(prev => {
+      const newData = { ...prev, ...data };
+      console.log('CreateOrderPage - New orderData:', newData);
+      return newData;
+    });
   };
 
   const nextStep = () => {
@@ -130,15 +137,19 @@ const CreateOrderPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (step4Data?: any) => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
     try {
-      console.log('Creando orden:', orderData);
+      // Si tenemos datos del Step4, combinarlos con orderData
+      const finalOrderData = step4Data ? { ...orderData, ...step4Data } : orderData;
+      
+      console.log('Creando orden:', finalOrderData);
+      console.log('Step4 data received:', step4Data);
       
       // Crear la orden en la base de datos
-      const newOrder = await createOrder(orderData);
+      const newOrder = await createOrder(finalOrderData);
       
       console.log('Orden creada exitosamente:', newOrder);
       

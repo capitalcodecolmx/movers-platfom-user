@@ -71,10 +71,57 @@ const OrdersPage: React.FC = () => {
     }
   };
 
+  // Función para obtener el texto del tipo de servicio
+  const getServiceTypeText = (serviceType: string) => {
+    switch (serviceType) {
+      case 'ftl': return 'Carga Completa';
+      case 'ltl': return 'Carga Parcial';
+      case 'last-mile': return 'Última Milla';
+      default: return serviceType || 'No especificado';
+    }
+  };
+
+  // Función para obtener el texto del tipo de vehículo
+  const getVehicleTypeText = (vehicleType: string) => {
+    switch (vehicleType) {
+      case 'motocicleta': return 'Motocicleta';
+      case 'small-van': return 'Small Van 1 ton';
+      case 'large-van': return 'Large Van 1.5 ton';
+      case 'truck': return 'Camión 3.5 ton';
+      case 'refrigerado': return 'Refrigerado';
+      default: return vehicleType || 'No especificado';
+    }
+  };
+
+  // Función para obtener el texto de la prioridad
+  const getPriorityText = (priority: string) => {
+    switch (priority) {
+      case 'economico': return 'Económico';
+      case 'estandar': return 'Estándar';
+      case 'urgente': return 'Urgente';
+      default: return priority || 'No especificado';
+    }
+  };
+
+  // Función para obtener el color de la prioridad
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'economico': return 'bg-green-100 text-green-800';
+      case 'estandar': return 'bg-blue-100 text-blue-800';
+      case 'urgente': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   const filteredOrders = orders.filter(order =>
     order.tracking_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.pickup_address?.full?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.delivery_address?.full?.toLowerCase().includes(searchTerm.toLowerCase())
+    order.delivery_address?.full?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.pickup_address?.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.delivery_address?.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    getServiceTypeText(order.package_data?.service_type).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    getVehicleTypeText(order.package_data?.vehicle_type).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    getPriorityText(order.package_data?.priority).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Abrir modal de mensajes
@@ -152,7 +199,7 @@ const OrdersPage: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Buscar por código, origen o destino..."
+                  placeholder="Buscar por código, servicio, vehículo, prioridad, origen o destino..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
@@ -169,10 +216,13 @@ const OrdersPage: React.FC = () => {
         {/* Tabla de órdenes */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-1">
           <div className="overflow-x-auto h-full overflow-y-auto">
-            <table className="w-full min-w-[640px]">
+            <table className="w-full min-w-[1000px]">
               <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Código</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Servicio</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Vehículo</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Prioridad</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Estado</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Costo</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Fecha</th>
@@ -187,6 +237,21 @@ const OrdersPage: React.FC = () => {
                         <Package className="w-5 h-5 text-gray-400 mr-3" />
                         <span className="font-medium text-gray-900">{order.tracking_code}</span>
                       </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-sm font-medium text-gray-900">
+                        {getServiceTypeText(order.package_data?.service_type)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-sm font-medium text-gray-900">
+                        {getVehicleTypeText(order.package_data?.vehicle_type)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(order.package_data?.priority)}`}>
+                        {getPriorityText(order.package_data?.priority)}
+                      </span>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
@@ -302,6 +367,34 @@ const OrdersPage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Información del servicio */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tipo de Servicio
+                    </label>
+                    <p className="text-sm font-medium text-gray-900">
+                      {getServiceTypeText(selectedOrder.package_data?.service_type)}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tipo de Vehículo
+                    </label>
+                    <p className="text-sm font-medium text-gray-900">
+                      {getVehicleTypeText(selectedOrder.package_data?.vehicle_type)}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Prioridad
+                    </label>
+                    <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(selectedOrder.package_data?.priority)}`}>
+                      {getPriorityText(selectedOrder.package_data?.priority)}
+                    </span>
+                  </div>
+                </div>
+
                 {/* Ruta */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -312,14 +405,22 @@ const OrdersPage: React.FC = () => {
                       <MapPin className="w-5 h-5 text-green-600 mr-3" />
                       <div>
                         <p className="font-medium text-gray-900">Origen</p>
-                        <p className="text-gray-600">{selectedOrder.pickup_address}</p>
+                        <p className="text-gray-600">
+                          {selectedOrder.pickup_address?.full || 
+                           `${selectedOrder.pickup_address?.street} ${selectedOrder.pickup_address?.number}, ${selectedOrder.pickup_address?.city}, ${selectedOrder.pickup_address?.state}` ||
+                           'Dirección no disponible'}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center p-3 bg-red-50 rounded-xl">
                       <MapPin className="w-5 h-5 text-red-600 mr-3" />
                       <div>
                         <p className="font-medium text-gray-900">Destino</p>
-                        <p className="text-gray-600">{selectedOrder.delivery_address}</p>
+                        <p className="text-gray-600">
+                          {selectedOrder.delivery_address?.full || 
+                           `${selectedOrder.delivery_address?.street} ${selectedOrder.delivery_address?.number}, ${selectedOrder.delivery_address?.city}, ${selectedOrder.delivery_address?.state}` ||
+                           'Dirección no disponible'}
+                        </p>
                       </div>
                     </div>
                   </div>

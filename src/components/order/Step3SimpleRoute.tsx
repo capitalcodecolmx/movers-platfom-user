@@ -1,9 +1,15 @@
 // =====================================================
-// PASO 3: RUTA DEL ENVÍO (VERSIÓN SIMPLE SIN MAPA)
+// PASO 3: ORIGEN Y DESTINO
 // =====================================================
 
 import React, { useState, useEffect } from 'react';
-import { MapPin, ArrowLeft, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowLeft, ArrowRight, Package } from 'lucide-react';
+import { 
+  MdLocationOn, 
+  MdLocalShipping,
+  MdCheckCircle,
+  MdPlace
+} from 'react-icons/md';
 
 interface Step3SimpleRouteProps {
   data: any;
@@ -13,11 +19,40 @@ interface Step3SimpleRouteProps {
 }
 
 
-// Ciudades principales de México
-const MEXICAN_CITIES = [
-  'Reynosa', 'Ciudad de México', 'Monterrey', 'Guadalajara', 
-  'Puebla', 'Veracruz', 'Tampico', 'Cancún', 'Tijuana',
-  'Mérida', 'León', 'Juárez', 'Torreón', 'Querétaro', 'San Luis Potosí'
+// Estados de México
+const MEXICAN_STATES = [
+  'Aguascalientes',
+  'Baja California',
+  'Baja California Sur',
+  'Campeche',
+  'Chiapas',
+  'Chihuahua',
+  'Ciudad de México',
+  'Coahuila',
+  'Colima',
+  'Durango',
+  'Guanajuato',
+  'Guerrero',
+  'Hidalgo',
+  'Jalisco',
+  'México',
+  'Michoacán',
+  'Morelos',
+  'Nayarit',
+  'Nuevo León',
+  'Oaxaca',
+  'Puebla',
+  'Querétaro',
+  'Quintana Roo',
+  'San Luis Potosí',
+  'Sinaloa',
+  'Sonora',
+  'Tabasco',
+  'Tamaulipas',
+  'Tlaxcala',
+  'Veracruz',
+  'Yucatán',
+  'Zacatecas'
 ];
 
 const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
@@ -115,40 +150,47 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   };
 
   return (
-    <div className="w-full p-6">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Crear Orden</h1>
-        <p className="text-gray-500 text-lg">
-          Especifica las direcciones de recogida y entrega
-        </p>
-        
-        {/* Indicador de progreso */}
-        {pickupStreet && pickupNumber && pickupCity && pickupState && 
-         deliveryStreet && deliveryNumber && deliveryCity && deliveryState && (
-          <div className="mt-4 p-4 bg-green-50 rounded-xl border border-green-200">
-            <div className="flex items-center text-green-600">
-              <span className="text-lg mr-2">✓</span>
-              <span className="text-sm font-medium">¡Direcciones completas! Listo para continuar.</span>
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-semibold text-gray-900 mb-3">
+            3. Origen y destino
+          </h2>
+          <p className="text-gray-500 text-lg">
+            Especifica las direcciones de recogida y entrega
+          </p>
+        </div>
 
-      <div className="w-full">
-        {/* Formulario de direcciones */}
-        <div className="w-full">
-          <div className="space-y-8">
-            {/* Dirección de recogida */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <span className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-blue-600 font-bold text-sm">1</span>
-                </span>
-                Dirección de Recogida
-              </h3>
+        <div className="space-y-8">
+          {/* Información del servicio y vehículo seleccionado */}
+          {data.serviceType && data.selectedVehicleType && (
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center space-x-4 text-sm text-gray-500">
+                <span>Servicio: {data.serviceType === 'ftl' ? 'Carga Completa' : data.serviceType === 'ltl' ? 'Carga Parcial' : 'Última Milla'}</span>
+                <span>•</span>
+                <span>Unidad: {data.selectedVehicleType.name}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Dirección de recogida */}
+          <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm">
+            <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <div className="w-12 h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-4 shadow-sm">
+                <MdLocationOn className="w-7 h-7 text-white" />
+              </div>
+              <span className="text-gray-900">
+                Recolección
+              </span>
+            </h3>
               
-              <div className="space-y-4">
+            <div className="space-y-4">
+              {/* Ejemplo de dirección */}
+              <div className="text-sm text-gray-500 mb-4 italic">
+                Ejemplo: Av. Revolución 1203, Monterrey, N.L.
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Calle */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -158,8 +200,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={pickupStreet}
                     onChange={(e) => setPickupStreet(e.target.value)}
-                    placeholder="Ej: Eugenio de La Croix"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Ej: Av. Revolución"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.pickupStreet && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupStreet}</p>
@@ -175,8 +217,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={pickupNumber}
                     onChange={(e) => setPickupNumber(e.target.value)}
-                    placeholder="Ej: 1120"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Ej: 1203"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.pickupNumber && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupNumber}</p>
@@ -192,8 +234,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={pickupNeighborhood}
                     onChange={(e) => setPickupNeighborhood(e.target.value)}
-                    placeholder="Ej: Col. Del Valle"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Ej: Col. Centro"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
 
@@ -202,16 +244,13 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Ciudad *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     value={pickupCity}
                     onChange={(e) => setPickupCity(e.target.value)}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-                  >
-                    <option value="">Selecciona una ciudad</option>
-                    {MEXICAN_CITIES.map(city => (
-                      <option key={city} value={city}>{city}</option>
-                    ))}
-                  </select>
+                    placeholder="Ej: Monterrey"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  />
                   {errors.pickupCity && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupCity}</p>
                   )}
@@ -222,30 +261,42 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Estado *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={pickupState}
                     onChange={(e) => setPickupState(e.target.value)}
-                    placeholder="Ej: Tamaulipas"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                  >
+                    <option value="">Selecciona un estado</option>
+                    {MEXICAN_STATES.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
                   {errors.pickupState && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupState}</p>
                   )}
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Dirección de entrega */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <span className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-green-600 font-bold text-sm">2</span>
-                </span>
-                Dirección de Entrega
-              </h3>
+          {/* Dirección de entrega */}
+          <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm">
+            <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <div className="w-12 h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-4 shadow-sm">
+                <MdLocalShipping className="w-7 h-7 text-white" />
+              </div>
+              <span className="text-gray-900">
+                Entrega
+              </span>
+            </h3>
               
-              <div className="space-y-4">
+            <div className="space-y-4">
+              {/* Ejemplo de dirección */}
+              <div className="text-sm text-gray-500 mb-4 italic">
+                Ejemplo: Blvd. Díaz Ordaz 4500, San Pedro Garza García, N.L.
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Calle */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -255,8 +306,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={deliveryStreet}
                     onChange={(e) => setDeliveryStreet(e.target.value)}
-                    placeholder="Ej: 5 de Febrero"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: Blvd. Díaz Ordaz"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.deliveryStreet && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryStreet}</p>
@@ -272,8 +323,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={deliveryNumber}
                     onChange={(e) => setDeliveryNumber(e.target.value)}
-                    placeholder="Ej: 456"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: 4500"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.deliveryNumber && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryNumber}</p>
@@ -289,8 +340,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     type="text"
                     value={deliveryNeighborhood}
                     onChange={(e) => setDeliveryNeighborhood(e.target.value)}
-                    placeholder="Ej: Col. Centro"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: Valle Oriente"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
 
@@ -299,16 +350,13 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Ciudad *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     value={deliveryCity}
                     onChange={(e) => setDeliveryCity(e.target.value)}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none bg-white"
-                  >
-                    <option value="">Selecciona una ciudad</option>
-                    {MEXICAN_CITIES.map(city => (
-                      <option key={city} value={city}>{city}</option>
-                    ))}
-                  </select>
+                    placeholder="Ej: San Pedro Garza García"
+                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  />
                   {errors.deliveryCity && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryCity}</p>
                   )}
@@ -319,13 +367,16 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Estado *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={deliveryState}
                     onChange={(e) => setDeliveryState(e.target.value)}
-                    placeholder="Ej: CDMX"
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none bg-white"
+                  >
+                    <option value="">Selecciona un estado</option>
+                    {MEXICAN_STATES.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
                   {errors.deliveryState && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryState}</p>
                   )}
@@ -333,33 +384,42 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Indicador de progreso */}
+          {pickupStreet && pickupNumber && pickupCity && pickupState && 
+           deliveryStreet && deliveryNumber && deliveryCity && deliveryState && (
+            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <div className="flex items-center text-gray-700">
+                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center mr-4 shadow-sm">
+                  <MdCheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">¡Direcciones completas!</p>
+                  <p className="text-sm text-gray-600">Listo para continuar al siguiente paso</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
 
-      {/* Navegación */}
-      <div className="flex justify-between items-center mt-8">
-        <button
-          onClick={onPrev}
-          className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Anterior
-        </button>
+        {/* Botones de navegación - Estilo Apple */}
+        <div className="mt-8 flex justify-between items-center">
+          <button
+            onClick={onPrev}
+            className="text-gray-500 hover:text-gray-700 transition-colors text-sm font-medium"
+          >
+            ← Anterior
+          </button>
 
-        <button
-          onClick={handleNext}
-          disabled={!pickupStreet || !pickupNumber || !pickupCity || !pickupState || 
-                   !deliveryStreet || !deliveryNumber || !deliveryCity || !deliveryState}
-          className={`flex items-center px-8 py-3 rounded-xl transition-colors font-semibold ${
-            pickupStreet && pickupNumber && pickupCity && pickupState && 
-            deliveryStreet && deliveryNumber && deliveryCity && deliveryState
-              ? 'bg-gray-900 text-white hover:bg-gray-800'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          Continuar
-          <ArrowRight className="w-5 h-5 ml-2" />
-        </button>
+          <button
+            onClick={handleNext}
+            disabled={!pickupStreet || !pickupNumber || !pickupCity || !pickupState || 
+                     !deliveryStreet || !deliveryNumber || !deliveryCity || !deliveryState}
+            className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          >
+            Continuar
+          </button>
+        </div>
       </div>
     </div>
   );

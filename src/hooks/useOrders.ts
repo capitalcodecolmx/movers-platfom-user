@@ -64,11 +64,22 @@ export const useOrders = () => {
       }
 
       console.log('Creating order for user:', user.id, 'email:', user.email);
+      console.log('Full orderData received:', JSON.stringify(orderData, null, 2));
 
-      // Preparar los datos para la base de datos
+      // Preparar los datos para la base de datos con el nuevo formato
       const orderPayload = {
         user_id: user.id,
         package_data: {
+          // Nuevo formato de servicio
+          service_type: orderData.serviceType, // 'ftl', 'ltl', 'last-mile'
+          vehicle_type: orderData.selectedVehicleType?.id, // 'motocicleta', 'small-van', etc.
+          vehicle_data: orderData.selectedVehicleType, // Datos completos del vehículo
+          
+          // Datos de prioridad
+          priority: orderData.priority, // 'economico', 'estandar', 'urgente'
+          priority_data: orderData.priorityData, // Datos completos de prioridad
+          
+          // Datos tradicionales (mantenidos para compatibilidad)
           type: orderData.packageType,
           description: orderData.packageDescription,
           weight: orderData.weight,
@@ -79,10 +90,10 @@ export const useOrders = () => {
           fragile: orderData.fragile,
           urgent: orderData.urgent,
         },
-        pickup_address: orderData.pickupAddress,
-        delivery_address: orderData.deliveryAddress,
-        pickup_contact: orderData.senderInfo || orderData.pickupContact,
-        delivery_contact: orderData.recipientInfo || orderData.deliveryContact,
+        pickup_address: orderData.pickupAddress, // Ya incluye campos separados
+        delivery_address: orderData.deliveryAddress, // Ya incluye campos separados
+        pickup_contact: orderData.senderInfo || orderData.pickupContact || null,
+        delivery_contact: orderData.recipientInfo || orderData.deliveryContact || null,
         pickup_date: orderData.pickupDate || null,
         pickup_time: orderData.pickupTime || null,
         delivery_date: orderData.deliveryDate || null,
@@ -93,6 +104,26 @@ export const useOrders = () => {
       };
 
       console.log('Creating order with payload:', orderPayload);
+      
+      // Debug específico para campos problemáticos
+      console.log('DEBUG - Priority data:', {
+        priority: orderData.priority,
+        priorityData: orderData.priorityData,
+        pickupDate: orderData.pickupDate,
+        pickupTime: orderData.pickupTime,
+        senderInfo: orderData.senderInfo,
+        recipientInfo: orderData.recipientInfo
+      });
+      
+      // Debug específico para contactos
+      console.log('DEBUG - Contact data:', {
+        'orderData.senderInfo': orderData.senderInfo,
+        'orderData.recipientInfo': orderData.recipientInfo,
+        'orderData.pickupContact': orderData.pickupContact,
+        'orderData.deliveryContact': orderData.deliveryContact,
+        'Final pickup_contact': orderData.senderInfo || orderData.pickupContact || null,
+        'Final delivery_contact': orderData.recipientInfo || orderData.deliveryContact || null
+      });
 
       const { data, error } = await supabase
         .from('orders')

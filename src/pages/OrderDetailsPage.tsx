@@ -65,6 +65,48 @@ const OrderDetailsPage: React.FC = () => {
     }
   };
 
+  // Función para obtener el texto del tipo de servicio
+  const getServiceTypeText = (serviceType: string) => {
+    switch (serviceType) {
+      case 'ftl': return 'Carga Completa (FTL)';
+      case 'ltl': return 'Carga Parcial (LTL)';
+      case 'last-mile': return 'Última Milla / Entregas Urbanas';
+      default: return serviceType || 'No especificado';
+    }
+  };
+
+  // Función para obtener el texto del tipo de vehículo
+  const getVehicleTypeText = (vehicleType: string) => {
+    switch (vehicleType) {
+      case 'motocicleta': return 'Motocicleta';
+      case 'small-van': return 'Small Van 1 ton';
+      case 'large-van': return 'Large Van 1.5 ton';
+      case 'truck': return 'Camión 3.5 ton';
+      case 'refrigerado': return 'Refrigerado';
+      default: return vehicleType || 'No especificado';
+    }
+  };
+
+  // Función para obtener el texto de la prioridad
+  const getPriorityText = (priority: string) => {
+    switch (priority) {
+      case 'economico': return 'Económico';
+      case 'estandar': return 'Estándar';
+      case 'urgente': return 'Urgente';
+      default: return priority || 'No especificado';
+    }
+  };
+
+  // Función para obtener el color de la prioridad
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'economico': return 'bg-green-100 text-green-800';
+      case 'estandar': return 'bg-blue-100 text-blue-800';
+      case 'urgente': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -128,39 +170,118 @@ const OrderDetailsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Información principal */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Detalles del paquete */}
+            {/* Información del servicio */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                 <Package className="w-5 h-5 mr-2" />
-                Detalles del Paquete
+                Información del Servicio
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Tipo</label>
-                  <p className="text-gray-900">{order.package_data?.type || 'No especificado'}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Peso</label>
-                  <p className="text-gray-900">{order.package_data?.weight || 0} kg</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Dimensiones</label>
-                  <p className="text-gray-900">
-                    {order.package_data?.dimensions?.height || 0} × {order.package_data?.dimensions?.width || 0} × {order.package_data?.dimensions?.length || 0} cm
+                  <label className="text-sm font-medium text-gray-500">Tipo de Servicio</label>
+                  <p className="text-gray-900 font-medium">
+                    {getServiceTypeText(order.package_data?.service_type)}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Descripción</label>
-                  <p className="text-gray-900">{order.package_data?.description || 'No especificada'}</p>
+                  <label className="text-sm font-medium text-gray-500">Vehículo Asignado</label>
+                  <p className="text-gray-900 font-medium">
+                    {getVehicleTypeText(order.package_data?.vehicle_type)}
+                  </p>
                 </div>
-                {order.package_data?.special_instructions && (
-                  <div className="md:col-span-2">
-                    <label className="text-sm font-medium text-gray-500">Instrucciones especiales</label>
-                    <p className="text-gray-900">{order.package_data.special_instructions}</p>
-                  </div>
-                )}
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Prioridad</label>
+                  <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(order.package_data?.priority)}`}>
+                    {getPriorityText(order.package_data?.priority)}
+                  </span>
+                </div>
               </div>
             </div>
+
+            {/* Detalles del vehículo */}
+            {order.package_data?.vehicle_data && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Truck className="w-5 h-5 mr-2" />
+                  Detalles del Vehículo
+                </h2>
+                <div className="flex items-start space-x-4">
+                  {order.package_data.vehicle_data.image && (
+                    <img
+                      src={order.package_data.vehicle_data.image}
+                      alt={order.package_data.vehicle_data.name}
+                      className="w-20 h-20 object-cover rounded-xl shadow-sm"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 text-lg mb-2">
+                      {order.package_data.vehicle_data.name}
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      {order.package_data.vehicle_data.description}
+                    </p>
+                    <div className="flex items-center text-sm text-gray-500 mb-3">
+                      <span className="font-medium">Capacidad:</span>
+                      <span className="ml-2">{order.package_data.vehicle_data.capacity}</span>
+                    </div>
+                    {order.package_data.vehicle_data.features && (
+                      <div className="flex flex-wrap gap-2">
+                        {order.package_data.vehicle_data.features.map((feature: string, index: number) => (
+                          <span
+                            key={index}
+                            className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                          >
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Detalles de prioridad */}
+            {order.package_data?.priority_data && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Clock className="w-5 h-5 mr-2" />
+                  Detalles de Prioridad
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      {order.package_data.priority_data.name}
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      {order.package_data.priority_data.description}
+                    </p>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <span className="font-medium">Tiempo estimado:</span>
+                      <span className="ml-2">{order.package_data.priority_data.timeFrame}</span>
+                    </div>
+                  </div>
+                  <div>
+                    {order.package_data.priority_data.features && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-500 mb-2 block">Características</label>
+                        <div className="flex flex-wrap gap-2">
+                          {order.package_data.priority_data.features.map((feature: string, index: number) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
 
             {/* Direcciones */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -170,16 +291,44 @@ const OrderDetailsPage: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Recogida</h3>
-                  <p className="text-gray-600 text-sm">
-                    {order.pickup_address?.full || 'No especificada'}
-                  </p>
+                  <h3 className="font-medium text-gray-900 mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                      <MapPin className="w-4 h-4 text-green-600" />
+                    </div>
+                    Recogida
+                  </h3>
+                  <div className="bg-green-50 rounded-xl p-4">
+                    <p className="text-gray-900 font-medium">
+                      {order.pickup_address?.full || 
+                       `${order.pickup_address?.street || ''} ${order.pickup_address?.number || ''}, ${order.pickup_address?.neighborhood || ''}`.trim() ||
+                       'No especificada'}
+                    </p>
+                    {order.pickup_address?.city && order.pickup_address?.state && (
+                      <p className="text-gray-600 text-sm mt-1">
+                        {order.pickup_address.city}, {order.pickup_address.state}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Entrega</h3>
-                  <p className="text-gray-600 text-sm">
-                    {order.delivery_address?.full || 'No especificada'}
-                  </p>
+                  <h3 className="font-medium text-gray-900 mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-2">
+                      <MapPin className="w-4 h-4 text-red-600" />
+                    </div>
+                    Entrega
+                  </h3>
+                  <div className="bg-red-50 rounded-xl p-4">
+                    <p className="text-gray-900 font-medium">
+                      {order.delivery_address?.full || 
+                       `${order.delivery_address?.street || ''} ${order.delivery_address?.number || ''}, ${order.delivery_address?.neighborhood || ''}`.trim() ||
+                       'No especificada'}
+                    </p>
+                    {order.delivery_address?.city && order.delivery_address?.state && (
+                      <p className="text-gray-600 text-sm mt-1">
+                        {order.delivery_address.city}, {order.delivery_address.state}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,36 +341,50 @@ const OrderDetailsPage: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Remitente</h3>
-                  <div className="space-y-1">
-                    <p className="text-gray-900">{order.pickup_contact?.name || 'No especificado'}</p>
+                  <h3 className="font-medium text-gray-900 mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-2">
+                      <User className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Remitente
+                  </h3>
+                  <div className="bg-blue-50 rounded-xl p-4 space-y-2">
+                    <p className="text-gray-900 font-medium">
+                      {order.pickup_contact?.name || 'No especificado'}
+                    </p>
                     {order.pickup_contact?.phone && (
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Phone className="w-3 h-3 mr-1" />
+                        <Phone className="w-3 h-3 mr-2" />
                         {order.pickup_contact.phone}
                       </p>
                     )}
                     {order.pickup_contact?.email && (
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Mail className="w-3 h-3 mr-1" />
+                        <Mail className="w-3 h-3 mr-2" />
                         {order.pickup_contact.email}
                       </p>
                     )}
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Destinatario</h3>
-                  <div className="space-y-1">
-                    <p className="text-gray-900">{order.delivery_contact?.name || 'No especificado'}</p>
+                  <h3 className="font-medium text-gray-900 mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-2">
+                      <User className="w-4 h-4 text-purple-600" />
+                    </div>
+                    Destinatario
+                  </h3>
+                  <div className="bg-purple-50 rounded-xl p-4 space-y-2">
+                    <p className="text-gray-900 font-medium">
+                      {order.delivery_contact?.name || 'No especificado'}
+                    </p>
                     {order.delivery_contact?.phone && (
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Phone className="w-3 h-3 mr-1" />
+                        <Phone className="w-3 h-3 mr-2" />
                         {order.delivery_contact.phone}
                       </p>
                     )}
                     {order.delivery_contact?.email && (
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Mail className="w-3 h-3 mr-1" />
+                        <Mail className="w-3 h-3 mr-2" />
                         {order.delivery_contact.email}
                       </p>
                     )}
@@ -261,17 +424,50 @@ const OrderDetailsPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Resumen del servicio */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+              <h3 className="font-semibold text-gray-900 mb-4">Resumen del Servicio</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Servicio</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {getServiceTypeText(order.package_data?.service_type)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Vehículo</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {getVehicleTypeText(order.package_data?.vehicle_type)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Prioridad</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(order.package_data?.priority)}`}>
+                    {getPriorityText(order.package_data?.priority)}
+                  </span>
+                </div>
+                {order.package_data?.priority_data?.timeFrame && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">Tiempo estimado</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      {order.package_data.priority_data.timeFrame}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Información de la orden */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               <h3 className="font-semibold text-gray-900 mb-4">Información de la Orden</h3>
               <div className="space-y-3">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Código de seguimiento</label>
-                  <p className="text-gray-900 font-mono">{order.tracking_code}</p>
+                  <p className="text-gray-900 font-mono text-sm">{order.tracking_code}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Creada el</label>
-                  <p className="text-gray-900">
+                  <p className="text-gray-900 text-sm">
                     {new Date(order.created_at).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',

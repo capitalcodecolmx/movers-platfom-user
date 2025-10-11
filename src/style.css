@@ -5,6 +5,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Estilos para scroll horizontal móvil */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Smooth scroll para móvil */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+}
+
+/* Estilos adicionales para cards móviles */
+.mobile-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.mobile-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Gradientes personalizados */
+.gradient-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Efectos para el hero móvil */
+.hero-mobile {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Animaciones suaves para móvil */
+.mobile-hero-card {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.mobile-hero-card:hover {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transform: translateY(-2px);
+}
+
+/* Efectos de glassmorphism para móvil */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 /* Estilos personalizados para Muvers Platform */
 body {
   margin: 0;
