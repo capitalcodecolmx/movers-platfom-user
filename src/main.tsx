@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/SupabaseAuthContext'
+import AuthInitializer from './components/AuthInitializer'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
@@ -147,7 +148,9 @@ const App: React.FC = () => {
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <AuthInitializer>
+        <App />
+      </AuthInitializer>
     </AuthProvider>
   </React.StrictMode>
 )
