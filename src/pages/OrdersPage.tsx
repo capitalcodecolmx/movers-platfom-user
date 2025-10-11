@@ -172,16 +172,16 @@ const OrdersPage: React.FC = () => {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 sm:py-6 gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Mis Órdenes</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Mis Órdenes</h1>
               <p className="text-gray-600 mt-1">
                 Gestiona y revisa todos tus envíos ({orders.length} órdenes)
               </p>
             </div>
             <button
               onClick={() => navigate('/orders/create')}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center"
+              className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center justify-center sm:justify-start"
             >
               <Plus className="w-5 h-5 mr-2" />
               Nueva Orden
@@ -192,29 +192,139 @@ const OrdersPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col h-[calc(100vh-200px)]">
         {/* Filtros y búsqueda */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
                   type="text"
-                  placeholder="Buscar por código, servicio, vehículo, prioridad, origen o destino..."
+                  placeholder="Buscar por código, servicio, vehículo..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                  className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 />
               </div>
             </div>
-            <button className="flex items-center justify-center px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors whitespace-nowrap">
-              <Filter className="w-5 h-5 mr-2 text-gray-600" />
-              <span className="hidden sm:inline">Filtros</span>
+            <button className="flex items-center justify-center px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors whitespace-nowrap">
+              <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-600" />
+              <span className="hidden sm:inline text-sm">Filtros</span>
             </button>
           </div>
         </div>
 
-        {/* Tabla de órdenes */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-1">
+        {/* Vista móvil - Cards */}
+        <div className="block lg:hidden space-y-4 flex-1 overflow-y-auto">
+          {filteredOrders.map((order) => (
+            <div key={order.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+              {/* Header de la card */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center">
+                  <Package className="w-5 h-5 text-gray-400 mr-3" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{order.tracking_code}</h3>
+                    <p className="text-sm text-gray-500">
+                      {new Date(order.created_at).toLocaleDateString('es-MX')}
+                    </p>
+                  </div>
+                </div>
+                <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                  {getStatusText(order.status)}
+                </span>
+              </div>
+
+              {/* Información principal */}
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Servicio</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {getServiceTypeText(order.package_data?.service_type)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Vehículo</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {getVehicleTypeText(order.package_data?.vehicle_type)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Prioridad</span>
+                  <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(order.package_data?.priority)}`}>
+                    {getPriorityText(order.package_data?.priority)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Costo</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {order.estimated_cost ? `$${order.estimated_cost.toFixed(2)}` : 'No calculado'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Acciones */}
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => navigate(`/orders/${order.id}`)}
+                    className="flex items-center px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
+                    <Eye className="w-4 h-4 mr-1" />
+                    <span className="text-sm">Ver</span>
+                  </button>
+                  <button
+                    onClick={() => openMessagesModal(order)}
+                    className="flex items-center px-3 py-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-1" />
+                    <span className="text-sm">Mensajes</span>
+                  </button>
+                </div>
+                {order.status === 'pending' && (
+                  <div className="relative" data-menu-container>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenMenuId(openMenuId === order.id ? null : order.id);
+                      }}
+                      className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <MoreVertical className="w-4 h-4" />
+                    </button>
+                    {openMenuId === order.id && (
+                      <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                        <button
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            if (confirm('¿Estás seguro de que quieres cancelar esta orden?')) {
+                              console.log('Cancelar orden:', order.id);
+                            }
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            if (confirm('¿Estás seguro de que quieres eliminar esta orden? Esta acción no se puede deshacer.')) {
+                              console.log('Eliminar orden:', order.id);
+                            }
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Vista desktop - Tabla */}
+        <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-1">
           <div className="overflow-x-auto h-full overflow-y-auto">
             <table className="w-full min-w-[1000px]">
               <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">

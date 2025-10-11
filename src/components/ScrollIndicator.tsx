@@ -82,10 +82,6 @@ const ScrollIndicator: React.FC<ScrollIndicatorProps> = ({
           <ChevronRight className="w-4 h-4 text-gray-600" />
         </button>
       )}
-
-      {/* Gradientes de fade en los bordes */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-5"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-5"></div>
     </div>
   );
 };

@@ -134,9 +134,9 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({ className
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="absolute right-0 mt-2 w-72 sm:w-80 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 z-50">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-3 sm:p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900">Notificaciones</h3>
               {unreadCount > 0 && (
@@ -158,7 +158,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({ className
                 <p className="text-sm text-gray-500 mt-2">Cargando notificaciones...</p>
               </div>
             ) : dropdownNotifications.length === 0 ? (
-              <div className="p-6 text-center">
+              <div className="p-4 sm:p-6 text-center">
                 <Bell className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500">
                   {unreadCount === 0 ? 'No tienes notificaciones nuevas' : 'Todas las notificaciones están leídas'}
@@ -170,7 +170,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({ className
                   <div
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
+                    className={`p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
                       !notification.is_read ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
                     }`}
                   >
@@ -210,7 +210,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({ className
 
           {/* Footer */}
           {unreadCount > 5 && (
-            <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <div className="p-3 sm:p-4 border-t border-gray-200 bg-gray-50">
               <button
                 onClick={() => {
                   setIsOpen(false);

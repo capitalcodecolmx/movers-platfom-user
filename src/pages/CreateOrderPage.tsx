@@ -213,9 +213,9 @@ const CreateOrderPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center space-x-3 sm:space-x-4">
               <button
                 onClick={() => navigate('/dashboard')}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
@@ -223,15 +223,15 @@ const CreateOrderPage: React.FC = () => {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Crear Nueva Orden</h1>
-                <p className="text-gray-600 mt-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Crear Nueva Orden</h1>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">
                   Sigue los pasos para solicitar tu envío
                 </p>
               </div>
             </div>
-            <div className="text-right">
+            <div className="flex items-center justify-between sm:flex-col sm:items-end sm:justify-center">
               <p className="text-sm text-gray-500">Paso {currentStep} de 4</p>
-              <div className="w-32 bg-gray-200 rounded-full h-2 mt-2">
+              <div className="w-24 sm:w-32 bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(currentStep / 4) * 100}%` }}
@@ -244,8 +244,37 @@ const CreateOrderPage: React.FC = () => {
 
       {/* Indicadores de pasos */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          {/* Vista móvil - Solo iconos */}
+          <div className="flex items-center justify-between sm:hidden">
+            {steps.map((step, index) => (
+              <div
+                key={step.number}
+                className={`flex flex-col items-center ${
+                  currentStep >= step.number ? 'opacity-100' : 'opacity-50'
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    currentStep >= step.number
+                      ? step.color
+                      : 'bg-gray-200'
+                  } text-white`}
+                >
+                  <step.icon className="w-4 h-4" />
+                </div>
+                <span className="text-xs text-gray-500 mt-1 text-center">
+                  {step.number}
+                </span>
+                {index < steps.length - 1 && (
+                  <div className="absolute w-full h-0.5 bg-gray-200 top-4 left-1/2 transform translate-x-4" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Vista desktop - Iconos con texto */}
+          <div className="hidden sm:flex items-center justify-between">
             {steps.map((step, index) => (
               <div
                 key={step.number}
@@ -262,7 +291,7 @@ const CreateOrderPage: React.FC = () => {
                 >
                   <step.icon className="w-5 h-5" />
                 </div>
-                <div className="hidden sm:block">
+                <div>
                   <p className="text-sm font-medium text-gray-900">
                     {step.title}
                   </p>
@@ -271,7 +300,7 @@ const CreateOrderPage: React.FC = () => {
                   </p>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="hidden sm:block w-8 h-0.5 bg-gray-200 mx-4" />
+                  <div className="w-8 h-0.5 bg-gray-200 mx-4" />
                 )}
               </div>
             ))}
@@ -280,7 +309,7 @@ const CreateOrderPage: React.FC = () => {
       </div>
 
       {/* Contenido del paso actual */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {renderStep()}
       </div>
     </div>

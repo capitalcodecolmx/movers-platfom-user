@@ -76,49 +76,49 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-3">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8">
+        <div className="text-center mb-6 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 mb-2 sm:mb-3">
             1. Elige tu tipo de servicio
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
             Selecciona el tipo de servicio que mejor se adapte a tus necesidades de envío
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Tipos de servicio - Estilo Apple con React Icons */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {serviceTypes.map((service) => {
               const IconComponent = service.icon;
               return (
                 <button
                   key={service.id}
                   onClick={() => handleServiceSelect(service.id)}
-                  className={`relative p-8 rounded-2xl transition-all duration-300 text-left group border-2 ${
+                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${
                     data.serviceType === service.id
                       ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
                       : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
                   }`}
                 >
                   {/* Icono con gradiente */}
-                  <div className={`mb-6 transition-all duration-300 ${
+                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${
                     data.serviceType === service.id 
                       ? 'text-white' 
                       : `text-gray-600 group-hover:scale-110`
                   }`}>
-                    <IconComponent className="w-20 h-20" />
+                    <IconComponent className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" />
                   </div>
                   
                   {/* Título */}
-                  <h3 className={`font-semibold text-lg mb-3 transition-colors duration-300 ${
+                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${
                     data.serviceType === service.id ? 'text-white' : 'text-gray-900'
                   }`}>
                     {service.name}
                   </h3>
                   
                   {/* Descripción */}
-                  <p className={`text-sm mb-4 leading-relaxed transition-colors duration-300 ${
+                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${
                     data.serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
                   }`}>
                     {service.description}
@@ -133,8 +133,8 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 
                   {/* Indicador de selección */}
                   {data.serviceType === service.id && (
-                    <div className="absolute top-4 right-4 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md">
-                      <MdCheckCircle className="w-4 h-4 text-gray-800" />
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full flex items-center justify-center shadow-md">
+                      <MdCheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-gray-800" />
                     </div>
                   )}
 
@@ -152,15 +152,15 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 
           {/* Resumen del servicio seleccionado */}
           {selectedServiceType && (
-            <div className="bg-blue-50 rounded-2xl p-6 border border-blue-200">
-              <h3 className="font-medium text-blue-900 mb-3">Servicio seleccionado</h3>
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                  <selectedServiceType.icon className="w-8 h-8 text-white" />
+            <div className="bg-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200">
+              <h3 className="font-medium text-blue-900 mb-2 sm:mb-3 text-sm sm:text-base">Servicio seleccionado</h3>
+              <div className="flex items-start space-x-3 sm:space-x-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-md">
+                  <selectedServiceType.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <div>
-                  <p className="font-medium text-blue-900">{selectedServiceType.name}</p>
-                  <p className="text-blue-700 text-sm mt-1">{selectedServiceType.description}</p>
+                <div className="flex-1">
+                  <p className="font-medium text-blue-900 text-sm sm:text-base">{selectedServiceType.name}</p>
+                  <p className="text-blue-700 text-xs sm:text-sm mt-1">{selectedServiceType.description}</p>
                 </div>
               </div>
             </div>
@@ -168,10 +168,10 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
         </div>
 
         {/* Botón siguiente - Estilo Apple */}
-        <div className="mt-8 flex justify-end">
+        <div className="mt-6 sm:mt-8 flex justify-end">
           <button
             onClick={handleNext}
-            className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors text-sm"
+            className="bg-black text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium hover:bg-gray-800 transition-colors text-sm w-full sm:w-auto"
           >
             Continuar
           </button>
