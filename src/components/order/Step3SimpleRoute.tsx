@@ -10,6 +10,7 @@ import {
   MdCheckCircle,
   MdPlace
 } from 'react-icons/md';
+import CityAutocomplete from '../CityAutocomplete';
 
 interface Step3SimpleRouteProps {
   data: any;
@@ -19,40 +20,40 @@ interface Step3SimpleRouteProps {
 }
 
 
-// Estados de México
+// Estados de México con abreviaciones
 const MEXICAN_STATES = [
-  'Aguascalientes',
-  'Baja California',
-  'Baja California Sur',
-  'Campeche',
-  'Chiapas',
-  'Chihuahua',
-  'Ciudad de México',
-  'Coahuila',
-  'Colima',
-  'Durango',
-  'Guanajuato',
-  'Guerrero',
-  'Hidalgo',
-  'Jalisco',
-  'México',
-  'Michoacán',
-  'Morelos',
-  'Nayarit',
-  'Nuevo León',
-  'Oaxaca',
-  'Puebla',
-  'Querétaro',
-  'Quintana Roo',
-  'San Luis Potosí',
-  'Sinaloa',
-  'Sonora',
-  'Tabasco',
-  'Tamaulipas',
-  'Tlaxcala',
-  'Veracruz',
-  'Yucatán',
-  'Zacatecas'
+  { name: 'Aguascalientes', abbrev: 'AGS' },
+  { name: 'Baja California', abbrev: 'BCN' },
+  { name: 'Baja California Sur', abbrev: 'BCS' },
+  { name: 'Campeche', abbrev: 'CAMP' },
+  { name: 'Chiapas', abbrev: 'CHIS' },
+  { name: 'Chihuahua', abbrev: 'CHIH' },
+  { name: 'Ciudad de México', abbrev: 'CDMX' },
+  { name: 'Coahuila', abbrev: 'COAH' },
+  { name: 'Colima', abbrev: 'COL' },
+  { name: 'Durango', abbrev: 'DGO' },
+  { name: 'Guanajuato', abbrev: 'GTO' },
+  { name: 'Guerrero', abbrev: 'GRO' },
+  { name: 'Hidalgo', abbrev: 'HGO' },
+  { name: 'Jalisco', abbrev: 'JAL' },
+  { name: 'México', abbrev: 'MEX' },
+  { name: 'Michoacán', abbrev: 'MICH' },
+  { name: 'Morelos', abbrev: 'MOR' },
+  { name: 'Nayarit', abbrev: 'NAY' },
+  { name: 'Nuevo León', abbrev: 'NL' },
+  { name: 'Oaxaca', abbrev: 'OAX' },
+  { name: 'Puebla', abbrev: 'PUE' },
+  { name: 'Querétaro', abbrev: 'QRO' },
+  { name: 'Quintana Roo', abbrev: 'QROO' },
+  { name: 'San Luis Potosí', abbrev: 'SLP' },
+  { name: 'Sinaloa', abbrev: 'SIN' },
+  { name: 'Sonora', abbrev: 'SON' },
+  { name: 'Tabasco', abbrev: 'TAB' },
+  { name: 'Tamaulipas', abbrev: 'TAMPS' },
+  { name: 'Tlaxcala', abbrev: 'TLAX' },
+  { name: 'Veracruz', abbrev: 'VER' },
+  { name: 'Yucatán', abbrev: 'YUC' },
+  { name: 'Zacatecas', abbrev: 'ZAC' }
 ];
 
 const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
@@ -67,6 +68,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   const [pickupNeighborhood, setPickupNeighborhood] = useState('');
   const [pickupCity, setPickupCity] = useState('');
   const [pickupState, setPickupState] = useState('');
+  const [pickupPostalCode, setPickupPostalCode] = useState('');
   
   // Estados para campos separados de entrega
   const [deliveryStreet, setDeliveryStreet] = useState('');
@@ -74,18 +76,20 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   const [deliveryNeighborhood, setDeliveryNeighborhood] = useState('');
   const [deliveryCity, setDeliveryCity] = useState('');
   const [deliveryState, setDeliveryState] = useState('');
+  const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
   
   // Estados para validación
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Función para construir dirección completa
-  const buildAddress = (street: string, number: string, neighborhood: string, city: string, state: string) => {
+  const buildAddress = (street: string, number: string, neighborhood: string, city: string, state: string, postalCode?: string) => {
     const parts = [];
     if (street) parts.push(street);
     if (number) parts.push(number);
     if (neighborhood) parts.push(neighborhood);
     if (city) parts.push(city);
     if (state) parts.push(state);
+    if (postalCode) parts.push(postalCode);
     return parts.join(', ');
   };
 
@@ -134,7 +138,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
           neighborhood: pickupNeighborhood,
           city: pickupCity,
           state: pickupState,
-          full: buildAddress(pickupStreet, pickupNumber, pickupNeighborhood, pickupCity, pickupState)
+          postalCode: pickupPostalCode,
+          full: buildAddress(pickupStreet, pickupNumber, pickupNeighborhood, pickupCity, pickupState, pickupPostalCode)
         },
         deliveryAddress: {
           street: deliveryStreet,
@@ -142,7 +147,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
           neighborhood: deliveryNeighborhood,
           city: deliveryCity,
           state: deliveryState,
-          full: buildAddress(deliveryStreet, deliveryNumber, deliveryNeighborhood, deliveryCity, deliveryState)
+          postalCode: deliveryPostalCode,
+          full: buildAddress(deliveryStreet, deliveryNumber, deliveryNeighborhood, deliveryCity, deliveryState, deliveryPostalCode)
         }
       });
       onNext();
@@ -241,15 +247,13 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
                 {/* Ciudad */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ciudad *
-                  </label>
-                  <input
-                    type="text"
+                  <CityAutocomplete
                     value={pickupCity}
-                    onChange={(e) => setPickupCity(e.target.value)}
-                    placeholder="Ej: Monterrey"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    onChange={setPickupCity}
+                    state={pickupState}
+                    placeholder="Ej: Monterrey, Reynosa"
+                    label="Ciudad"
+                    required={true}
                   />
                   {errors.pickupCity && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupCity}</p>
@@ -268,12 +272,26 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   >
                     <option value="">Selecciona un estado</option>
                     {MEXICAN_STATES.map(state => (
-                      <option key={state} value={state}>{state}</option>
+                      <option key={state.abbrev} value={state.name}>{state.name}</option>
                     ))}
                   </select>
                   {errors.pickupState && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupState}</p>
                   )}
+                </div>
+
+                {/* Código Postal */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Código Postal
+                  </label>
+                  <input
+                    type="text"
+                    value={pickupPostalCode}
+                    onChange={(e) => setPickupPostalCode(e.target.value)}
+                    placeholder="Ej: 64000"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  />
                 </div>
               </div>
             </div>
@@ -347,15 +365,13 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
                 {/* Ciudad */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ciudad *
-                  </label>
-                  <input
-                    type="text"
+                  <CityAutocomplete
                     value={deliveryCity}
-                    onChange={(e) => setDeliveryCity(e.target.value)}
-                    placeholder="Ej: San Pedro Garza García"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    onChange={setDeliveryCity}
+                    state={deliveryState}
+                    placeholder="Ej: San Pedro, Reynosa"
+                    label="Ciudad"
+                    required={true}
                   />
                   {errors.deliveryCity && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryCity}</p>
@@ -374,12 +390,26 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   >
                     <option value="">Selecciona un estado</option>
                     {MEXICAN_STATES.map(state => (
-                      <option key={state} value={state}>{state}</option>
+                      <option key={state.abbrev} value={state.name}>{state.name}</option>
                     ))}
                   </select>
                   {errors.deliveryState && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryState}</p>
                   )}
+                </div>
+
+                {/* Código Postal */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Código Postal
+                  </label>
+                  <input
+                    type="text"
+                    value={deliveryPostalCode}
+                    onChange={(e) => setDeliveryPostalCode(e.target.value)}
+                    placeholder="Ej: 66200"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  />
                 </div>
               </div>
             </div>

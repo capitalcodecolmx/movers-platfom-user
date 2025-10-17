@@ -66,9 +66,25 @@ export const useOrders = () => {
       console.log('Creating order for user:', user.id, 'email:', user.email);
       console.log('Full orderData received:', JSON.stringify(orderData, null, 2));
 
+      // Determinar el estado inicial según el tipo de cotización
+      let initialStatus = 'pending';
+      let initialPaymentStatus = 'pending';
+      
+      if (orderData.isAutomaticQuote && orderData.estimatedCost) {
+        // Cotización automática - lista para pago
+        initialStatus = 'quote_ready';
+        initialPaymentStatus = 'pending';
+      } else {
+        // Cotización manual - esperando cotización
+        initialStatus = 'quote_pending';
+        initialPaymentStatus = 'pending';
+      }
+
       // Preparar los datos para la base de datos con el nuevo formato
       const orderPayload = {
         user_id: user.id,
+        status: initialStatus,
+        payment_status: initialPaymentStatus,
         package_data: {
           // Nuevo formato de servicio
           service_type: orderData.serviceType, // 'ftl', 'ltl', 'last-mile'
@@ -78,6 +94,11 @@ export const useOrders = () => {
           // Datos de prioridad
           priority: orderData.priority, // 'economico', 'estandar', 'urgente'
           priority_data: orderData.priorityData, // Datos completos de prioridad
+          
+          // Información de cotización
+          is_automatic_quote: orderData.isAutomaticQuote || false,
+          pricing_result: orderData.pricingResult || null,
+          quote_status: orderData.quoteStatus || 'manual_pending',
           
           // Datos tradicionales (mantenidos para compatibilidad)
           type: orderData.packageType,
@@ -99,6 +120,7 @@ export const useOrders = () => {
         delivery_date: orderData.deliveryDate || null,
         delivery_time: orderData.deliveryTime || null,
         estimated_cost: orderData.estimatedCost || null,
+        final_cost: orderData.estimatedCost || null, // Para cotizaciones automáticas
         assigned_vehicle_id: orderData.selectedVehicle?.id || null,
         customer_notes: orderData.specialInstructions || null,
       };

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Package, Truck, MapPin, Users } from 'lucide-react';
 import { useAuth } from '../contexts/SupabaseAuthContext';
 import { useOrders } from '../hooks/useOrders';
+import PaymentModal from '../components/PaymentModal';
 
 // Componentes de los pasos
 import Step1PackageDetails from '../components/order/Step1PackageDetails';
@@ -58,6 +59,10 @@ const CreateOrderPage: React.FC = () => {
   const { createOrder, isLoading: isCreatingOrder } = useOrders();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Estados para el modal de pago
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [createdOrder, setCreatedOrder] = useState<any>(null);
   const [orderData, setOrderData] = useState<OrderData>({
     packageType: '',
     packageDescription: '',
@@ -152,12 +157,16 @@ const CreateOrderPage: React.FC = () => {
       const newOrder = await createOrder(finalOrderData);
       
       console.log('Orden creada exitosamente:', newOrder);
+      setCreatedOrder(newOrder);
       
-      // Mostrar mensaje de éxito y redirigir
-      alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}`);
-      
-      // Redirigir al dashboard
-      navigate('/dashboard');
+      // Si es cotización automática con precio, mostrar modal de pago
+      if (finalOrderData.isAutomaticQuote && finalOrderData.estimatedCost) {
+        setShowPaymentModal(true);
+      } else {
+        // Si es cotización manual, mostrar mensaje y redirigir
+        alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nUn administrador revisará tu solicitud y te contactará con la cotización.`);
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       console.error('Error creating order:', error);
       alert(`Error al crear la orden: ${error.message}`);
@@ -312,6 +321,26 @@ const CreateOrderPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {renderStep()}
       </div>
+
+      {/* Modal de Pago */}
+      {showPaymentModal && createdOrder && (
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => {
+            setShowPaymentModal(false);
+            navigate('/dashboard');
+          }}
+          orderId={createdOrder.id}
+          trackingCode={createdOrder.tracking_code}
+          amount={createdOrder.estimated_cost || createdOrder.final_cost}
+          onPaymentSuccess={(paymentData) => {
+            console.log('Payment successful:', paymentData);
+            setShowPaymentModal(false);
+            alert(`¡Pago procesado exitosamente!\n\nCódigo de seguimiento: ${createdOrder.tracking_code}\nTu orden está siendo preparada.`);
+            navigate('/dashboard');
+          }}
+        />
+      )}
     </div>
   );
 };

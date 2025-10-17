@@ -2,8 +2,8 @@
 // PASO 4: PRIORIDAD DE ENVÍO
 // =====================================================
 
-import React, { useState } from 'react';
-import { Clock, DollarSign, Zap, ArrowLeft, Check, User, Phone, Mail, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Clock, DollarSign, Zap, ArrowLeft, Check, User, Phone, Mail, Calendar, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { 
   MdAccessTime,
   MdAttachMoney,
@@ -12,8 +12,11 @@ import {
   MdPerson,
   MdPhone,
   MdEmail,
-  MdEvent
+  MdEvent,
+  MdWarning,
+  MdInfo
 } from 'react-icons/md';
+import { pricingService } from '../../services/pricingService';
 
 interface Step4ContactsProps {
   data: any;
@@ -36,14 +39,14 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
       name: 'Económico',
       description: 'Tarifas más bajas; la recolección puede ajustarse según disponibilidad.',
       icon: MdAccessTime,
-      priceMultiplier: 0.8
+      priceMultiplier: 0.85 // -15%
     },
     {
       id: 'estandar',
       name: 'Estándar',
       description: 'Mejor equilibrio entre costo y rapidez.',
       icon: MdAttachMoney,
-      priceMultiplier: 1.0,
+      priceMultiplier: 1.0, // Precio base
       recommended: true
     },
     {
@@ -51,7 +54,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
       name: 'Urgente',
       description: 'Para entregas el mismo día o con prioridad en asignación de unidad.',
       icon: MdFlashOn,
-      priceMultiplier: 1.5
+      priceMultiplier: 1.15 // +15%
     }
   ]);
 
@@ -69,6 +72,90 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Estados para cotización automática
+  const [isCalculatingPrice, setIsCalculatingPrice] = useState(false);
+  const [pricingResult, setPricingResult] = useState<any>(null);
+  const [isRouteAvailable, setIsRouteAvailable] = useState<boolean | null>(null);
+  const [estimatedCost, setEstimatedCost] = useState<number | null>(null);
+
+  // Función para calcular precio automático
+  const calculateAutomaticPrice = async (priority: string) => {
+    console.log('🚀 calculateAutomaticPrice llamado con:', {
+      priority,
+      pickupAddress: data.pickupAddress,
+      deliveryAddress: data.deliveryAddress,
+      selectedVehicleType: data.selectedVehicleType
+    });
+
+    if (!data.pickupAddress || !data.deliveryAddress || !data.selectedVehicleType) {
+      console.log('❌ Datos incompletos:', {
+        pickupAddress: !!data.pickupAddress,
+        deliveryAddress: !!data.deliveryAddress,
+        selectedVehicleType: !!data.selectedVehicleType
+      });
+      return;
+    }
+
+    setIsCalculatingPrice(true);
+    
+    try {
+      console.log('💰 Llamando a pricingService.calculatePrice con:', {
+        pickupCity: data.pickupAddress.city,
+        pickupState: data.pickupAddress.state,
+        deliveryCity: data.deliveryAddress.city,
+        deliveryState: data.deliveryAddress.state,
+        vehicleType: data.selectedVehicleType.name,
+        priority
+      });
+
+      const result = await pricingService.calculatePrice(
+        data.pickupAddress.city,
+        data.pickupAddress.state,
+        data.deliveryAddress.city,
+        data.deliveryAddress.state,
+        data.selectedVehicleType.name,
+        priority as 'economico' | 'estandar' | 'urgente'
+      );
+
+      console.log('📊 Resultado del cálculo:', result);
+
+      setPricingResult(result);
+      setIsRouteAvailable(result.found);
+      
+      if (result.found && result.finalPrice !== undefined) {
+        console.log('✅ Precio calculado exitosamente:', result.finalPrice);
+        setEstimatedCost(result.finalPrice);
+      } else {
+        console.log('⚠️ No se pudo calcular precio:', result.error || 'Sin error específico');
+        setEstimatedCost(null);
+      }
+    } catch (error) {
+      console.error('❌ Error calculating price:', error);
+      setPricingResult(null);
+      setIsRouteAvailable(false);
+      setEstimatedCost(null);
+    } finally {
+      setIsCalculatingPrice(false);
+    }
+  };
+
+  // Verificar disponibilidad de ruta cuando se cargan los datos
+  useEffect(() => {
+    const checkRouteAvailability = async () => {
+      if (data.pickupAddress && data.deliveryAddress) {
+        const available = await pricingService.isRouteAvailable(
+          data.pickupAddress.city,
+          data.pickupAddress.state,
+          data.deliveryAddress.city,
+          data.deliveryAddress.state
+        );
+        setIsRouteAvailable(available);
+      }
+    };
+
+    checkRouteAvailability();
+  }, [data.pickupAddress, data.deliveryAddress]);
 
   const validateStep = () => {
     console.log('Step4 - validateStep called');
@@ -119,7 +206,10 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
 
   const handlePrioritySelect = (priorityId: string) => {
     setSelectedPriority(priorityId);
-    // No llamamos onUpdate aquí, solo en handleSubmit
+    // Calcular precio automático cuando se selecciona prioridad
+    if (isRouteAvailable) {
+      calculateAutomaticPrice(priorityId);
+    }
   };
 
   const handleSubmit = () => {
@@ -138,6 +228,11 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
         recipientInfo,
         pickupDate,
         pickupTime,
+        // Información de cotización
+        isAutomaticQuote: isRouteAvailable,
+        estimatedCost: estimatedCost,
+        pricingResult: pricingResult,
+        quoteStatus: isRouteAvailable ? 'auto_ready' : 'manual_pending'
       };
       
       console.log('Step4 - Sending data:', updateData);
@@ -180,6 +275,73 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                 <span>•</span>
                 <span>Ruta: {data.pickupAddress?.city} → {data.deliveryAddress?.city}</span>
               </div>
+            </div>
+          )}
+
+          {/* Estado de cotización automática */}
+          {isRouteAvailable !== null && (
+            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Cotización Automática</h3>
+                <div className="flex items-center space-x-2">
+                  {isRouteAvailable ? (
+                    <>
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      <span className="text-sm text-green-600 font-medium">Disponible</span>
+                    </>
+                  ) : (
+                    <>
+                      <AlertCircle className="w-5 h-5 text-amber-500" />
+                      <span className="text-sm text-amber-600 font-medium">Cotización Manual</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              {isRouteAvailable ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">
+                    Esta ruta está disponible para cotización automática. El precio se calculará según el tarifario oficial.
+                  </p>
+                  {isCalculatingPrice && (
+                    <div className="flex items-center space-x-2 text-sm text-gray-500">
+                      <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      <span>Calculando precio...</span>
+                    </div>
+                  )}
+                  {estimatedCost && selectedPriority && (
+                    <div className="bg-white rounded-xl p-4 border border-gray-200">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-600">Precio estimado ({priorityTypes.find(p => p.id === selectedPriority)?.name}):</p>
+                          <p className="text-2xl font-bold text-gray-900">${estimatedCost.toLocaleString('es-MX')}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-gray-500">Distancia: {pricingResult?.distance} km</p>
+                          <p className="text-xs text-gray-500">Vehículo: {pricingResult?.vehicleType}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">
+                    Esta ruta no está disponible en el tarifario automático. Un administrador revisará tu solicitud y te proporcionará una cotización personalizada.
+                  </p>
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <div className="flex items-start space-x-3">
+                      <MdWarning className="w-5 h-5 text-amber-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-amber-800">Cotización Manual Requerida</p>
+                        <p className="text-xs text-amber-700 mt-1">
+                          Te contactaremos en las próximas 24 horas con el precio final y detalles del envío.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
