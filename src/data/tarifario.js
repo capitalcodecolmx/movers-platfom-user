@@ -5516,6 +5516,7 @@ const MEXICAN_STATES = {
   'CAMP': 'Campeche',
   'CHIS': 'Chiapas',
   'CHIH': 'Chihuahua',
+  'CDMX': 'Ciudad de México',
   'COL': 'Colima',
   'COAH': 'Coahuila',
   'DGO': 'Durango',
@@ -5655,12 +5656,145 @@ export const calculatePrice = (
   vehicleType,
   priority = 'estandar'
 ) => {
+  console.log('💰 calculatePrice llamado con:', {
+    pickupCity,
+    pickupState,
+    deliveryCity,
+    deliveryState,
+    vehicleType,
+    priority
+  });
+
+  // Normalizar ciudades y estados
+  const normalizedPickupCity = normalizeCityName(pickupCity);
+  const normalizedPickupState = normalizeStateName(pickupState);
+  const normalizedDeliveryCity = normalizeCityName(deliveryCity);
+  const normalizedDeliveryState = normalizeStateName(deliveryState);
+
+  console.log('🔄 Ciudades normalizadas:', {
+    pickup: `${normalizedPickupCity}, ${normalizedPickupState}`,
+    delivery: `${normalizedDeliveryCity}, ${normalizedDeliveryState}`
+  });
+
+  // LÓGICA CORRECTA DEL TARIFARIO:
+  // 1. LOCAL: CDMX → CDMX (servicio local)
+  // 2. TARIFA AUTOMÁTICA: Recolección en CDMX → Entrega a otra ciudad
+  // 3. COTIZACIÓN MANUAL: Recolección en otra ciudad → CDMX (o cualquier otra combinación no cubierta)
+
+  // Verificar si el pickup es CDMX
+  const isCDMX = (city, state) => {
+    const normalizedCity = normalizeCityName(city);
+    const normalizedState = normalizeStateName(state);
+    return (normalizedState === 'CDMX' || 
+            normalizedCity.includes('mexico') || 
+            normalizedCity.includes('cdmx') ||
+            normalizedCity.includes('ciudad de mexico'));
+  };
+
+  const isPickupCDMX = isCDMX(pickupCity, pickupState);
+  const isDeliveryCDMX = isCDMX(deliveryCity, deliveryState);
+
+  console.log('🏙️ Verificación CDMX:', {
+    isPickupCDMX,
+    isDeliveryCDMX
+  });
+
+  // Caso 1: Si la recolección NO es CDMX → Cotización Manual
+  if (!isPickupCDMX) {
+    console.log('❌ Cotización manual requerida: La recolección debe ser desde CDMX');
+    return {
+      found: false,
+      error: 'Cotización manual requerida. El tarifario automático solo aplica para envíos que salen de CDMX.',
+      distance: null,
+      basePrice: null,
+      finalPrice: null
+    };
+  }
+
+  // Caso 2: CDMX → CDMX (Servicio Local)
+  if (isPickupCDMX && isDeliveryCDMX) {
+    console.log('🏠 Buscando servicio local CDMX → CDMX');
+    const entry = findTarifarioEntry('servicio local', 'CDMX');
+    
+    if (!entry) {
+      console.log('❌ No se encontró servicio local para CDMX');
+      return {
+        found: false,
+        error: 'Servicio local CDMX no encontrado en el tarifario',
+        distance: null,
+        basePrice: null,
+        finalPrice: null
+      };
+    }
+
+    const vehicleColumn = VEHICLE_TYPE_MAPPING[vehicleType];
+    if (!vehicleColumn) {
+      return {
+        found: false,
+        error: `Tipo de vehículo no válido: ${vehicleType}`,
+        distance: null,
+        basePrice: null,
+        finalPrice: null
+      };
+    }
+
+    const basePrice = entry[vehicleColumn];
+    if (!basePrice || basePrice === 0) {
+      return {
+        found: false,
+        error: `Precio no disponible para ${vehicleType}`,
+        distance: null,
+        basePrice: null,
+        finalPrice: null
+      };
+    }
+
+    // Aplicar multiplicadores según prioridad
+    let multiplier = 1;
+    switch (priority) {
+      case 'economico':
+        multiplier = 0.85; // -15%
+        break;
+      case 'urgente':
+        multiplier = 1.15; // +15%
+        break;
+      case 'estandar':
+      default:
+        multiplier = 1; // +0%
+        break;
+    }
+
+    const finalPrice = Math.round(basePrice * multiplier * 100) / 100;
+
+    console.log('✅ Servicio local CDMX calculado:', {
+      destination: entry.destino,
+      vehicleType,
+      basePrice,
+      priority,
+      multiplier,
+      finalPrice
+    });
+
+    return {
+      found: true,
+      distance: entry.km,
+      basePrice,
+      finalPrice,
+      entry,
+      vehicleType,
+      priority
+    };
+  }
+
+  // Caso 3: CDMX → Otra ciudad (Tarifario automático)
+  console.log('🚛 Buscando tarifa CDMX → Otra ciudad');
   const entry = findTarifarioEntry(deliveryCity, deliveryState);
   
   if (!entry) {
+    console.log('❌ Ciudad de destino no encontrada en el tarifario');
     return {
       found: false,
-      error: 'Ruta no encontrada en el tarifario',
+      error: 'Ruta no encontrada en el tarifario. Se requiere cotización manual.',
       distance: null,
       basePrice: null,
       finalPrice: null
@@ -5706,7 +5840,7 @@ export const calculatePrice = (
   
   const finalPrice = Math.round(basePrice * multiplier * 100) / 100;
   
-  console.log('💰 Cálculo de precio:', {
+  console.log('✅ Tarifa CDMX → Otra ciudad calculada:', {
     destination: entry.destino,
     vehicleType,
     basePrice,
@@ -5720,7 +5854,9 @@ export const calculatePrice = (
     distance: entry.km,
     basePrice,
     finalPrice,
-    entry
+    entry,
+    vehicleType,
+    priority
   };
 };
 

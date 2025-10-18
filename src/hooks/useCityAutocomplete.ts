@@ -37,6 +37,30 @@ export const useCityAutocomplete = () => {
           });
         }
       });
+
+      // Agregar CDMX como opción de ciudad (tanto como origen como destino)
+      const cdmxKey = 'ciudad de mexico_cdmx';
+      if (!citiesMap.has(cdmxKey)) {
+        citiesMap.set(cdmxKey, {
+          name: 'Ciudad de México',
+          state: 'Ciudad de México',
+          normalizedName: 'ciudad de mexico'
+        });
+      }
+
+      // Agregar variantes de CDMX para mejor búsqueda
+      const cdmxVariants = [
+        { name: 'CDMX', state: 'Ciudad de México', normalizedName: 'cdmx' },
+        { name: 'México D.F.', state: 'Ciudad de México', normalizedName: 'mexico df' },
+        { name: 'Distrito Federal', state: 'Ciudad de México', normalizedName: 'distrito federal' }
+      ];
+
+      cdmxVariants.forEach(variant => {
+        const key = `${variant.normalizedName}_${variant.state}`;
+        if (!citiesMap.has(key)) {
+          citiesMap.set(key, variant);
+        }
+      });
       
       setCities(Array.from(citiesMap.values()));
       setIsLoading(false);

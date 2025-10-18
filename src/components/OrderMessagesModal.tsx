@@ -3,7 +3,7 @@
 // =====================================================
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, MessageSquare, User, Clock, Paperclip } from 'lucide-react';
+import { X, Send, MessageSquare, User, Clock, Paperclip, Upload, FileText, Image } from 'lucide-react';
 import { useOrderMessages, type OrderMessage } from '../hooks/useOrderMessages';
 
 interface OrderMessagesModalProps {
@@ -22,7 +22,10 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
   const [newMessage, setNewMessage] = useState('');
   const [recipient, setRecipient] = useState<any>(null);
   const [isSending, setIsSending] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     messages,
@@ -42,6 +45,20 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
   // Scroll automático al final de los mensajes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Limpiar duplicados de mensajes
+  useEffect(() => {
+    if (messages.length > 0) {
+      const uniqueMessages = messages.filter((message, index, self) => 
+        index === self.findIndex(m => m.id === message.id)
+      );
+      
+      if (uniqueMessages.length !== messages.length) {
+        console.log('🧹 Limpiando mensajes duplicados:', messages.length - uniqueMessages.length);
+        // Los mensajes se actualizarán automáticamente por el hook
+      }
+    }
   }, [messages]);
 
   // Formatear tiempo relativo
@@ -78,6 +95,7 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
+      alert('Error al enviar el mensaje. Por favor, inténtalo de nuevo.');
     } finally {
       setIsSending(false);
     }
@@ -89,6 +107,92 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  // Manejar selección de archivo
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validar tipo de archivo (imágenes y PDFs)
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+      if (allowedTypes.includes(file.type)) {
+        setSelectedFile(file);
+      } else {
+        alert('Solo se permiten archivos de imagen (JPG, PNG, GIF) y PDF');
+      }
+    }
+  };
+
+  // Enviar archivo
+  const handleSendFile = async () => {
+    if (!selectedFile || !recipient) return;
+
+    setIsUploading(true);
+    try {
+      // Crear mensaje con archivo adjunto
+      const messageText = `📎 Comprobante de pago: ${selectedFile.name}`;
+      await sendMessage(orderId, recipient.id, messageText, 'file', selectedFile);
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error sending file:', error);
+      alert('Error al enviar el archivo');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Obtener icono del tipo de archivo
+  const getFileIcon = (fileName: string) => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension || '')) {
+      return <Image className="w-4 h-4" />;
+    }
+    return <FileText className="w-4 h-4" />;
+  };
+
+  // Renderizar archivo adjunto
+  const renderAttachment = (attachment: any) => {
+    if (!attachment) return null;
+
+    const { file_name, file_url, file_type } = attachment;
+    const isImage = file_type?.startsWith('image/');
+    const isPdf = file_type === 'application/pdf';
+
+    return (
+      <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center space-x-2">
+          {getFileIcon(file_name)}
+          <div className="flex-1 min-w-0">
+            <a
+              href={file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline truncate block"
+            >
+              {file_name}
+            </a>
+            <p className="text-xs text-gray-500">
+              {isImage ? 'Imagen' : isPdf ? 'Documento PDF' : 'Archivo adjunto'}
+            </p>
+          </div>
+        </div>
+        
+        {/* Vista previa para imágenes */}
+        {isImage && (
+          <div className="mt-2">
+            <img
+              src={file_url}
+              alt={file_name}
+              className="max-w-full h-32 object-cover rounded border cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={() => window.open(file_url, '_blank')}
+            />
+          </div>
+        )}
+      </div>
+    );
   };
 
   if (!isOpen) return null;
@@ -180,6 +284,10 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
                         </div>
                       )}
                       <p className="text-sm">{message.message}</p>
+                      
+                      {/* Mostrar archivo adjunto si existe */}
+                      {message.attachments && renderAttachment(message.attachments)}
+                      
                       <div className={`text-xs mt-1 ${
                         message.sender?.role === 'admin' ? 'text-blue-100' : 'text-gray-500'
                       }`}>
@@ -194,6 +302,48 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
 
             {/* Input de mensaje */}
             <div className="p-6 border-t border-gray-200 bg-gray-50">
+              {/* Archivo seleccionado */}
+              {selectedFile && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      {getFileIcon(selectedFile.name)}
+                      <span className="text-sm font-medium text-blue-900">
+                        {selectedFile.name}
+                      </span>
+                      <span className="text-xs text-blue-600">
+                        ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={handleSendFile}
+                        disabled={isUploading || !recipient}
+                        className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-1"
+                      >
+                        {isUploading ? (
+                          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+                        ) : (
+                          <Upload className="w-3 h-3" />
+                        )}
+                        <span>Enviar</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedFile(null);
+                          if (fileInputRef.current) {
+                            fileInputRef.current.value = '';
+                          }
+                        }}
+                        className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex space-x-3">
                 <div className="flex-1 relative">
                   <textarea
@@ -203,18 +353,27 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
                     placeholder="Escribe tu mensaje..."
                     className="w-full p-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     rows={2}
-                    disabled={isSending || !recipient}
+                    disabled={isSending || isUploading || !recipient}
+                  />
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={handleFileSelect}
+                    className="hidden"
                   />
                   <button
+                    onClick={() => fileInputRef.current?.click()}
                     className="absolute right-2 top-2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                    title="Adjuntar archivo"
+                    title="Adjuntar comprobante de pago"
+                    disabled={isSending || isUploading || !recipient}
                   >
                     <Paperclip className="w-4 h-4" />
                   </button>
                 </div>
                 <button
                   onClick={handleSendMessage}
-                  disabled={!newMessage.trim() || isSending || !recipient}
+                  disabled={!newMessage.trim() || isSending || isUploading || !recipient}
                   className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
                 >
                   {isSending ? (
@@ -230,6 +389,14 @@ const OrderMessagesModal: React.FC<OrderMessagesModalProps> = ({
                   Cargando información del destinatario...
                 </p>
               )}
+
+              {/* Ayuda para comprobantes */}
+              <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-xs text-green-700">
+                  💡 <strong>Tip:</strong> Puedes subir tu comprobante de pago usando el botón de adjuntar archivo. 
+                  Se aceptan imágenes (JPG, PNG, GIF) y archivos PDF.
+                </p>
+              </div>
             </div>
           </div>
         </div>

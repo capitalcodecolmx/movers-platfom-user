@@ -118,44 +118,31 @@ const NotificationsPage: React.FC = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => navigate(-1)}
-                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                </button>
-                
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">Notificaciones</h1>
-                  <p className="text-gray-600 mt-1">
-                    {filter === 'unread' 
-                      ? `${unreadCount} notificaciones no leídas`
-                      : `${notifications.length} notificaciones totales`
-                    }
-                  </p>
-                </div>
-              </div>
-
-              {unreadCount > 0 && (
-                <button
-                  onClick={handleMarkAllAsRead}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                >
-                  Marcar todas como leídas
-                </button>
-              )}
+        {/* Contenido principal sin header duplicado */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Notificaciones</h1>
+              <p className="text-gray-600 mt-1">
+                {filter === 'unread' 
+                  ? `${unreadCount} notificaciones no leídas`
+                  : `${notifications.length} notificaciones totales`
+                }
+              </p>
             </div>
-          </div>
-        </div>
 
-        {/* Filtros */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex space-x-4">
+            {unreadCount > 0 && (
+              <button
+                onClick={handleMarkAllAsRead}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              >
+                Marcar todas como leídas
+              </button>
+            )}
+          </div>
+
+          {/* Filtros */}
+          <div className="flex space-x-4 mb-6">
             <button
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -177,10 +164,8 @@ const NotificationsPage: React.FC = () => {
               No leídas ({unreadCount})
             </button>
           </div>
-        </div>
 
-        {/* Lista de notificaciones */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+          {/* Lista de notificaciones */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             {isLoading ? (
               <div className="p-8 text-center">

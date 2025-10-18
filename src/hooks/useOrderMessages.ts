@@ -68,11 +68,44 @@ export const useOrderMessages = (orderId?: string) => {
     recipientId: string,
     message: string,
     messageType: 'text' | 'image' | 'file' = 'text',
-    attachments?: any
+    file?: File
   ) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuario no autenticado');
+
+      let attachments = null;
+
+      // Si hay un archivo, subirlo a Supabase Storage
+      if (file && messageType === 'file') {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        // Usar auth.uid() como primer nivel para cumplir con la política RLS
+        const filePath = `${user.id}/${orderId}/${fileName}`;
+
+        // Subir archivo a Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('attachments')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          console.error('Error uploading file:', uploadError);
+          throw new Error(`Error al subir el archivo: ${uploadError.message}`);
+        }
+
+        // Obtener URL pública del archivo
+        const { data: urlData } = supabase.storage
+          .from('attachments')
+          .getPublicUrl(filePath);
+
+        attachments = {
+          file_name: file.name,
+          file_path: filePath,
+          file_url: urlData.publicUrl,
+          file_size: file.size,
+          file_type: file.type
+        };
+      }
 
       const { data, error } = await supabase
         .from('messages')
@@ -98,8 +131,8 @@ export const useOrderMessages = (orderId?: string) => {
 
       if (error) throw error;
 
-      // Agregar el nuevo mensaje a la lista local
-      setMessages(prev => [...prev, data]);
+      // No agregar aquí porque el listener de tiempo real lo hará
+      // setMessages(prev => [...prev, data]);
 
       return data;
     } catch (err: any) {
@@ -203,9 +236,39 @@ export const useOrderMessages = (orderId?: string) => {
           table: 'messages',
           filter: `order_id=eq.${orderId}`
         },
-        (payload) => {
+        async (payload) => {
           const newMessage = payload.new as OrderMessage;
-          setMessages(prev => [...prev, newMessage]);
+          
+          // Verificar que el mensaje no esté ya en la lista (evitar duplicados)
+          setMessages(prev => {
+            const exists = prev.some(msg => msg.id === newMessage.id);
+            if (exists) return prev;
+            return [...prev, newMessage];
+          });
+
+          // Si no tiene información del sender, obtenerla de forma asíncrona
+          if (!newMessage.sender) {
+            try {
+              const { data: senderData } = await supabase
+                .from('users')
+                .select('id, full_name, email, role')
+                .eq('id', newMessage.sender_id)
+                .single();
+              
+              if (senderData) {
+                // Actualizar el mensaje con la información del sender
+                setMessages(prev => 
+                  prev.map(msg => 
+                    msg.id === newMessage.id 
+                      ? { ...msg, sender: senderData }
+                      : msg
+                  )
+                );
+              }
+            } catch (error) {
+              console.error('Error fetching sender data:', error);
+            }
+          }
         }
       )
       .on(

@@ -72,12 +72,16 @@ export const useNotifications = () => {
 
       if (error) throw error;
 
-      // Actualizar la lista local
-      setNotifications(prev => [data, ...prev]);
+      // Actualizar la lista local solo si no existe ya
+      setNotifications(prev => {
+        const exists = prev.some(n => n.id === data.id);
+        if (exists) return prev;
+        return [data, ...prev];
+      });
       
       // Actualizar contador de no leídas si es para el usuario actual
       const { data: { user } } = await supabase.auth.getUser();
-      if (user && notificationData.user_id === user.id) {
+      if (user && notificationData.user_id === user.id && !data.is_read) {
         setUnreadCount(prev => prev + 1);
       }
 
@@ -214,7 +218,15 @@ export const useNotifications = () => {
           },
           (payload) => {
             const newNotification = payload.new as Notification;
-            setNotifications(prev => [newNotification, ...prev]);
+            
+            // Verificar que no esté ya en la lista (evitar duplicados)
+            setNotifications(prev => {
+              const exists = prev.some(n => n.id === newNotification.id);
+              if (exists) return prev;
+              
+              return [newNotification, ...prev];
+            });
+            
             if (!newNotification.is_read) {
               setUnreadCount(prev => prev + 1);
             }

@@ -60,8 +60,7 @@ const CreateOrderPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Estados para el modal de pago
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  // Estados para la orden creada
   const [createdOrder, setCreatedOrder] = useState<any>(null);
   const [orderData, setOrderData] = useState<OrderData>({
     packageType: '',
@@ -159,13 +158,15 @@ const CreateOrderPage: React.FC = () => {
       console.log('Orden creada exitosamente:', newOrder);
       setCreatedOrder(newOrder);
       
-      // Si es cotización automática con precio, mostrar modal de pago
+      // Mostrar mensaje de éxito y redirigir (sin modal de pago)
       if (finalOrderData.isAutomaticQuote && finalOrderData.estimatedCost) {
-        setShowPaymentModal(true);
+        // Cotización automática - orden lista para pago
+        alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nPuedes proceder al pago desde la sección "Mis Órdenes".`);
+        navigate('/orders');
       } else {
-        // Si es cotización manual, mostrar mensaje y redirigir
+        // Cotización manual - esperando cotización
         alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nUn administrador revisará tu solicitud y te contactará con la cotización.`);
-        navigate('/dashboard');
+        navigate('/orders');
       }
     } catch (error: any) {
       console.error('Error creating order:', error);
@@ -322,25 +323,6 @@ const CreateOrderPage: React.FC = () => {
         {renderStep()}
       </div>
 
-      {/* Modal de Pago */}
-      {showPaymentModal && createdOrder && (
-        <PaymentModal
-          isOpen={showPaymentModal}
-          onClose={() => {
-            setShowPaymentModal(false);
-            navigate('/dashboard');
-          }}
-          orderId={createdOrder.id}
-          trackingCode={createdOrder.tracking_code}
-          amount={createdOrder.estimated_cost || createdOrder.final_cost}
-          onPaymentSuccess={(paymentData) => {
-            console.log('Payment successful:', paymentData);
-            setShowPaymentModal(false);
-            alert(`¡Pago procesado exitosamente!\n\nCódigo de seguimiento: ${createdOrder.tracking_code}\nTu orden está siendo preparada.`);
-            navigate('/dashboard');
-          }}
-        />
-      )}
     </div>
   );
 };

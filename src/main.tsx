@@ -10,6 +10,7 @@ import CreateOrderPage from './pages/CreateOrderPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
 import TrackingPage from './pages/TrackingPage'
 import NotificationsPage from './pages/NotificationsPage'
+import TestOrderFlow from './components/TestOrderFlow'
 import './style.css'
 
 // Componente para rutas protegidas
@@ -118,6 +119,17 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <Layout>
                 <NotificationsPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/test-orders"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <TestOrderFlow />
               </Layout>
             </ProtectedRoute>
           }
