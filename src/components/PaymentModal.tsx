@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, CreditCard, Smartphone, Building2, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, CreditCard, Smartphone, Building2, CheckCircle, AlertCircle, FileText, Handshake } from 'lucide-react';
 import { supabase } from '../config/supabase';
+import { useNavigate } from 'react-router-dom';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -19,18 +20,14 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   amount,
   onPaymentSuccess
 }) => {
+  const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [showTransferInfo, setShowTransferInfo] = useState(false);
+  const [receiptUploaded, setReceiptUploaded] = useState(false);
 
   const paymentMethods = [
-    {
-      id: 'card',
-      name: 'Tarjeta de Crédito/Débito',
-      description: 'Visa, Mastercard, American Express',
-      icon: CreditCard,
-      available: true
-    },
     {
       id: 'transfer',
       name: 'Transferencia Bancaria',
@@ -39,16 +36,22 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       available: true
     },
     {
-      id: 'spei',
-      name: 'SPEI',
-      description: 'Transferencia electrónica',
-      icon: Smartphone,
+      id: 'contrapago',
+      name: 'Contrapago',
+      description: 'Pago contra entrega con contrato establecido',
+      icon: Handshake,
       available: true
     }
   ];
 
   const handlePayment = async () => {
     if (!selectedMethod) return;
+
+    // Validación especial para transferencia
+    if (selectedMethod === 'transfer' && !receiptUploaded) {
+      alert('Por favor, sube tu comprobante de transferencia en el chat de la orden antes de continuar.');
+      return;
+    }
 
     setIsProcessing(true);
     
@@ -87,12 +90,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         });
       }
 
+      // Si es contrapago, redirigir a /orders después de confirmar
+      if (selectedMethod === 'contrapago') {
+        setTimeout(() => {
+          navigate('/orders');
+          onClose();
+        }, 2000);
+      }
+
     } catch (error) {
       console.error('Error processing payment:', error);
       alert('Error al procesar el pago. Por favor, inténtalo de nuevo.');
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleMethodSelection = (methodId: string) => {
+    setSelectedMethod(methodId);
+    setShowTransferInfo(methodId === 'transfer');
+    setReceiptUploaded(false);
   };
 
   if (!isOpen) return null;
@@ -159,7 +176,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                 {paymentMethods.map((method) => (
                   <button
                     key={method.id}
-                    onClick={() => setSelectedMethod(method.id)}
+                    onClick={() => handleMethodSelection(method.id)}
                     disabled={!method.available}
                     className={`w-full p-4 rounded-xl border-2 transition-all ${
                       selectedMethod === method.id
@@ -187,6 +204,39 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                 ))}
               </div>
 
+              {/* Transfer Information */}
+              {showTransferInfo && (
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+                  <h4 className="font-medium text-green-800 mb-3">Información para Transferencia</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-green-700">Banco:</span>
+                      <span className="font-medium text-green-900">BBVA</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-700">Cuenta:</span>
+                      <span className="font-mono font-medium text-green-900">0123456789</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-700">CLABE:</span>
+                      <span className="font-mono font-medium text-green-900">012345678901234567</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-700">Beneficiario:</span>
+                      <span className="font-medium text-green-900">Mouvers Logistics S.A.</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-700">Referencia:</span>
+                      <span className="font-mono font-medium text-green-900">{trackingCode}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-700">Monto:</span>
+                      <span className="font-medium text-green-900">${amount.toLocaleString('es-MX')}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Security Notice */}
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
                 <div className="flex items-start space-x-3">
@@ -202,18 +252,37 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
               {/* Action Buttons */}
               <div className="space-y-3">
+                {/* Validación para transferencia */}
+                {selectedMethod === 'transfer' && !receiptUploaded && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
+                    <div className="flex items-start space-x-2">
+                      <AlertCircle className="w-4 h-4 text-red-600 mt-0.5" />
+                      <p className="text-sm text-red-800">
+                        Debes subir tu comprobante de transferencia en el chat de la orden antes de continuar.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <button
                   onClick={handlePayment}
-                  disabled={!selectedMethod || isProcessing}
+                  disabled={!selectedMethod || isProcessing || (selectedMethod === 'transfer' && !receiptUploaded)}
                   className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
                   {isProcessing ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Procesando...</span>
+                      <span>
+                        {selectedMethod === 'contrapago' ? 'Confirmando...' : 'Procesando...'}
+                      </span>
                     </>
                   ) : (
-                    <span>Procesar Pago - ${amount.toLocaleString('es-MX')}</span>
+                    <span>
+                      {selectedMethod === 'contrapago' 
+                        ? `Confirmar Contrapago - $${amount.toLocaleString('es-MX')}`
+                        : `Procesar Pago - $${amount.toLocaleString('es-MX')}`
+                      }
+                    </span>
                   )}
                 </button>
                 

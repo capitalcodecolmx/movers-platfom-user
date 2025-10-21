@@ -104,7 +104,7 @@ const TestOrderFlow: React.FC = () => {
         testData.deliveryAddress.city,
         testData.deliveryAddress.state,
         testData.vehicleType,
-        testData.priority
+        testData.priority as 'economico' | 'estandar' | 'urgente'
       );
 
       console.log('📊 Resultado de cotización:', pricingResult);
@@ -246,7 +246,7 @@ const TestOrderFlow: React.FC = () => {
         testData.deliveryAddress.city,
         testData.deliveryAddress.state,
         testData.vehicleType,
-        testData.priority
+        testData.priority as 'economico' | 'estandar' | 'urgente'
       );
 
       console.log('📊 Resultado de cotización:', pricingResult);
