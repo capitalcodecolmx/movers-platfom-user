@@ -17,7 +17,11 @@ import CartPage from './pages/CartPage'
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
 import AguacentrosPage from './pages/AguacentrosPage'
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './style.css'
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Componente para rutas protegidas
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
