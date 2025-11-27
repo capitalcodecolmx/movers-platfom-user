@@ -64,8 +64,18 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                             ))}
                         </nav>
 
-                        {/* Cart & Mobile Menu Button */}
-                        <div className="flex items-center gap-4">
+                        {/* Cart, Login & Mobile Menu Button */}
+                        <div className="flex items-center gap-3">
+                            <Link
+                                to="/login"
+                                className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-cyan-600 to-blue-600 rounded-full hover:from-cyan-500 hover:to-blue-500 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                Portal de Clientes
+                            </Link>
+
                             <Link to="/cart" className="relative p-2 text-gray-600 hover:text-cyan-600 transition-all duration-200 hover:scale-110">
                                 <ShoppingCart size={24} />
                                 {cartCount > 0 && (
@@ -104,6 +114,13 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                                     {item.name}
                                 </Link>
                             ))}
+                            <Link
+                                to="/login"
+                                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all duration-200 text-center"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Portal de Clientes
+                            </Link>
                         </div>
                     </div>
                 )}
