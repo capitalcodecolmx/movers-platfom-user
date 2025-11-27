@@ -17,8 +17,8 @@ export const COMPANY_INFO = {
   whatsapp: '5218999211010',
   logo: logo,
   social: {
-    facebook: '#',
-    instagram: '#'
+    facebook: 'https://www.facebook.com/apblanquita',
+    instagram: 'https://www.instagram.com/apblanquita/'
   }
 };
 
