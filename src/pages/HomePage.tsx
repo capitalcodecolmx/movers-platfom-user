@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import PublicLayout from '../components/PublicLayout';
 import ProductCard from '../components/ProductCard';
+import PromotionsSlider from '../components/PromotionsSlider';
 import { PRODUCTS } from '../data/mockData';
 import { ArrowRight, Droplets, ShieldCheck, Truck } from 'lucide-react';
 
@@ -83,29 +84,10 @@ const HomePage: React.FC = () => {
             {/* Hero Section */}
             <section ref={heroRef} className="relative bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 text-white overflow-hidden">
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 relative z-10">
-                    <div className="max-w-2xl">
-                        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-                            Pureza y Calidad <br />
-                            <span className="bg-gradient-to-r from-cyan-200 to-white bg-clip-text text-transparent">Para Tu Familia</span>
-                        </h1>
-                        <p className="text-xl md:text-2xl mb-8 text-cyan-50 leading-relaxed">
-                            Agua Purificada Blanquita ofrece la mejor hidratación con los más altos estándares de calidad.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <Link
-                                to="/products"
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-cyan-700 bg-white rounded-full hover:bg-cyan-50 transition-all transform hover:scale-105 shadow-2xl hover:shadow-cyan-300/50"
-                            >
-                                Ver Productos <ArrowRight className="ml-2" size={20} />
-                            </Link>
-                            <Link
-                                to="/contact"
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white border-2 border-white rounded-full hover:bg-white/20 backdrop-blur-sm transition-all"
-                            >
-                                Contáctanos
-                            </Link>
-                        </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 relative z-10">
+                    {/* Promotions Slider - Full Width */}
+                    <div className="w-full">
+                        <PromotionsSlider autoSlideInterval={5000} />
                     </div>
                 </div>
 

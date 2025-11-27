@@ -37,7 +37,25 @@ export interface Product {
   image: string;
   category: 'garrafon' | 'botella' | 'hielo';
   description: string;
+  marca: string;
+  submarca?: string;
+  sabor?: string;
+  presentacion: string;
+  tamaño: string;
+  tipoAgua: string;
+  tipoProducto: string;
 }
+
+// Filter option constants
+export const FILTER_OPTIONS = {
+  marcas: ['Blanquita'],
+  submarcas: ['Natural', 'Premium', 'Fórmula'],
+  sabores: ['Natural', 'Saborizada'],
+  presentaciones: ['Garrafón', 'Botella', 'Galón'],
+  tamaños: ['20L', '11L', '5L', '1.5L', '1L', '600ml', '350ml'],
+  tiposAgua: ['Natural', 'Purificada', 'Mineral'],
+  tiposProducto: ['Con envase', 'Sin envase']
+};
 
 export const PRODUCTS: Product[] = [
   {
@@ -46,7 +64,13 @@ export const PRODUCTS: Product[] = [
     price: 45.00,
     image: garrafon,
     category: 'garrafon',
-    description: 'Agua purificada de la mejor calidad en presentación familiar.'
+    description: 'Agua purificada de la mejor calidad en presentación familiar.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Garrafón',
+    tamaño: '20L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '2',
@@ -54,7 +78,13 @@ export const PRODUCTS: Product[] = [
     price: 25.00,
     image: botella5l,
     category: 'botella',
-    description: 'Ideal para compartir en reuniones o viajes cortos.'
+    description: 'Ideal para compartir en reuniones o viajes cortos.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Botella',
+    tamaño: '5L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '3',
@@ -62,7 +92,13 @@ export const PRODUCTS: Product[] = [
     price: 20.00,
     image: galon,
     category: 'botella',
-    description: 'Práctico envase para el consumo diario.'
+    description: 'Práctico envase para el consumo diario.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Galón',
+    tamaño: '1L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '4',
@@ -70,7 +106,13 @@ export const PRODUCTS: Product[] = [
     price: 15.00,
     image: medioGalon,
     category: 'botella',
-    description: 'Tamaño perfecto para llevar contigo.'
+    description: 'Tamaño perfecto para llevar contigo.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Galón',
+    tamaño: '600ml',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '5',
@@ -78,7 +120,13 @@ export const PRODUCTS: Product[] = [
     price: 22.00,
     image: galonBaby,
     category: 'botella',
-    description: 'Especialmente diseñada para la preparación de alimentos para bebés.'
+    description: 'Especialmente diseñada para la preparación de alimentos para bebés.',
+    marca: 'Blanquita',
+    submarca: 'Fórmula',
+    presentacion: 'Galón',
+    tamaño: '1L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '6',
@@ -86,7 +134,13 @@ export const PRODUCTS: Product[] = [
     price: 12.00,
     image: botella15l,
     category: 'botella',
-    description: 'Hidratación prolongada para tu día.'
+    description: 'Hidratación prolongada para tu día.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Botella',
+    tamaño: '1.5L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '7',
@@ -94,7 +148,13 @@ export const PRODUCTS: Product[] = [
     price: 10.00,
     image: botella1l,
     category: 'botella',
-    description: 'La medida estándar para tu sed.'
+    description: 'La medida estándar para tu sed.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Botella',
+    tamaño: '1L',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '8',
@@ -102,7 +162,13 @@ export const PRODUCTS: Product[] = [
     price: 8.00,
     image: botella600ml,
     category: 'botella',
-    description: 'Compacta y ligera, llévala a todas partes.'
+    description: 'Compacta y ligera, llévala a todas partes.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Botella',
+    tamaño: '600ml',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   },
   {
     id: '9',
@@ -110,7 +176,13 @@ export const PRODUCTS: Product[] = [
     price: 6.00,
     image: botella350ml,
     category: 'botella',
-    description: 'Pequeña y práctica, ideal para niños o eventos.'
+    description: 'Pequeña y práctica, ideal para niños o eventos.',
+    marca: 'Blanquita',
+    submarca: 'Natural',
+    presentacion: 'Botella',
+    tamaño: '350ml',
+    tipoAgua: 'Purificada',
+    tipoProducto: 'Con envase'
   }
 ];
 
