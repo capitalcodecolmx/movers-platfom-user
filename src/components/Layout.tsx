@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
+import {
   MdDashboard,
   MdInventory,
   MdAdd,
@@ -55,7 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-2xl">
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-gray-900">Mouvers</span>
+              <img src="/src/assets/images/branding/logo.png" alt="Agua Blanquita" className="h-8 w-auto" />
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -70,11 +70,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(item.href)
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
+                className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(item.href)
+                  ? 'bg-gray-100 text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
               >
                 <item.icon className="w-5 h-5 mr-4" />
                 {item.name}
@@ -110,18 +109,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col z-40">
         <div className="flex flex-col flex-grow bg-white border-r border-gray-200">
           <div className="flex h-16 items-center px-6">
-            <span className="text-2xl font-bold text-gray-900">Mouvers</span>
+            <img src="/src/assets/images/branding/logo.png" alt="Agua Blanquita" className="h-10 w-auto" />
           </div>
           <nav className="flex-1 px-4 py-6 space-y-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(item.href)
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
+                className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(item.href)
+                  ? 'bg-gray-100 text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
               >
                 <item.icon className="w-5 h-5 mr-4" />
                 {item.name}
@@ -156,70 +154,62 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Contenido principal */}
       <div className="lg:pl-64 relative">
         {/* Top bar */}
-        <div className={`z-40 ${
-          location.pathname === '/dashboard' 
-            ? 'absolute inset-x-0 top-0 bg-transparent border-transparent' 
-            : 'sticky top-0 bg-white border-b border-gray-200'
-        }`}>
+        <div className={`z-40 ${location.pathname === '/dashboard'
+          ? 'absolute inset-x-0 top-0 bg-transparent border-transparent'
+          : 'sticky top-0 bg-white border-b border-gray-200'
+          }`}>
           <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className={`lg:hidden ${
-                  location.pathname === '/dashboard' 
-                    ? 'text-white/70 hover:text-white' 
-                    : 'text-gray-400 hover:text-gray-600'
-                }`}
+                className={`lg:hidden ${location.pathname === '/dashboard'
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-gray-400 hover:text-gray-600'
+                  }`}
               >
                 <MdMenu className="w-6 h-6" />
               </button>
               <div className="ml-4 lg:ml-0">
-                <h1 className={`text-xl font-semibold ${
-                  location.pathname === '/dashboard' 
-                    ? 'text-white' 
-                    : 'text-gray-900'
-                }`}>
+                <h1 className={`text-xl font-semibold ${location.pathname === '/dashboard'
+                  ? 'text-white'
+                  : 'text-gray-900'
+                  }`}>
                   {navigation.find(item => isActive(item.href))?.name || 'Dashboard'}
                 </h1>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {/* Notificaciones */}
-              <NotificationsDropdown 
-                className={`${
-                  location.pathname === '/dashboard'
-                    ? 'text-white/70 hover:text-white'
-                    : 'text-gray-400 hover:text-gray-600'
-                }`}
+              <NotificationsDropdown
+                className={`${location.pathname === '/dashboard'
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-gray-400 hover:text-gray-600'
+                  }`}
               />
 
               {/* Perfil */}
               <div className="flex items-center space-x-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  location.pathname === '/dashboard'
-                    ? 'bg-white/20'
-                    : 'bg-gray-100'
-                }`}>
-                  <MdPerson className={`w-4 h-4 ${
-                    location.pathname === '/dashboard'
-                      ? 'text-white'
-                      : 'text-gray-600'
-                  }`} />
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${location.pathname === '/dashboard'
+                  ? 'bg-white/20'
+                  : 'bg-gray-100'
+                  }`}>
+                  <MdPerson className={`w-4 h-4 ${location.pathname === '/dashboard'
+                    ? 'text-white'
+                    : 'text-gray-600'
+                    }`} />
                 </div>
                 <div className="hidden sm:block">
-                  <p className={`text-sm font-medium ${
-                    location.pathname === '/dashboard'
-                      ? 'text-white'
-                      : 'text-gray-900'
-                  }`}>
+                  <p className={`text-sm font-medium ${location.pathname === '/dashboard'
+                    ? 'text-white'
+                    : 'text-gray-900'
+                    }`}>
                     {user?.user_metadata?.full_name?.split(' ')[0] || 'Usuario'}
                   </p>
-                  <p className={`text-xs ${
-                    location.pathname === '/dashboard'
-                      ? 'text-white/70'
-                      : 'text-gray-500'
-                  }`}>
+                  <p className={`text-xs ${location.pathname === '/dashboard'
+                    ? 'text-white/70'
+                    : 'text-gray-500'
+                    }`}>
                     {user?.user_metadata?.role === 'user' ? 'Cliente' : user?.user_metadata?.role}
                   </p>
                 </div>

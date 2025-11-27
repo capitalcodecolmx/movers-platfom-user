@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  
+
   const { signIn, signUp, isLoading, error, clearError } = useAuth();
   const navigate = useNavigate();
 
@@ -38,23 +38,27 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
-        backgroundImage: 'url(/back.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        background: 'linear-gradient(135deg, #00AEEF 0%, #0055A4 100%)',
       }}
     >
       {/* Overlay oscuro para mejorar legibilidad */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      
+
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Mouvers</h1>
-          <p className="text-gray-200">Plataforma de envíos</p>
+          <img
+            src="/src/assets/images/branding/logo.png"
+            alt="Agua Purificada Blanquita"
+            className="h-16 mx-auto mb-4 brightness-0 invert"
+          />
+          <p className="text-cyan-100 font-medium">Portal de Clientes</p>
+          <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mt-4 transition-colors">
+            <ArrowRight className="w-4 h-4 rotate-180" /> Volver al inicio
+          </Link>
         </div>
 
         {/* Formulario */}
@@ -64,8 +68,8 @@ const LoginPage: React.FC = () => {
               {isSignUp ? 'Crear cuenta' : 'Iniciar sesión'}
             </h2>
             <p className="text-gray-600">
-              {isSignUp 
-                ? 'Regístrate para comenzar a enviar paquetes' 
+              {isSignUp
+                ? 'Regístrate para comenzar a enviar paquetes'
                 : 'Accede a tu cuenta para gestionar tus envíos'
               }
             </p>
@@ -162,8 +166,8 @@ const LoginPage: React.FC = () => {
 
             {!isSignUp && (
               <div className="text-right">
-                <Link 
-                  to="/forgot-password" 
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   ¿Olvidaste tu contraseña?
@@ -174,7 +178,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-cyan-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-cyan-700 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

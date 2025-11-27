@@ -11,12 +11,18 @@ import OrderDetailsPage from './pages/OrderDetailsPage'
 import TrackingPage from './pages/TrackingPage'
 import NotificationsPage from './pages/NotificationsPage'
 import TestOrderFlow from './components/TestOrderFlow'
+import HomePage from './pages/HomePage'
+import ProductsPage from './pages/ProductsPage'
+import CartPage from './pages/CartPage'
+import ContactPage from './pages/ContactPage'
+import AboutPage from './pages/AboutPage'
+import AguacentrosPage from './pages/AguacentrosPage'
 import './style.css'
 
 // Componente para rutas protegidas
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  
+
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
@@ -28,7 +34,7 @@ const App: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando...</p>
         </div>
       </div>
@@ -38,26 +44,23 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/aguacentros" element={<AguacentrosPage />} />
+
         {/* Ruta de login */}
-        <Route 
-          path="/login" 
+        <Route
+          path="/login"
           element={
             isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
-          } 
-        />
-        
-        {/* Rutas protegidas */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <Navigate to="/dashboard" replace />
-              </Layout>
-            </ProtectedRoute>
           }
         />
-        
+
+        {/* Rutas protegidas */}
         <Route
           path="/dashboard"
           element={
@@ -68,7 +71,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/orders"
           element={
@@ -79,7 +82,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/orders/create"
           element={
@@ -90,7 +93,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/orders/:id"
           element={
@@ -101,7 +104,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/tracking"
           element={
@@ -112,7 +115,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/notifications"
           element={
@@ -123,7 +126,7 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/test-orders"
           element={
@@ -134,13 +137,13 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Ruta por defecto */}
-        <Route 
-          path="*" 
+        <Route
+          path="*"
           element={
-            <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
-          } 
+            <Navigate to="/" replace />
+          }
         />
       </Routes>
     </Router>
