@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Product } from '../data/mockData';
+import type { Product } from '../data/mockData';
 import { useCartStore } from '../store/useCartStore';
 import { ShoppingCart, Check } from 'lucide-react';
 
