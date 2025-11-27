@@ -14,31 +14,49 @@ const HomePage: React.FC = () => {
 
     // Hero animation
     useGSAP(() => {
-        const tl = gsap.timeline();
+        if (!heroRef.current) return;
 
-        tl.fromTo(
-            heroRef.current?.querySelector('h1'),
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-        )
-            .fromTo(
-                heroRef.current?.querySelector('p'),
+        const tl = gsap.timeline();
+        const h1 = heroRef.current.querySelector('h1');
+        const p = heroRef.current.querySelector('p');
+        const links = heroRef.current.querySelectorAll('a');
+
+        if (h1) {
+            tl.fromTo(
+                h1,
+                { opacity: 0, y: 50 },
+                { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+            );
+        }
+
+        if (p) {
+            tl.fromTo(
+                p,
                 { opacity: 0, y: 30 },
                 { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
                 '-=0.4'
-            )
-            .fromTo(
-                heroRef.current?.querySelectorAll('a'),
+            );
+        }
+
+        if (links.length > 0) {
+            tl.fromTo(
+                links,
                 { opacity: 0, scale: 0.8 },
                 { opacity: 1, scale: 1, duration: 0.5, stagger: 0.2, ease: 'back.out(1.7)' },
                 '-=0.3'
             );
+        }
     }, { scope: heroRef });
 
     // Features animation
     useGSAP(() => {
+        if (!featuresRef.current) return;
+
+        const featureCards = featuresRef.current.querySelectorAll('.feature-card');
+        if (featureCards.length === 0) return;
+
         gsap.fromTo(
-            featuresRef.current?.querySelectorAll('.feature-card'),
+            featureCards,
             {
                 opacity: 0,
                 y: 60,
