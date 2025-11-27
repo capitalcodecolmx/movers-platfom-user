@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import type { Product } from '../data/mockData';
 import { useCartStore } from '../store/useCartStore';
 import { useProductsStore } from '../store/useProductsStore';
-import { ShoppingCart, Check } from 'lucide-react';
+import { ShoppingCart, Check, Plus } from 'lucide-react';
 
 interface ProductCardProps {
     product: Product;
@@ -17,7 +17,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
     const [isAdded, setIsAdded] = React.useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
-    
+
     // Use cached image if available, otherwise use original
     const imageSrc = useMemo(() => {
         const cached = getCachedImage(product.id);
@@ -30,38 +30,40 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
             cardRef.current,
             {
                 opacity: 0,
-                y: 50,
-                scale: 0.9
+                y: 30,
             },
             {
                 opacity: 1,
                 y: 0,
-                scale: 1,
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: 'power3.out',
+                duration: 0.5,
+                delay: index * 0.05, // Faster stagger
+                ease: 'power2.out',
                 scrollTrigger: {
                     trigger: cardRef.current,
-                    start: 'top bottom-=100',
+                    start: 'top bottom-=50',
                     toggleActions: 'play none none none'
                 }
             }
         );
     }, { scope: cardRef });
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent navigation if wrapped in Link
         addItem(product);
         setIsAdded(true);
 
         // Animate the button
         if (cardRef.current) {
-            gsap.to(cardRef.current.querySelector('button'), {
-                scale: 1.1,
-                duration: 0.2,
-                yoyo: true,
-                repeat: 1,
-                ease: 'power2.inOut'
-            });
+            const btn = cardRef.current.querySelector('.add-btn');
+            if (btn) {
+                gsap.to(btn, {
+                    scale: 0.95,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: 'power2.inOut'
+                });
+            }
         }
 
         setTimeout(() => setIsAdded(false), 2000);
@@ -69,8 +71,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
 
     const handleMouseEnter = () => {
         gsap.to(imageRef.current, {
-            scale: 1.15,
-            rotation: 5,
+            scale: 1.08,
+            y: -5,
             duration: 0.4,
             ease: 'power2.out'
         });
@@ -79,7 +81,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
     const handleMouseLeave = () => {
         gsap.to(imageRef.current, {
             scale: 1,
-            rotation: 0,
+            y: 0,
             duration: 0.4,
             ease: 'power2.out'
         });
@@ -88,52 +90,64 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
     return (
         <div
             ref={cardRef}
-            className="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden group border border-gray-100 hover:border-cyan-200 flex flex-col h-full"
+            className="group relative bg-white rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-gray-100 flex flex-col h-full overflow-hidden"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="relative pt-[100%] bg-gradient-to-br from-cyan-50 to-blue-50 overflow-hidden">
+            {/* Image Container */}
+            <div className="relative pt-[100%] bg-gray-50 overflow-hidden rounded-t-xl group-hover:bg-gray-100/50 transition-colors duration-300">
                 <img
                     ref={imageRef}
                     src={imageSrc}
                     alt={product.name}
-                    className="absolute top-0 left-0 w-full h-full object-contain p-4 sm:p-6"
+                    className="absolute top-0 left-0 w-full h-full object-contain p-6 mix-blend-multiply"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Quick Actions Overlay (Optional for future) */}
+                {/* <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
             </div>
 
-            <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-1 min-h-0">
-                <div className="mb-3 sm:mb-4 flex-1 min-h-0">
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5 sm:mb-2 group-hover:text-cyan-600 transition-colors duration-200 line-clamp-2 leading-tight">
-                        {product.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-500 line-clamp-2 leading-relaxed">{product.description}</p>
+            {/* Content */}
+            <div className="p-4 sm:p-5 flex flex-col flex-1">
+                {/* Category/Brand Tag */}
+                <div className="mb-2">
+                    <span className="text-[10px] sm:text-xs font-bold tracking-wider text-cyan-600 uppercase bg-cyan-50 px-2 py-1 rounded-sm">
+                        {product.marca}
+                    </span>
                 </div>
 
-                <div className="flex items-center justify-between gap-2 mt-auto pt-2 border-t border-gray-100">
-                    <span className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent whitespace-nowrap overflow-hidden text-ellipsis">
-                        ${product.price.toFixed(2)}
-                    </span>
+                {/* Title */}
+                <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-1 leading-snug group-hover:text-cyan-700 transition-colors line-clamp-2 min-h-[2.5em]">
+                    {product.name}
+                </h3>
+
+                {/* Description */}
+                <p className="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed">
+                    {product.description}
+                </p>
+
+                {/* Price and Action */}
+                <div className="mt-auto flex items-center justify-between gap-3">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-gray-400 font-medium">Precio</span>
+                        <span className="text-lg sm:text-xl font-bold text-gray-900">
+                            ${product.price.toFixed(2)}
+                        </span>
+                    </div>
 
                     <button
                         onClick={handleAddToCart}
                         disabled={isAdded}
-                        className={`flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${isAdded
-                                ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/50'
-                                : 'bg-gradient-to-r from-gray-900 to-gray-800 text-white hover:from-cyan-600 hover:to-blue-600 shadow-lg hover:shadow-cyan-500/50'
+                        className={`add-btn flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-all duration-300 shadow-sm ${isAdded
+                            ? 'bg-green-500 text-white shadow-green-200'
+                            : 'bg-gray-900 text-white hover:bg-cyan-600 shadow-gray-200 hover:shadow-cyan-200 hover:scale-105'
                             }`}
+                        aria-label="Agregar al carrito"
                     >
                         {isAdded ? (
-                            <>
-                                <Check size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 animate-bounce flex-shrink-0" />
-                                <span className="hidden sm:inline text-xs">Agregado</span>
-                                <span className="sm:hidden text-xs">✓</span>
-                            </>
+                            <Check size={20} className="animate-bounce" />
                         ) : (
-                            <>
-                                <ShoppingCart size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0" />
-                                <span className="whitespace-nowrap text-xs sm:text-sm">Agregar</span>
-                            </>
+                            <Plus size={20} strokeWidth={2.5} />
                         )}
                     </button>
                 </div>

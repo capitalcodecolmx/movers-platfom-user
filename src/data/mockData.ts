@@ -1,21 +1,10 @@
-import logo from '../assets/images/branding/logo.png';
-import garrafon from '../assets/images/products/garrafon.png';
-import botella5l from '../assets/images/products/botella-5l.png';
-import galon from '../assets/images/products/galon.png';
-import medioGalon from '../assets/images/products/medio-galon.png';
-import galonBaby from '../assets/images/products/galon-baby.png';
-import botella15l from '../assets/images/products/botella-1-5l.png';
-import botella1l from '../assets/images/products/botella-1l.png';
-import botella600ml from '../assets/images/products/botella-600ml.png';
-import botella350ml from '../assets/images/products/botella-350ml.png';
-
 export const COMPANY_INFO = {
   name: 'Agua Purificada Blanquita',
   address: 'Calle Camargo, Colonia Revolución Obrera, Reynosa, Tamps. México',
   phone: '(899) 921-1010',
   email: 'contacto@grupoblanquita.com',
   whatsapp: '5218999211010',
-  logo: logo,
+  logo: '/LOGO AGUA NUEVO 2.png',
   social: {
     facebook: 'https://www.facebook.com/apblanquita',
     instagram: 'https://www.instagram.com/apblanquita/'
@@ -62,7 +51,7 @@ export const PRODUCTS: Product[] = [
     id: '1',
     name: 'Garrafón 20lt',
     price: 45.00,
-    image: garrafon,
+    image: '/BLANQUITA_WATER_STILL_20L.png',
     category: 'garrafon',
     description: 'Agua purificada de la mejor calidad en presentación familiar.',
     marca: 'Blanquita',
@@ -76,7 +65,7 @@ export const PRODUCTS: Product[] = [
     id: '2',
     name: 'Botella 5 Litros',
     price: 25.00,
-    image: botella5l,
+    image: '/BLANQUITA_WATER_STILL_5L.png',
     category: 'botella',
     description: 'Ideal para compartir en reuniones o viajes cortos.',
     marca: 'Blanquita',
@@ -90,7 +79,7 @@ export const PRODUCTS: Product[] = [
     id: '3',
     name: 'Galón',
     price: 20.00,
-    image: galon,
+    image: '/BLANQUITA_WATER_STILL_GALLON.png',
     category: 'botella',
     description: 'Práctico envase para el consumo diario.',
     marca: 'Blanquita',
@@ -104,7 +93,7 @@ export const PRODUCTS: Product[] = [
     id: '4',
     name: 'Medio Galón',
     price: 15.00,
-    image: medioGalon,
+    image: '/BLANQUITA_WATER_STILL_0.5 GALLON.png',
     category: 'botella',
     description: 'Tamaño perfecto para llevar contigo.',
     marca: 'Blanquita',
@@ -118,7 +107,7 @@ export const PRODUCTS: Product[] = [
     id: '5',
     name: 'Galón Baby Fórmula',
     price: 22.00,
-    image: galonBaby,
+    image: '/BLANQUITA_WATER_STILL_GALLON BABY.png',
     category: 'botella',
     description: 'Especialmente diseñada para la preparación de alimentos para bebés.',
     marca: 'Blanquita',
@@ -132,7 +121,7 @@ export const PRODUCTS: Product[] = [
     id: '6',
     name: 'Botella Litro y Medio',
     price: 12.00,
-    image: botella15l,
+    image: '/BLANQUITA_WATER_STILL_1.5L.png',
     category: 'botella',
     description: 'Hidratación prolongada para tu día.',
     marca: 'Blanquita',
@@ -146,7 +135,7 @@ export const PRODUCTS: Product[] = [
     id: '7',
     name: 'Botella 1 Litro',
     price: 10.00,
-    image: botella1l,
+    image: '/BLANQUITA_WATER_STILL_1000ML_SPORT.png',
     category: 'botella',
     description: 'La medida estándar para tu sed.',
     marca: 'Blanquita',
@@ -160,7 +149,7 @@ export const PRODUCTS: Product[] = [
     id: '8',
     name: 'Botella 600 ml',
     price: 8.00,
-    image: botella600ml,
+    image: '/BLANQUITA_&_CRISTALINA_WATER_STILL_600ML.png',
     category: 'botella',
     description: 'Compacta y ligera, llévala a todas partes.',
     marca: 'Blanquita',
@@ -174,7 +163,7 @@ export const PRODUCTS: Product[] = [
     id: '9',
     name: 'Botella 350 ml',
     price: 6.00,
-    image: botella350ml,
+    image: '/BLANQUITA_&_CRISTALINA_WATER_STILL_355ML.png',
     category: 'botella',
     description: 'Pequeña y práctica, ideal para niños o eventos.',
     marca: 'Blanquita',

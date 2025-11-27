@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 import { useProductsStore } from '../store/useProductsStore';
 import { FILTER_OPTIONS, PRODUCTS } from '../data/mockData';
 
@@ -12,20 +12,22 @@ interface FilterSectionProps {
 
 const FilterSection: React.FC<FilterSectionProps> = ({ title, isOpen, onToggle, children }) => {
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-gray-100 last:border-0">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-2 sm:py-3 px-3 sm:px-4 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between py-4 text-left group"
       >
-        <span className="font-medium text-gray-900 text-sm sm:text-base">{title}</span>
+        <span className="font-bold text-gray-900 text-sm tracking-wide uppercase group-hover:text-cyan-700 transition-colors">
+          {title}
+        </span>
         {isOpen ? (
-          <ChevronUp className="w-4 h-4 text-gray-500 flex-shrink-0" />
+          <ChevronUp className="w-4 h-4 text-gray-400 group-hover:text-cyan-600 transition-colors" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-gray-500 flex-shrink-0" />
+          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-cyan-600 transition-colors" />
         )}
       </button>
       {isOpen && (
-        <div className="px-3 sm:px-4 pb-3 sm:pb-4 space-y-2">
+        <div className="pb-6 space-y-3 animate-fade-in">
           {children}
         </div>
       )}
@@ -37,13 +39,13 @@ const ProductFilters: React.FC = () => {
   const { filters, setFilters, clearFilters } = useProductsStore();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     marca: true,
-    submarca: false,
-    sabor: false,
-    presentacion: false,
+    submarca: true,
+    sabor: true,
+    presentacion: true,
     tamaño: false,
     tipoAgua: false,
     tipoProducto: false,
-    precio: false
+    precio: true
   });
 
   const toggleSection = (section: string) => {
@@ -66,18 +68,6 @@ const ProductFilters: React.FC = () => {
     setFilters({ priceRange: newRange });
   };
 
-  // Get unique values from products for dynamic filters
-  const getUniqueValues = (key: keyof typeof PRODUCTS[0]): string[] => {
-    const values = new Set<string>();
-    PRODUCTS.forEach(product => {
-      const value = product[key];
-      if (value && typeof value === 'string') {
-        values.add(value);
-      }
-    });
-    return Array.from(values).sort();
-  };
-
   const hasActiveFilters = () => {
     return (
       filters.marca.length > 0 ||
@@ -92,23 +82,44 @@ const ProductFilters: React.FC = () => {
     );
   };
 
+  const CheckboxOption = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => (
+    <label className="flex items-center space-x-3 cursor-pointer group select-none">
+      <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all duration-200 ${checked
+          ? 'bg-cyan-600 border-cyan-600 text-white'
+          : 'bg-white border-gray-300 group-hover:border-cyan-400'
+        }`}>
+        {checked && <X className="w-3.5 h-3.5" />}
+      </div>
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="hidden"
+      />
+      <span className={`text-sm transition-colors ${checked ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+        {label}
+      </span>
+    </label>
+  );
+
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-full">
-      <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-gray-200 bg-gray-50">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Filtros</h2>
-          {hasActiveFilters() && (
-            <button
-              onClick={clearFilters}
-              className="text-xs sm:text-sm text-orange-600 hover:text-orange-700 font-medium px-2 py-1"
-            >
-              Limpiar
-            </button>
-          )}
+    <div className="w-full">
+      <div className="pb-4 mb-2 border-b border-gray-200 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-gray-900">
+          <Filter className="w-5 h-5" />
+          <h2 className="text-lg font-bold">Filtros</h2>
         </div>
+        {hasActiveFilters() && (
+          <button
+            onClick={clearFilters}
+            className="text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-wider transition-colors"
+          >
+            Limpiar todo
+          </button>
+        )}
       </div>
 
-      <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+      <div className="space-y-1">
         {/* Marca */}
         <FilterSection
           title="Marca"
@@ -116,15 +127,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('marca')}
         >
           {FILTER_OPTIONS.marcas.map((marca) => (
-            <label key={marca} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.marca.includes(marca)}
-                onChange={() => handleCheckboxChange('marca', marca)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-xs sm:text-sm text-gray-700">{marca}</span>
-            </label>
+            <CheckboxOption
+              key={marca}
+              label={marca}
+              checked={filters.marca.includes(marca)}
+              onChange={() => handleCheckboxChange('marca', marca)}
+            />
           ))}
         </FilterSection>
 
@@ -135,15 +143,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('submarca')}
         >
           {FILTER_OPTIONS.submarcas.map((submarca) => (
-            <label key={submarca} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.submarca.includes(submarca)}
-                onChange={() => handleCheckboxChange('submarca', submarca)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-xs sm:text-sm text-gray-700">{submarca}</span>
-            </label>
+            <CheckboxOption
+              key={submarca}
+              label={submarca}
+              checked={filters.submarca.includes(submarca)}
+              onChange={() => handleCheckboxChange('submarca', submarca)}
+            />
           ))}
         </FilterSection>
 
@@ -154,15 +159,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('sabor')}
         >
           {FILTER_OPTIONS.sabores.map((sabor) => (
-            <label key={sabor} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.sabor.includes(sabor)}
-                onChange={() => handleCheckboxChange('sabor', sabor)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-sm text-gray-700">{sabor}</span>
-            </label>
+            <CheckboxOption
+              key={sabor}
+              label={sabor}
+              checked={filters.sabor.includes(sabor)}
+              onChange={() => handleCheckboxChange('sabor', sabor)}
+            />
           ))}
         </FilterSection>
 
@@ -173,15 +175,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('presentacion')}
         >
           {FILTER_OPTIONS.presentaciones.map((presentacion) => (
-            <label key={presentacion} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.presentacion.includes(presentacion)}
-                onChange={() => handleCheckboxChange('presentacion', presentacion)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-sm text-gray-700">{presentacion}</span>
-            </label>
+            <CheckboxOption
+              key={presentacion}
+              label={presentacion}
+              checked={filters.presentacion.includes(presentacion)}
+              onChange={() => handleCheckboxChange('presentacion', presentacion)}
+            />
           ))}
         </FilterSection>
 
@@ -192,15 +191,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('tamaño')}
         >
           {FILTER_OPTIONS.tamaños.map((tamaño) => (
-            <label key={tamaño} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.tamaño.includes(tamaño)}
-                onChange={() => handleCheckboxChange('tamaño', tamaño)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-sm text-gray-700">{tamaño}</span>
-            </label>
+            <CheckboxOption
+              key={tamaño}
+              label={tamaño}
+              checked={filters.tamaño.includes(tamaño)}
+              onChange={() => handleCheckboxChange('tamaño', tamaño)}
+            />
           ))}
         </FilterSection>
 
@@ -211,15 +207,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('tipoAgua')}
         >
           {FILTER_OPTIONS.tiposAgua.map((tipoAgua) => (
-            <label key={tipoAgua} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.tipoAgua.includes(tipoAgua)}
-                onChange={() => handleCheckboxChange('tipoAgua', tipoAgua)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-sm text-gray-700">{tipoAgua}</span>
-            </label>
+            <CheckboxOption
+              key={tipoAgua}
+              label={tipoAgua}
+              checked={filters.tipoAgua.includes(tipoAgua)}
+              onChange={() => handleCheckboxChange('tipoAgua', tipoAgua)}
+            />
           ))}
         </FilterSection>
 
@@ -230,15 +223,12 @@ const ProductFilters: React.FC = () => {
           onToggle={() => toggleSection('tipoProducto')}
         >
           {FILTER_OPTIONS.tiposProducto.map((tipoProducto) => (
-            <label key={tipoProducto} className="flex items-center space-x-2 cursor-pointer py-1">
-              <input
-                type="checkbox"
-                checked={filters.tipoProducto.includes(tipoProducto)}
-                onChange={() => handleCheckboxChange('tipoProducto', tipoProducto)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 flex-shrink-0"
-              />
-              <span className="text-sm text-gray-700">{tipoProducto}</span>
-            </label>
+            <CheckboxOption
+              key={tipoProducto}
+              label={tipoProducto}
+              checked={filters.tipoProducto.includes(tipoProducto)}
+              onChange={() => handleCheckboxChange('tipoProducto', tipoProducto)}
+            />
           ))}
         </FilterSection>
 
@@ -248,27 +238,33 @@ const ProductFilters: React.FC = () => {
           isOpen={openSections.precio}
           onToggle={() => toggleSection('precio')}
         >
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <input
-                type="number"
-                min="0"
-                max="1000"
-                value={filters.priceRange[0]}
-                onChange={(e) => handlePriceRangeChange(0, Number(e.target.value))}
-                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-md text-xs sm:text-sm focus:ring-orange-500 focus:border-orange-500"
-                placeholder="Mínimo"
-              />
-              <span className="text-gray-500 text-sm">-</span>
-              <input
-                type="number"
-                min="0"
-                max="1000"
-                value={filters.priceRange[1]}
-                onChange={(e) => handlePriceRangeChange(1, Number(e.target.value))}
-                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-md text-xs sm:text-sm focus:ring-orange-500 focus:border-orange-500"
-                placeholder="Máximo"
-              />
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">$</span>
+                <input
+                  type="number"
+                  min="0"
+                  max="1000"
+                  value={filters.priceRange[0]}
+                  onChange={(e) => handlePriceRangeChange(0, Number(e.target.value))}
+                  className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all bg-gray-50 focus:bg-white"
+                  placeholder="Min"
+                />
+              </div>
+              <span className="text-gray-400">-</span>
+              <div className="relative flex-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">$</span>
+                <input
+                  type="number"
+                  min="0"
+                  max="1000"
+                  value={filters.priceRange[1]}
+                  onChange={(e) => handlePriceRangeChange(1, Number(e.target.value))}
+                  className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all bg-gray-50 focus:bg-white"
+                  placeholder="Max"
+                />
+              </div>
             </div>
           </div>
         </FilterSection>
