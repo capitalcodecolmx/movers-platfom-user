@@ -110,6 +110,7 @@ export const PRODUCTS: Product[] = [
     price: 6.00,
     image: botella350ml,
     category: 'botella',
+    description: 'Pequeña y práctica, ideal para niños o eventos.'
   }
 ];
 
