@@ -28,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = '' }) => {
             />
             <button
                 type="submit"
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2.5 transition-all duration-200 flex items-center gap-2"
+                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-6 py-2.5 transition-all duration-200 flex items-center gap-2"
                 aria-label="Buscar"
             >
                 <Icon icon="ph:magnifying-glass-bold" width="18" height="18" />
