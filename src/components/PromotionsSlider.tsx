@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { COMPANY_INFO } from '../data/mockData';
 
 interface Promotion {
     id: string;
@@ -132,39 +133,72 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
         >
-            <div ref={sliderRef} className="relative overflow-hidden rounded-2xl md:rounded-3xl">
-                {/* Promotion Card */}
-                <div className="promo-slide relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-xl border border-white/30 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl overflow-hidden min-h-[200px] sm:min-h-[240px] md:min-h-[280px]">
+            <div ref={sliderRef} className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
+                {/* Promotion Poster */}
+                <div className="promo-slide relative bg-gradient-to-br from-orange-500 via-orange-600 to-red-600 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl overflow-hidden min-h-[180px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[280px]">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4yIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')]"></div>
+                    </div>
+
                     {/* Decorative Background Elements */}
-                    <div className="absolute top-0 right-0 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-cyan-400/20 rounded-full blur-3xl -mr-16 sm:-mr-24 md:-mr-32 -mt-16 sm:-mt-24 md:-mt-32"></div>
-                    <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-36 sm:h-36 md:w-48 md:h-48 bg-blue-400/20 rounded-full blur-3xl -ml-12 sm:-ml-18 md:-ml-24 -mb-12 sm:-mb-18 md:-mb-24"></div>
+                    <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 bg-white/10 rounded-full blur-3xl -mr-12 sm:-mr-16 md:-mr-20 lg:-mr-24 -mt-12 sm:-mt-16 md:-mt-20 lg:-mt-24"></div>
+                    <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 bg-yellow-400/20 rounded-full blur-3xl -ml-10 sm:-ml-14 md:-ml-18 -mb-10 sm:-mb-14 md:-mb-18"></div>
                     
-                    <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-                        <div className="flex-1 w-full text-center lg:text-left">
-                            {currentPromotion.discount && (
-                                <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                                    <Icon icon="solar:tag-bold" className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />
-                                    <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 text-white px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 rounded-full text-xs sm:text-sm md:text-base lg:text-lg font-extrabold shadow-xl transform hover:scale-105 transition-transform">
+                    {/* Logo Watermark */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                        <img 
+                            src={COMPANY_INFO.logo} 
+                            alt={COMPANY_INFO.name}
+                            className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 object-contain"
+                        />
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center h-full min-h-[180px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[280px] py-2">
+                        {/* Discount Badge */}
+                        {currentPromotion.discount && (
+                            <div className="mb-2 sm:mb-3 md:mb-4">
+                                <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5 sm:px-4 sm:py-2 md:px-5 md:py-2.5 border-2 border-white/30 shadow-xl">
+                                    <Icon icon="solar:tag-bold" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-yellow-300 animate-pulse" />
+                                    <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold drop-shadow-lg">
                                         {currentPromotion.discount}
                                     </span>
                                 </div>
-                            )}
-                            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-2 sm:mb-3 drop-shadow-2xl leading-tight">
-                                {currentPromotion.title}
-                            </h3>
-                            <p className="text-cyan-50 text-base sm:text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                                {currentPromotion.description}
-                            </p>
-                        </div>
+                            </div>
+                        )}
+                        
+                        {/* Title */}
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-2 sm:mb-3 drop-shadow-2xl leading-tight px-4">
+                            {currentPromotion.title}
+                        </h3>
+                        
+                        {/* Description */}
+                        <p className="text-white/95 text-sm sm:text-base md:text-lg lg:text-xl font-semibold leading-snug max-w-2xl mx-auto mb-3 sm:mb-4 md:mb-5 px-4 drop-shadow-lg">
+                            {currentPromotion.description}
+                        </p>
+                        
+                        {/* CTA Button */}
                         {currentPromotion.ctaText && currentPromotion.ctaLink && (
                             <Link
                                 to={currentPromotion.ctaLink}
-                                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 md:px-8 md:py-4 bg-white text-cyan-700 font-bold rounded-full hover:bg-cyan-50 transition-all transform hover:scale-110 shadow-2xl hover:shadow-cyan-500/50 text-sm sm:text-base md:text-lg"
+                                className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 bg-white text-orange-600 font-extrabold rounded-full hover:bg-orange-50 transition-all transform hover:scale-110 shadow-2xl hover:shadow-white/50 text-xs sm:text-sm md:text-base border-2 border-white/50"
                             >
                                 <span className="whitespace-nowrap">{currentPromotion.ctaText}</span>
                                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                             </Link>
                         )}
+                    </div>
+
+                    {/* Branding Badge - Bottom Right */}
+                    <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4 z-20">
+                        <div className="bg-white/20 backdrop-blur-md rounded-lg px-2 py-1.5 sm:px-3 sm:py-2 border border-white/30 shadow-lg">
+                            <img 
+                                src={COMPANY_INFO.logo} 
+                                alt={COMPANY_INFO.name}
+                                className="h-5 sm:h-6 md:h-7 w-auto brightness-0 invert"
+                            />
+                        </div>
                     </div>
                 </div>
 
