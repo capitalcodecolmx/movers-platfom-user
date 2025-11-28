@@ -8,12 +8,12 @@ const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative bg-slate-950 text-white pt-12 pb-12 overflow-hidden font-sans">
+        <footer className="relative bg-gradient-to-br from-cyan-900 via-blue-900 to-cyan-950 text-white pt-12 pb-12 overflow-hidden font-sans">
             {/* Background Elements */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 {/* Subtle Water Texture Overlay */}
                 <div
-                    className="absolute inset-0 opacity-[0.05] mix-blend-soft-light"
+                    className="absolute inset-0 opacity-[0.08] mix-blend-soft-light"
                     style={{
                         backgroundImage: `url(${waterTexture})`,
                         backgroundSize: 'cover',
@@ -21,8 +21,8 @@ const Footer: React.FC = () => {
                     }}
                 ></div>
 
-                {/* Radial Gradient for depth */}
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-black opacity-90"></div>
+                {/* Gradient for depth */}
+                <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/95 via-blue-900/95 to-cyan-950/95"></div>
             </div>
 
             <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,17 +37,19 @@ const Footer: React.FC = () => {
                                 className="h-16 w-auto brightness-0 invert opacity-90 hover:opacity-100 transition-opacity duration-300"
                             />
                         </Link>
-                        <p className="text-slate-400 text-sm leading-relaxed max-w-sm font-light">
+                        <p className="text-cyan-100/80 text-sm leading-relaxed max-w-sm font-light">
                             Elevando el estándar de pureza. Agua premium procesada con tecnología de vanguardia para tu bienestar y el de tu familia.
                         </p>
 
-                        {/* Social Icons - Minimalist & Real */}
+                        {/* Social Icons - Minimalist & Real with Neon Water Effect */}
                         <div className="flex gap-4">
-                            <a href={COMPANY_INFO.social.facebook} target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full border border-slate-800 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300" aria-label="Facebook">
-                                <Icon icon="logos:facebook" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                            <a href={COMPANY_INFO.social.facebook} target="_blank" rel="noopener noreferrer" className="group relative p-2 rounded-full border border-cyan-700/50 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm" aria-label="Facebook">
+                                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-sm group-hover:bg-cyan-400/30 transition-all"></div>
+                                <Icon icon="logos:facebook" className="relative w-6 h-6 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-90 group-hover:opacity-100 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
                             </a>
-                            <a href={COMPANY_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full border border-slate-800 hover:border-pink-500/50 hover:bg-pink-500/10 transition-all duration-300" aria-label="Instagram">
-                                <Icon icon="skill-icons:instagram" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                            <a href={COMPANY_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="group relative p-2 rounded-full border border-cyan-700/50 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm" aria-label="Instagram">
+                                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-sm group-hover:bg-cyan-400/30 transition-all"></div>
+                                <Icon icon="skill-icons:instagram" className="relative w-6 h-6 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-90 group-hover:opacity-100 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
                             </a>
                         </div>
                     </div>
@@ -55,35 +57,44 @@ const Footer: React.FC = () => {
                     {/* Navigation - Clean Columns */}
                     <div className="md:col-span-7 lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 pt-2">
                         <div>
-                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Compañía</h4>
-                            <ul className="space-y-4 text-sm text-slate-400 font-light">
-                                <li><Link to="/about" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Nosotros</Link></li>
-                                <li><Link to="/contact" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Contacto</Link></li>
+                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase">Compañía</h4>
+                            <ul className="space-y-4 text-sm text-cyan-100/70 font-light">
+                                <li><Link to="/about" className="hover:text-cyan-300 transition-colors flex items-center gap-2 group"><span className="w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm shadow-cyan-400/50"></span>Nosotros</Link></li>
+                                <li><Link to="/contact" className="hover:text-cyan-300 transition-colors flex items-center gap-2 group"><span className="w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm shadow-cyan-400/50"></span>Contacto</Link></li>
                             </ul>
                         </div>
 
                         <div>
-                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Servicios</h4>
-                            <ul className="space-y-4 text-sm text-slate-400 font-light">
-                                <li><Link to="/products" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Productos</Link></li>
-                                <li><Link to="/aguacentros" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Aguacentros</Link></li>
+                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase">Servicios</h4>
+                            <ul className="space-y-4 text-sm text-cyan-100/70 font-light">
+                                <li><Link to="/products" className="hover:text-cyan-300 transition-colors flex items-center gap-2 group"><span className="w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm shadow-cyan-400/50"></span>Productos</Link></li>
+                                <li><Link to="/aguacentros" className="hover:text-cyan-300 transition-colors flex items-center gap-2 group"><span className="w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm shadow-cyan-400/50"></span>Aguacentros</Link></li>
                             </ul>
                         </div>
 
                         <div>
-                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Contacto</h4>
-                            <ul className="space-y-4 text-sm text-slate-400 font-light">
-                                <li className="flex items-start gap-3">
-                                    <Icon icon="solar:phone-calling-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                                    <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-cyan-400 transition-colors">{COMPANY_INFO.phone}</a>
+                            <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase">Contacto</h4>
+                            <ul className="space-y-4 text-sm text-cyan-100/70 font-light">
+                                <li className="flex items-start gap-3 group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-cyan-400/20 rounded-lg blur-sm group-hover:bg-cyan-400/30 transition-all"></div>
+                                        <Icon icon="solar:phone-calling-linear" className="relative w-6 h-6 text-cyan-300 mt-0.5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all" />
+                                    </div>
+                                    <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-cyan-300 transition-colors">{COMPANY_INFO.phone}</a>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <Icon icon="solar:letter-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                                    <a href={`mailto:${COMPANY_INFO.email}`} className="hover:text-cyan-400 transition-colors break-all">{COMPANY_INFO.email}</a>
+                                <li className="flex items-start gap-3 group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-cyan-400/20 rounded-lg blur-sm group-hover:bg-cyan-400/30 transition-all"></div>
+                                        <Icon icon="solar:letter-linear" className="relative w-6 h-6 text-cyan-300 mt-0.5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all" />
+                                    </div>
+                                    <a href={`mailto:${COMPANY_INFO.email}`} className="hover:text-cyan-300 transition-colors break-all">{COMPANY_INFO.email}</a>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <Icon icon="solar:map-point-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                                    <span>{COMPANY_INFO.address}</span>
+                                <li className="flex items-start gap-3 group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-cyan-400/20 rounded-lg blur-sm group-hover:bg-cyan-400/30 transition-all"></div>
+                                        <Icon icon="solar:map-point-linear" className="relative w-6 h-6 text-cyan-300 mt-0.5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all" />
+                                    </div>
+                                    <span className="hover:text-cyan-100 transition-colors">{COMPANY_INFO.address}</span>
                                 </li>
                             </ul>
                         </div>
@@ -91,13 +102,13 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Bottom Minimalist Bar */}
-                <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-slate-600 text-xs font-light">
+                <div className="border-t border-cyan-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p className="text-cyan-200/60 text-xs font-light">
                         &copy; {currentYear} {COMPANY_INFO.name}. Todos los derechos reservados.
                     </p>
-                    <div className="flex gap-8 text-xs text-slate-600 font-light">
-                        <Link to="/contact" className="hover:text-slate-400 transition-colors">Contacto</Link>
-                        <Link to="/about" className="hover:text-slate-400 transition-colors">Nosotros</Link>
+                    <div className="flex gap-8 text-xs text-cyan-200/60 font-light">
+                        <Link to="/contact" className="hover:text-cyan-300 transition-colors">Contacto</Link>
+                        <Link to="/about" className="hover:text-cyan-300 transition-colors">Nosotros</Link>
                     </div>
                 </div>
             </div>
