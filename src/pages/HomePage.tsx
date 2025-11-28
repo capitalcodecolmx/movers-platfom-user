@@ -7,6 +7,7 @@ import ProductCard from '../components/ProductCard';
 import PromotionsSlider from '../components/PromotionsSlider';
 import { PRODUCTS } from '../data/mockData';
 import { ArrowRight, Droplets, ShieldCheck, Truck } from 'lucide-react';
+import headerBg from '../assets/images/headers/water-texture.png';
 
 const HomePage: React.FC = () => {
     const featuredProducts = PRODUCTS.slice(0, 3);
@@ -81,61 +82,57 @@ const HomePage: React.FC = () => {
 
     return (
         <PublicLayout>
-            {/* Hero Section */}
-            <section ref={heroRef} className="relative bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 text-white overflow-hidden">
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12 relative z-10">
-                    {/* Promotions Slider - Full Width */}
-                    <div className="w-full">
-                        <PromotionsSlider autoSlideInterval={5000} />
-                    </div>
-                </div>
+            {/* Hero Section - Full Width */}
+            <section ref={heroRef} className="relative bg-gray-900 text-white overflow-hidden">
+                {/* Background Texture */}
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0YzAtMi4yMS0xLjc5LTQtNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
 
-                {/* Abstract Shapes with Animation */}
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-cyan-300 opacity-20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                {/* Promotions Slider - Full Width Container */}
+                <div className="w-full relative z-10">
+                    <PromotionsSlider autoSlideInterval={5000} />
+                </div>
             </section>
 
             {/* Features Section */}
-            <section ref={featuresRef} className="py-20 bg-gradient-to-b from-white to-gray-50">
+            <section ref={featuresRef} className="py-24 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
+                        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
                             ¿Por qué elegirnos?
                         </h2>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto font-light">
                             Nos comprometemos a entregar el agua más pura y saludable directamente a tu hogar.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="feature-card text-center p-8 rounded-3xl bg-gradient-to-br from-cyan-50 to-cyan-100 hover:from-cyan-100 hover:to-cyan-200 transition-all duration-300 transform hover:-translate-y-2 shadow-lg hover:shadow-2xl">
-                            <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                <Droplets size={36} />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div className="feature-card group bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <div className="w-16 h-16 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Droplets size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Máxima Pureza</h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Proceso de purificación avanzado libre de cloro y metales pesados.
+                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Máxima Pureza</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Proceso de purificación avanzado libre de cloro y metales pesados para tu tranquilidad.
                             </p>
                         </div>
 
-                        <div className="feature-card text-center p-8 rounded-3xl bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 transform hover:-translate-y-2 shadow-lg hover:shadow-2xl">
-                            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                <ShieldCheck size={36} />
+                        <div className="feature-card group bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <ShieldCheck size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Calidad Garantizada</h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Filtración de múltiples pasos para asegurar la mejor calidad de agua.
+                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Calidad Garantizada</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Filtración de múltiples pasos y controles rigurosos para asegurar la mejor calidad.
                             </p>
                         </div>
 
-                        <div className="feature-card text-center p-8 rounded-3xl bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 transition-all duration-300 transform hover:-translate-y-2 shadow-lg hover:shadow-2xl">
-                            <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                <Truck size={36} />
+                        <div className="feature-card group bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Truck size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Servicio a Domicilio</h3>
-                            <p className="text-gray-700 leading-relaxed">
-                                Llevamos nuestros productos hasta la puerta de tu casa o negocio.
+                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Servicio a Domicilio</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Llevamos nuestros productos hasta la puerta de tu casa o negocio con rapidez.
                             </p>
                         </div>
                     </div>
@@ -143,28 +140,28 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Featured Products */}
-            <section className="py-20 bg-gray-50">
+            <section className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-end mb-12">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                         <div>
-                            <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
+                            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
                                 Nuestros Productos
                             </h2>
-                            <p className="text-xl text-gray-600">Las presentaciones favoritas de nuestros clientes.</p>
+                            <p className="text-xl text-gray-600 font-light">Las presentaciones favoritas de nuestros clientes.</p>
                         </div>
-                        <Link to="/products" className="hidden md:flex items-center gap-2 text-cyan-600 font-bold hover:text-cyan-700 transition-all hover:gap-3">
+                        <Link to="/products" className="hidden md:flex items-center gap-2 text-cyan-600 font-bold hover:text-cyan-700 transition-all hover:gap-3 px-6 py-3 bg-cyan-50 rounded-full hover:bg-cyan-100">
                             Ver todos <ArrowRight size={20} />
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                         {featuredProducts.map((product, index) => (
                             <ProductCard key={product.id} product={product} index={index} />
                         ))}
                     </div>
 
-                    <div className="mt-12 text-center md:hidden">
-                        <Link to="/products" className="inline-flex items-center gap-2 text-cyan-600 font-bold hover:text-cyan-700 transition-colors">
+                    <div className="mt-16 text-center md:hidden">
+                        <Link to="/products" className="inline-flex items-center gap-2 text-cyan-600 font-bold hover:text-cyan-700 transition-colors px-6 py-3 bg-cyan-50 rounded-full">
                             Ver todos los productos <ArrowRight size={20} />
                         </Link>
                     </div>
@@ -172,8 +169,15 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
+            <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
+                <div className="absolute inset-0">
+                    <img
+                        src={headerBg}
+                        alt="Background"
+                        className="w-full h-full object-cover opacity-20 mix-blend-overlay"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-blue-900/80 to-black/90"></div>
+                </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <h2 className="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
                         ¿Listo para hacer tu pedido?

@@ -107,17 +107,17 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
         // Animate content elements
         const currentSlide = slides[currentIndex];
         const contentElements = currentSlide.querySelectorAll('.animate-content');
-        
+
         gsap.fromTo(
             contentElements,
             { opacity: 0, y: 20 },
-            { 
-                opacity: 1, 
-                y: 0, 
-                duration: 0.6, 
-                stagger: 0.1, 
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.1,
                 ease: 'power2.out',
-                delay: 0.2 
+                delay: 0.2
             }
         );
 
@@ -150,100 +150,100 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
         >
-            <div ref={sliderRef} className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl aspect-[16/9] md:aspect-[21/9] min-h-[300px] md:min-h-[400px]">
+            {/* Updated aspect ratio for a wider, more compact look */}
+            <div ref={sliderRef} className="relative overflow-hidden shadow-2xl aspect-[16/9] md:aspect-[32/9] min-h-[300px] md:min-h-[380px]">
                 {promotions.map((promotion, index) => (
-                    <div 
+                    <div
                         key={promotion.id}
                         className={`promo-slide absolute inset-0 w-full h-full ${index === currentIndex ? 'z-10' : 'z-0'}`}
                     >
                         {/* Background Image */}
-                        <div 
+                        <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
                             style={{ backgroundImage: `url(${promotion.image})` }}
                         />
-                        
-                        {/* Gradient Overlay for Text Readability */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+
+                        {/* Gradient Overlay for Text Readability - Darker for better contrast */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
 
                         {/* Logo Watermark Pattern */}
-                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                             style={{ backgroundImage: `url(${COMPANY_INFO.logo})`, backgroundSize: '100px', backgroundRepeat: 'repeat' }}>
+                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                            style={{ backgroundImage: `url(${COMPANY_INFO.logo})`, backgroundSize: '100px', backgroundRepeat: 'repeat' }}>
                         </div>
-                        
-                        {/* Content */}
-                        <div className="relative z-20 h-full flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-24 max-w-3xl">
+
+                        {/* Content - Adjusted padding and max-width */}
+                        <div className="relative z-20 h-full flex flex-col justify-center px-8 sm:px-12 md:px-20 lg:px-32 max-w-4xl">
                             {/* Discount Badge */}
                             {promotion.discount && (
-                                <div className="animate-content mb-4">
-                                    <div className="inline-flex items-center gap-2 bg-cyan-500/90 backdrop-blur-sm text-white px-4 py-1.5 rounded-full font-bold text-sm sm:text-base shadow-lg border border-cyan-400/50">
-                                        <Icon icon="solar:tag-bold" className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <div className="animate-content mb-3">
+                                    <div className="inline-flex items-center gap-2 bg-cyan-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full font-bold text-xs sm:text-sm shadow-lg border border-cyan-400/50">
+                                        <Icon icon="solar:tag-bold" className="w-4 h-4" />
                                         <span>{promotion.discount}</span>
                                     </div>
                                 </div>
                             )}
-                            
-                            {/* Title */}
-                            <h3 className="animate-content text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg leading-tight">
+
+                            {/* Title - Slightly smaller to fit compact height */}
+                            <h3 className="animate-content text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-3 drop-shadow-lg leading-tight">
                                 {promotion.title}
                             </h3>
-                            
+
                             {/* Description */}
-                            <p className="animate-content text-gray-100 text-lg sm:text-xl md:text-2xl font-medium mb-8 max-w-xl drop-shadow-md leading-relaxed">
+                            <p className="animate-content text-gray-200 text-base sm:text-lg md:text-xl font-medium mb-6 max-w-lg drop-shadow-md leading-relaxed">
                                 {promotion.description}
                             </p>
-                            
+
                             {/* CTA Button */}
                             {promotion.ctaText && promotion.ctaLink && (
                                 <div className="animate-content">
                                     <Link
                                         to={promotion.ctaLink}
-                                        className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-cyan-50 transition-all transform hover:scale-105 shadow-xl hover:shadow-cyan-500/20 text-base sm:text-lg"
+                                        className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-bold rounded-full hover:bg-cyan-50 transition-all transform hover:scale-105 shadow-xl hover:shadow-cyan-500/20 text-sm sm:text-base"
                                     >
                                         <span>{promotion.ctaText}</span>
-                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
                             )}
                         </div>
 
                         {/* Large Branding Watermark (Bottom Right) */}
-                        <div className="absolute bottom-6 right-6 z-10 opacity-20 hidden sm:block">
-                            <img 
-                                src={COMPANY_INFO.logo} 
-                                alt="Watermark" 
-                                className="h-24 md:h-32 w-auto brightness-0 invert"
+                        <div className="absolute bottom-6 right-6 z-10 opacity-10 hidden lg:block">
+                            <img
+                                src={COMPANY_INFO.logo}
+                                alt="Watermark"
+                                className="h-32 w-auto brightness-0 invert"
                             />
                         </div>
                     </div>
                 ))}
 
-                {/* Navigation Arrows */}
+                {/* Navigation Arrows - Adjusted position */}
                 <button
                     onClick={goToPrevious}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white p-3 rounded-full transition-all hover:scale-110 z-30 border border-white/10 group"
+                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 backdrop-blur-md text-white p-2 md:p-3 rounded-full transition-all hover:scale-110 z-30 border border-white/10 group"
                     aria-label="Anterior"
                 >
-                    <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
+                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-0.5 transition-transform" />
                 </button>
                 <button
                     onClick={goToNext}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white p-3 rounded-full transition-all hover:scale-110 z-30 border border-white/10 group"
+                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 backdrop-blur-md text-white p-2 md:p-3 rounded-full transition-all hover:scale-110 z-30 border border-white/10 group"
                     aria-label="Siguiente"
                 >
-                    <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Dots Indicator */}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30">
                     {promotions.map((_, index) => (
                         <button
                             key={index}
                             onClick={() => goToSlide(index)}
-                            className={`transition-all duration-300 rounded-full h-2 shadow-lg ${
-                                index === currentIndex
+                            className={`transition-all duration-300 rounded-full h-1.5 shadow-lg ${index === currentIndex
                                     ? 'bg-white w-8'
                                     : 'bg-white/40 w-2 hover:bg-white/60'
-                            }`}
+                                }`}
                             aria-label={`Ir a slide ${index + 1}`}
                         />
                     ))}
