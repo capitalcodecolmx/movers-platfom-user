@@ -43,14 +43,11 @@ const Footer: React.FC = () => {
 
                         {/* Social Icons - Minimalist & Real */}
                         <div className="flex gap-4">
-                            <a href={COMPANY_INFO.social.facebook} className="group p-2 rounded-full border border-slate-800 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300" aria-label="Facebook">
+                            <a href={COMPANY_INFO.social.facebook} target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full border border-slate-800 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300" aria-label="Facebook">
                                 <Icon icon="logos:facebook" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
                             </a>
-                            <a href={COMPANY_INFO.social.instagram} className="group p-2 rounded-full border border-slate-800 hover:border-pink-500/50 hover:bg-pink-500/10 transition-all duration-300" aria-label="Instagram">
+                            <a href={COMPANY_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full border border-slate-800 hover:border-pink-500/50 hover:bg-pink-500/10 transition-all duration-300" aria-label="Instagram">
                                 <Icon icon="skill-icons:instagram" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
-                            </a>
-                            <a href="#" className="group p-2 rounded-full border border-slate-800 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300" aria-label="Twitter">
-                                <Icon icon="prime:twitter" className="w-5 h-5 text-slate-400 group-hover:text-sky-400 transition-all duration-300" />
                             </a>
                         </div>
                     </div>
@@ -61,8 +58,7 @@ const Footer: React.FC = () => {
                             <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Compañía</h4>
                             <ul className="space-y-4 text-sm text-slate-400 font-light">
                                 <li><Link to="/about" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Nosotros</Link></li>
-                                <li><Link to="/careers" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Carreras</Link></li>
-                                <li><Link to="/blog" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Noticias</Link></li>
+                                <li><Link to="/contact" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Contacto</Link></li>
                             </ul>
                         </div>
 
@@ -70,8 +66,7 @@ const Footer: React.FC = () => {
                             <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Servicios</h4>
                             <ul className="space-y-4 text-sm text-slate-400 font-light">
                                 <li><Link to="/products" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Productos</Link></li>
-                                <li><Link to="/delivery" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Delivery</Link></li>
-                                <li><Link to="/business" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Empresas</Link></li>
+                                <li><Link to="/aguacentros" className="hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-all"></span>Aguacentros</Link></li>
                             </ul>
                         </div>
 
@@ -79,15 +74,15 @@ const Footer: React.FC = () => {
                             <h4 className="text-white font-medium mb-6 text-sm tracking-wider uppercase opacity-80">Contacto</h4>
                             <ul className="space-y-4 text-sm text-slate-400 font-light">
                                 <li className="flex items-start gap-3">
-                                    <Icon icon="solar:phone-calling-linear" className="w-5 h-5 text-cyan-500 mt-0.5" />
-                                    <span>{COMPANY_INFO.phone}</span>
+                                    <Icon icon="solar:phone-calling-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                    <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-cyan-400 transition-colors">{COMPANY_INFO.phone}</a>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <Icon icon="solar:letter-linear" className="w-5 h-5 text-cyan-500 mt-0.5" />
-                                    <span>{COMPANY_INFO.email}</span>
+                                    <Icon icon="solar:letter-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                    <a href={`mailto:${COMPANY_INFO.email}`} className="hover:text-cyan-400 transition-colors break-all">{COMPANY_INFO.email}</a>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <Icon icon="solar:map-point-linear" className="w-5 h-5 text-cyan-500 mt-0.5" />
+                                    <Icon icon="solar:map-point-linear" className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
                                     <span>{COMPANY_INFO.address}</span>
                                 </li>
                             </ul>
@@ -101,9 +96,8 @@ const Footer: React.FC = () => {
                         &copy; {currentYear} {COMPANY_INFO.name}. Todos los derechos reservados.
                     </p>
                     <div className="flex gap-8 text-xs text-slate-600 font-light">
-                        <Link to="/privacy" className="hover:text-slate-400 transition-colors">Privacidad</Link>
-                        <Link to="/terms" className="hover:text-slate-400 transition-colors">Términos</Link>
-                        <Link to="/cookies" className="hover:text-slate-400 transition-colors">Cookies</Link>
+                        <Link to="/contact" className="hover:text-slate-400 transition-colors">Contacto</Link>
+                        <Link to="/about" className="hover:text-slate-400 transition-colors">Nosotros</Link>
                     </div>
                 </div>
             </div>
