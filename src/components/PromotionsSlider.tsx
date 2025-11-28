@@ -65,7 +65,7 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const sliderRef = useRef<HTMLDivElement>(null);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // Auto-slide functionality
     useEffect(() => {
@@ -241,8 +241,8 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
                             key={index}
                             onClick={() => goToSlide(index)}
                             className={`transition-all duration-300 rounded-full h-1.5 shadow-lg ${index === currentIndex
-                                    ? 'bg-white w-8'
-                                    : 'bg-white/40 w-2 hover:bg-white/60'
+                                ? 'bg-white w-8'
+                                : 'bg-white/40 w-2 hover:bg-white/60'
                                 }`}
                             aria-label={`Ir a slide ${index + 1}`}
                         />
