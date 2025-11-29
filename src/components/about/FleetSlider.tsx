@@ -75,8 +75,11 @@ const FleetSlider: React.FC = () => {
                     >
                         {FLEET_IMAGES.map((img, index) => (
                             <SwiperSlide key={index} className="w-[300px] sm:w-[400px] md:w-[500px]">
-                                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white relative">
                                     <img src={img} alt={`Flota Blanquita ${index + 1}`} className="w-full h-auto object-cover" />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                        <img src="/LOGO AGUA NUEVO 2.png" alt="" className="w-1/2 h-auto object-contain" />
+                                    </div>
                                 </div>
                             </SwiperSlide>
                         ))}

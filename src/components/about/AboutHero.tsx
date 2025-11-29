@@ -31,14 +31,23 @@ const AboutHero: React.FC = () => {
 
     return (
         <div ref={heroRef} className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-gray-900 text-white">
-            {/* Background Image/Video Placeholder - Ideally fetch a high-quality image or use a video */}
+            {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/assets/images/headers/delivery-texture.png" // Fallback or specific hero image
+                    src="/about.avif"
                     alt="Nuestra Historia Background"
-                    className="w-full h-full object-cover opacity-40"
+                    className="w-full h-full object-cover opacity-50"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900"></div>
+
+                {/* Watermark */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05]">
+                    <img
+                        src="/LOGO AGUA NUEVO 2.png"
+                        alt=""
+                        className="w-[80%] h-auto object-contain"
+                    />
+                </div>
             </div>
 
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">

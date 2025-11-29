@@ -53,12 +53,15 @@ const HistoryTimeline: React.FC = () => {
                                 <div className="w-8 h-8 bg-cyan-500 rounded-full border-4 border-white shadow-lg"></div>
                             </div>
                             <div className="md:w-5/12 order-3 md:order-3 pl-8">
-                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500">
+                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500 relative">
                                     <img
                                         src="/assets/images/about/fleet/fleet-1.avif" // Using fleet image as placeholder for history if needed
                                         alt="Fundación 1993"
                                         className="w-full h-auto object-cover"
                                     />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                        <img src="/LOGO AGUA NUEVO 2.png" alt="" className="w-1/2 h-auto object-contain" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,12 +71,15 @@ const HistoryTimeline: React.FC = () => {
                     <div className="relative z-10 mb-20 timeline-item">
                         <div className="flex flex-col md:flex-row items-center justify-between w-full">
                             <div className="md:w-5/12 order-3 md:order-1 pl-8 md:pl-0 md:pr-8 md:text-right">
-                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500">
+                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500 relative">
                                     <img
                                         src="/assets/images/about/fleet/fleet-2.avif"
                                         alt="Misión"
                                         className="w-full h-auto object-cover"
                                     />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                        <img src="/LOGO AGUA NUEVO 2.png" alt="" className="w-1/2 h-auto object-contain" />
+                                    </div>
                                 </div>
                             </div>
                             <div className="md:w-2/12 order-2 md:order-2 flex justify-center my-4 md:my-0">
@@ -111,12 +117,15 @@ const HistoryTimeline: React.FC = () => {
                                 <div className="w-8 h-8 bg-indigo-600 rounded-full border-4 border-white shadow-lg"></div>
                             </div>
                             <div className="md:w-5/12 order-3 md:order-3 pl-8">
-                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500">
+                                <div className="rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500 relative">
                                     <img
                                         src="/assets/images/about/fleet/fleet-3.avif"
                                         alt="Visión"
                                         className="w-full h-auto object-cover"
                                     />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                        <img src="/LOGO AGUA NUEVO 2.png" alt="" className="w-1/2 h-auto object-contain" />
+                                    </div>
                                 </div>
                             </div>
                         </div>

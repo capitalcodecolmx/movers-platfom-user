@@ -119,6 +119,9 @@ const MissionVisionValues: React.FC = () => {
                                         alt={value.title}
                                         className="w-full h-[300px] md:h-[400px] object-cover transform group-hover:scale-105 transition-transform duration-700"
                                     />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 z-20">
+                                        <img src="/LOGO AGUA NUEVO 2.png" alt="" className="w-1/2 h-auto object-contain" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
