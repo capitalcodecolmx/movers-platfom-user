@@ -14,8 +14,8 @@ const AguacentrosHero: React.FC = () => {
                 {/* Enhanced Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/95 via-blue-900/90 to-indigo-900/80"></div>
 
-                {/* Watermark - Refined integration */}
-                <div className="absolute -right-16 -bottom-16 sm:-right-24 sm:-bottom-24 md:-right-32 md:-bottom-32 w-64 h-64 sm:w-80 sm:h-80 md:w-[500px] md:h-[500px] opacity-[0.07] pointer-events-none mix-blend-screen">
+                {/* Watermark - Centered */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-80 sm:h-80 md:w-[500px] md:h-[500px] opacity-[0.07] pointer-events-none mix-blend-screen">
                     <img src={COMPANY_INFO.logo} alt="" className="w-full h-full object-contain brightness-0 invert drop-shadow-2xl" />
                 </div>
             </div>
