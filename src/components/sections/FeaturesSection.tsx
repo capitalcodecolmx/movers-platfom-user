@@ -84,13 +84,13 @@ const FeaturesSection: React.FC = () => {
     ];
 
     return (
-        <section ref={featuresRef} className="py-16 bg-white relative overflow-hidden">
+        <section ref={featuresRef} className="py-12 md:py-16 lg:py-24 bg-white relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/30 via-transparent to-blue-50/30 pointer-events-none"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header */}
-                <div className="text-center mb-12 max-w-3xl mx-auto">
+                <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
                     <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
                         ¿Por qué elegirnos<span className="italic font-light">?</span>
                     </h2>
@@ -102,7 +102,7 @@ const FeaturesSection: React.FC = () => {
                 {/* Features Grid with Center Image */}
                 <div className="relative">
                     {/* Desktop Layout: Grid with center image */}
-                    <div className="hidden md:grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div className="hidden md:grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
                         {/* Left Column */}
                         <div className="space-y-8">
                             {features.slice(0, 2).map((feature, index) => (

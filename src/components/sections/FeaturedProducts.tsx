@@ -8,7 +8,7 @@ const FeaturedProducts: React.FC = () => {
     const featuredProducts = PRODUCTS.slice(0, 3);
 
     return (
-        <section className="py-12 bg-gradient-to-b from-white to-gray-50">
+        <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header - Sleek & Compact */}
                 <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-8 gap-4 pb-4 border-b border-gray-100">
@@ -32,8 +32,8 @@ const FeaturedProducts: React.FC = () => {
                     </Link>
                 </div>
 
-                {/* Grid - Responsive & Tight */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+                {/* Grid - Responsive & Enhanced Spacing */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {featuredProducts.map((product, index) => (
                         <ProductCard key={product.id} product={product} index={index} />
                     ))}

@@ -2,30 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { COMPANY_INFO } from '../data/mockData';
-import waterTexture from '../assets/images/headers/water-texture.png';
 
 const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative bg-gradient-to-br from-cyan-900 via-blue-900 to-cyan-950 text-white pt-12 pb-12 overflow-hidden font-sans">
-            {/* Background Elements */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                {/* Subtle Water Texture Overlay */}
-                <div
-                    className="absolute inset-0 opacity-[0.08] mix-blend-soft-light"
-                    style={{
-                        backgroundImage: `url(${waterTexture})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
-                ></div>
-
-                {/* Gradient for depth */}
-                <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/95 via-blue-900/95 to-cyan-950/95"></div>
-            </div>
-
-            <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer className="relative bg-gradient-to-br from-cyan-900 via-blue-900 to-indigo-900 text-white pt-12 pb-12 overflow-hidden font-sans">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16">
 
                     {/* Brand Section - Minimalist */}

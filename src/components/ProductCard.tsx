@@ -1,10 +1,9 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import type { Product } from '../data/mockData';
 import { useCartStore } from '../store/useCartStore';
-import { useProductsStore } from '../store/useProductsStore';
-import { ShoppingCart, Check, Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 
 interface ProductCardProps {
     product: Product;
@@ -13,16 +12,13 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
     const addItem = useCartStore((state) => state.addItem);
-    const getCachedImage = useProductsStore((state) => state.getCachedImage);
     const [isAdded, setIsAdded] = React.useState(false);
+    const [imageError, setImageError] = React.useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
 
-    // Use cached image if available, otherwise use original
-    const imageSrc = useMemo(() => {
-        const cached = getCachedImage(product.id);
-        return cached || product.image;
-    }, [product.id, product.image, getCachedImage]);
+    // Use product image directly from public folder
+    const imageSrc = product.image;
 
     // Entrance animation
     useGSAP(() => {
@@ -70,21 +66,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
     };
 
     const handleMouseEnter = () => {
-        gsap.to(imageRef.current, {
-            scale: 1.08,
-            y: -5,
-            duration: 0.4,
-            ease: 'power2.out'
-        });
+        if (imageRef.current && !imageError) {
+            gsap.to(imageRef.current, {
+                scale: 1.1,
+                y: -8,
+                duration: 0.4,
+                ease: 'power2.out'
+            });
+        }
     };
 
     const handleMouseLeave = () => {
-        gsap.to(imageRef.current, {
-            scale: 1,
-            y: 0,
-            duration: 0.4,
-            ease: 'power2.out'
-        });
+        if (imageRef.current && !imageError) {
+            gsap.to(imageRef.current, {
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                ease: 'power2.out'
+            });
+        }
     };
 
     return (
@@ -94,17 +94,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {/* Image Container */}
-            <div className="relative pt-[100%] bg-gray-50 overflow-hidden rounded-t-xl group-hover:bg-gray-100/50 transition-colors duration-300">
-                <img
-                    ref={imageRef}
-                    src={imageSrc}
-                    alt={product.name}
-                    className="absolute top-0 left-0 w-full h-full object-contain p-6 mix-blend-multiply"
-                />
+            {/* Image Container - Improved sizing and responsive */}
+            <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-xl group-hover:from-gray-100 group-hover:to-gray-200 transition-all duration-300">
+                <div className="aspect-square flex items-center justify-center p-4 sm:p-6 md:p-8">
+                    <img
+                        ref={imageRef}
+                        src={imageSrc}
+                        alt={product.name}
+                        onError={() => setImageError(true)}
+                        className="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-lg transition-transform duration-300"
+                        loading="lazy"
+                    />
+                </div>
 
-                {/* Quick Actions Overlay (Optional for future) */}
-                {/* <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
+                {/* Loading placeholder */}
+                {imageError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <span className="text-gray-400 text-sm">Imagen no disponible</span>
+                    </div>
+                )}
             </div>
 
             {/* Content */}
