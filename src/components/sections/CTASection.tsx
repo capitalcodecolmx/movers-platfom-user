@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import bottleWater from '../../assets/images/products/botella-5l.png';
 
 const CTASection: React.FC = () => {
     return (
@@ -53,20 +54,15 @@ const CTASection: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right Column - Removed Photo Element for Minimal Look */}
-                    <div className="lg:col-span-2 hidden lg:flex items-center justify-center opacity-40 mix-blend-overlay">
-                        {/* Optional: Abstract geometric shape or pattern could go here if needed, 
-                             but keeping it empty for now to match the minimal request */}
-                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-64 h-64 text-white fill-current animate-pulse-slow">
-                            <path d="M45.7,-76.3C58.9,-69.3,69.1,-55.6,76.3,-41.2C83.5,-26.8,87.7,-11.7,85.8,2.8C83.9,17.3,75.9,31.2,66.3,43.3C56.7,55.4,45.5,65.7,32.6,72.3C19.7,78.9,5.1,81.8,-8.7,79.8C-22.5,77.8,-35.5,70.9,-47.3,62.1C-59.1,53.3,-69.7,42.6,-76.5,29.8C-83.3,17,-86.3,2.1,-83.4,-11.3C-80.5,-24.7,-71.7,-36.6,-60.8,-45.5C-49.9,-54.4,-36.9,-60.3,-24.2,-67.6C-11.5,-74.9,-1.9,-83.6,10.6,-81.8C23.1,-80,32.5,-67.7,45.7,-76.3Z" transform="translate(100 100)" />
-                        </svg>
+                    {/* Right Column - Bottle Water Image */}
+                    <div className="lg:col-span-2 hidden lg:flex items-center justify-center">
+                        <img 
+                            src={bottleWater} 
+                            alt="Botella de agua" 
+                            className="w-64 h-auto max-h-96 object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                        />
                     </div>
                 </div>
-            </div>
-
-            {/* Decorative Elements */}
-            <div className="hidden md:block absolute top-6 right-6 text-white/20 text-xs tracking-wider font-mono">
-                EST. 2024
             </div>
         </section>
     );
