@@ -20,16 +20,13 @@ const AguacentrosHero: React.FC = () => {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-                <div className="max-w-4xl">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 text-xs sm:text-sm font-bold tracking-[0.2em] mb-4 sm:mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-                        SUCURSALES
-                    </span>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6 leading-[1.1] tracking-tight">
-                        Nuestros <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 filter drop-shadow-lg">Aguacentros</span>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
+                <div className="max-w-5xl mx-auto">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight uppercase">
+                        Aguacentros <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 filter drop-shadow-lg">Calidad y Precio</span> Cerca de Ti
                     </h1>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-300/90 max-w-2xl leading-relaxed font-light tracking-wide">
-                        Encuentra tu punto de venta más cercano. <span className="text-white font-medium">Calidad, frescura y el mejor precio</span> siempre cerca de ti.
+                    <p className="text-base sm:text-lg md:text-xl text-gray-200/90 max-w-3xl mx-auto leading-relaxed font-light tracking-wide">
+                        Para que puedas tener siempre a mano y disfrutes junto a tu familia los beneficios de <span className="text-white font-medium">Agua Purificada Blanquita</span> a precios de fábrica, abrimos para ti nuestros Aguacentros.
                     </p>
                 </div>
             </div>

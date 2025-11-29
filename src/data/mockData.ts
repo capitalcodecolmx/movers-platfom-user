@@ -179,52 +179,82 @@ export const LOCATIONS = [
   {
     name: 'Agua Centro Río Purificación',
     address: 'Calle Nueva Ciudad Guerrero esq. #867. Prol. Río Purificación, col. Revolución Obrera, Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.058,
+    lng: -98.285,
+    color: 'from-purple-500 to-indigo-600'
   },
   {
     name: 'Agua Centro Cumbres',
     address: 'Av. Mil Cumbres 960, Las Cumbres, 88740 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.075,
+    lng: -98.310,
+    color: 'from-blue-500 to-cyan-500'
   },
   {
     name: 'Agua Centro Las Fuentes',
     address: 'Blvd. Las Fuentes 913, Aztlán, 88740 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.082,
+    lng: -98.305,
+    color: 'from-cyan-500 to-teal-500'
   },
   {
     name: 'Agua Centro Calle 20',
     address: 'Calle 20, Veinte 117, Aztlán, 88740 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.085,
+    lng: -98.315,
+    color: 'from-orange-500 to-red-500'
   },
   {
     name: 'Agua centro Petrolera',
     address: 'Poza Rica 1203, Refinería, 88640 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.065,
+    lng: -98.325,
+    color: 'from-green-500 to-emerald-600'
   },
   {
     name: 'Agua Centro Vista Hermosa',
     address: 'Av. Vista Hermosa y C. 13, Vista Hermosa, 88710 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.055,
+    lng: -98.335,
+    color: 'from-orange-400 to-amber-500'
   },
   {
     name: 'Agua Centro Pedro J. Méndez',
     address: 'Enrique Canseco y C. 13, Pedro J. Méndez, 88799 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.045,
+    lng: -98.300,
+    color: 'from-yellow-400 to-orange-500'
   },
   {
     name: 'Agua Centro Hielo (Col. Rodríguez)',
     address: 'Jalapa esq. Herón Ramírez, Col. Rodríguez, Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.090,
+    lng: -98.280,
+    color: 'from-red-500 to-rose-600'
   },
   {
     name: 'Agua Centro Lomas',
     address: 'José de Rivera, Lomas de Jarachina Sur, 88730 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.060,
+    lng: -98.340,
+    color: 'from-indigo-500 to-violet-600'
   },
   {
     name: 'Agua Centro Cavazos',
     address: 'Calle Amado Nervo 510, Los Cavazos, 88720 Reynosa, Tamps.',
-    phone: '(899) 921-10-10'
+    phone: '(899) 921-10-10',
+    lat: 26.035,
+    lng: -98.260,
+    color: 'from-pink-500 to-rose-500'
   }
 ];
 

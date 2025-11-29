@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Navigation, Clock } from 'lucide-react';
+import { Phone, Navigation, Clock } from 'lucide-react';
 
 interface AguacentroLocation {
     name: string;
@@ -18,8 +18,12 @@ const LocationCard: React.FC<LocationCardProps> = ({ location }) => {
             <div className="absolute top-0 right-0 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-cyan-50 rounded-bl-full -mr-12 sm:-mr-14 md:-mr-16 -mt-12 sm:-mt-14 md:-mt-16 transition-transform group-hover:scale-110"></div>
 
             <div className="relative z-10">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 md:mb-6 shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform duration-300">
-                    <MapPin size={20} className="sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 md:mb-6 shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform duration-300 overflow-hidden p-1 sm:p-1.5">
+                    <img 
+                        src="/LOGO AGUA NUEVO 2.png" 
+                        alt="Blanquita Logo" 
+                        className="w-full h-full object-contain brightness-0 invert"
+                    />
                 </div>
 
                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-cyan-600 transition-colors">

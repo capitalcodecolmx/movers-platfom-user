@@ -78,6 +78,27 @@
   line-height: 1.4;
 }
 
+/* Clean attribution styling */
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 6px 0 0 0 !important;
+  padding: 4px 8px !important;
+  font-size: 10px !important;
+  color: #6b7280 !important;
+  border: none !important;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-attribution a {
+  color: #06b6d4 !important;
+  font-weight: 500 !important;
+}
+
+.leaflet-control-attribution a:hover {
+  color: #0891b2 !important;
+}
+
 /* Estilos para controles personalizados */
 .custom-control {
   background: white;
