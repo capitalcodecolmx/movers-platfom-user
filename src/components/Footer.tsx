@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative bg-gradient-to-br from-cyan-900 via-blue-900 to-indigo-900 text-white pt-12 pb-12 overflow-hidden font-sans">
+        <footer className="relative bg-gradient-to-br from-cyan-900 via-blue-900 to-indigo-900 text-white pt-12 pb-12 overflow-hidden font-sans border-t-0">
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16">
 
