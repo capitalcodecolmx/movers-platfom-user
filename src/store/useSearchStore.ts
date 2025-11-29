@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { Product, PRODUCTS } from '../data/mockData';
+import type { Product } from '../data/mockData';
+import { PRODUCTS } from '../data/mockData';
 import { searchProducts } from '../utils/searchUtils';
 
 interface SearchState {
