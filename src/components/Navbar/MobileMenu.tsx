@@ -23,7 +23,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     const getIcon = (name: string) => {
         const icons: { [key: string]: string } = {
             'Inicio': 'ph:house-fill',
-            'Productos': 'ph:package-fill',
+            'Productos': 'fa6-solid:bottle-water',
             'Aguacentros': 'ph:map-pin-fill',
             'Contacto': 'ph:envelope-fill',
             'Nuestra Empresa': 'ph:buildings-fill',
@@ -69,8 +69,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                             to={item.href}
                             onClick={onClose}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${location.pathname === item.href
-                                    ? 'text-cyan-600 bg-cyan-50'
-                                    : 'text-gray-700 hover:text-cyan-600 hover:bg-gray-50'
+                                ? 'text-cyan-600 bg-cyan-50'
+                                : 'text-gray-700 hover:text-cyan-600 hover:bg-gray-50'
                                 }`}
                         >
                             <Icon icon={getIcon(item.name)} width="20" height="20" />
