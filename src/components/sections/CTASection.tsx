@@ -1,12 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import bottleWater from '../../assets/images/products/botella-5l.png';
+import logo from '../../assets/images/branding/logo.png';
 
 const CTASection: React.FC = () => {
     return (
         <section className="relative py-12 md:py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-cyan-900 via-blue-900 to-indigo-900">
+            {/* Watermark Logo */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                <img
+                    src={logo}
+                    alt=""
+                    className="w-[120%] max-w-none opacity-[0.03] transform -rotate-12 scale-150 blur-sm"
+                />
+            </div>
+
             {/* Noise Texture Overlay */}
-            <div className="absolute inset-0 opacity-20 mix-blend-overlay">
+            <div className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none">
                 <div className="w-full h-full" style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
                     backgroundRepeat: 'repeat',
@@ -56,9 +66,9 @@ const CTASection: React.FC = () => {
 
                     {/* Right Column - Bottle Water Image */}
                     <div className="lg:col-span-2 hidden lg:flex items-center justify-center">
-                        <img 
-                            src={bottleWater} 
-                            alt="Botella de agua" 
+                        <img
+                            src={bottleWater}
+                            alt="Botella de agua"
                             className="w-64 h-auto max-h-96 object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-300"
                         />
                     </div>
