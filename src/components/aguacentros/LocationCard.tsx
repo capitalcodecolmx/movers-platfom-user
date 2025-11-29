@@ -17,6 +17,15 @@ const LocationCard: React.FC<LocationCardProps> = ({ location }) => {
         <div className="group bg-white rounded-xl sm:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-4 sm:p-5 md:p-6 lg:p-8 border border-gray-100 hover:border-cyan-200 flex flex-col h-full relative overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-cyan-50 rounded-bl-full -mr-12 sm:-mr-14 md:-mr-16 -mt-12 sm:-mt-14 md:-mt-16 transition-transform group-hover:scale-110"></div>
 
+            {/* Watermark Logo */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-[0.03] sm:opacity-[0.04]">
+                <img
+                    src="/LOGO AGUA NUEVO 2.png"
+                    alt=""
+                    className="w-full max-w-[80%] sm:max-w-[70%] h-auto object-contain transform -rotate-12"
+                />
+            </div>
+
             <div className="relative z-10">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 md:mb-6 shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform duration-300 overflow-hidden p-1 sm:p-1.5">
                     <img 
