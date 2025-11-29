@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/SupabaseAuthContext';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { COMPANY_INFO } from '../data/mockData';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -44,18 +45,27 @@ const LoginPage: React.FC = () => {
         background: 'linear-gradient(135deg, #00AEEF 0%, #0055A4 100%)',
       }}
     >
-      {/* Overlay oscuro para mejorar legibilidad */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      {/* Overlay oscuro con branding */}
+      <div className="absolute inset-0 bg-black bg-opacity-50">
+        {/* Watermark Logo */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          <img
+            src={COMPANY_INFO.logo}
+            alt=""
+            className="w-[120%] max-w-none opacity-[0.05] transform -rotate-12 scale-150"
+          />
+        </div>
+      </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8">
           <img
-            src="/src/assets/images/branding/logo.png"
-            alt="Agua Purificada Blanquita"
-            className="h-16 mx-auto mb-4 brightness-0 invert"
+            src={COMPANY_INFO.logo}
+            alt={COMPANY_INFO.name}
+            className="h-20 sm:h-24 mx-auto mb-4 brightness-0 invert drop-shadow-lg"
           />
-          <p className="text-cyan-100 font-medium">Portal de Clientes</p>
+          <p className="text-cyan-200/80 font-medium text-sm">Portal de Clientes</p>
           <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mt-4 transition-colors">
             <ArrowRight className="w-4 h-4 rotate-180" /> Volver al inicio
           </Link>
@@ -208,8 +218,8 @@ const LoginPage: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-sm text-gray-500">
-          <p>© 2024 Muvers Platform. Todos los derechos reservados.</p>
+        <div className="text-center mt-8 text-sm text-white/60">
+          <p>© {new Date().getFullYear()} {COMPANY_INFO.name}. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>

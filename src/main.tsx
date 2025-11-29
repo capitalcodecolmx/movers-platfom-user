@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider, useAuth } from './contexts/SupabaseAuthContext'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
@@ -157,8 +158,10 @@ const App: React.FC = () => {
 // Renderizar la aplicación
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </HelmetProvider>
   </React.StrictMode>
 )
