@@ -2,7 +2,7 @@
 // TYPES PARA ADMIN DASHBOARD
 // =====================================================
 
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 export interface StatCard {
   title: string;
