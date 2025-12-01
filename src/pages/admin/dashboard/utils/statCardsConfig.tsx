@@ -11,7 +11,7 @@ import {
   Clock
 } from 'lucide-react';
 import type { StatCard } from '../types';
-import type { AdminStats } from '../../../store/useAdminStore';
+import type { AdminStats } from '../../../../store/useAdminStore';
 
 export const createStatCards = (stats: AdminStats): StatCard[] => [
   {
