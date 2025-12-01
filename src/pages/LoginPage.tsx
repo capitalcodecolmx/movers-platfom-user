@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
         // El usuario debe confirmar su email primero
       } else {
         await signIn(email, password);
-        // Después del login exitoso, redirigir al dashboard
+        // Redirigir a dashboard - el DashboardRedirect component verificará el rol
         navigate('/dashboard');
       }
     } catch (error) {

@@ -144,7 +144,15 @@ SELECT public.update_user_role(
 2. Inicia sesión con:
    - **Email**: El email del admin
    - **Password**: La contraseña que configuraste
-3. Deberías poder acceder al dashboard
+3. **Deberías ser redirigido automáticamente al Dashboard de Administración** (`/admin/dashboard`)
+   - ⚠️ **Nota**: Si ves el dashboard de usuario, espera unos segundos o recarga la página. El sistema detecta el rol automáticamente.
+4. El dashboard de admin muestra:
+   - Estadísticas de todas las órdenes (no solo las del admin)
+   - Total de usuarios del sistema
+   - Ingresos totales
+   - Vehículos activos
+   - Acciones rápidas para gestionar el sistema
+   - Enlaces a gestión de órdenes, usuarios, vehículos y precios
 
 ### Verificar Permisos de Admin
 

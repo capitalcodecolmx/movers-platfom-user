@@ -2,10 +2,11 @@
 // PÁGINA PRINCIPAL DEL DASHBOARD - ESTILO APPLE
 // =====================================================
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, Plus, Search } from 'lucide-react';
 import { useAuth } from '../contexts/SupabaseAuthContext';
+import { useUserRole } from '../hooks/useUserRole';
 import DashboardStats from '../components/DashboardStats';
 import RecentOrders from '../components/RecentOrders';
 import DashboardSkeleton from '../components/DashboardSkeleton';
@@ -15,7 +16,15 @@ import { useDashboardStats } from '../hooks/useDashboardStats';
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin, isLoading: roleLoading } = useUserRole();
   const { stats, isLoading } = useDashboardStats();
+
+  // Redirigir admins al dashboard de administración
+  useEffect(() => {
+    if (!roleLoading && isAdmin) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [isAdmin, roleLoading, navigate]);
 
   const mainActions = [
     {

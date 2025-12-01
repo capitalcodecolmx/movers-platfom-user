@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider, useAuth } from './contexts/SupabaseAuthContext'
+import { useUserRole } from './hooks/useUserRole'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
+import AdminDashboardPage from './pages/admin/dashboard'
 import OrdersPage from './pages/OrdersPage'
 import CreateOrderPage from './pages/CreateOrderPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
@@ -29,6 +31,28 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const { isAuthenticated } = useAuth();
 
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+};
+
+// Componente para verificar rol y redirigir al dashboard correcto
+const DashboardRedirect: React.FC = () => {
+  const { isAdmin, isLoading } = useUserRole();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAdmin) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  return <Navigate to="/dashboard" replace />;
 };
 
 // Componente principal de la aplicación
@@ -61,17 +85,29 @@ const App: React.FC = () => {
         <Route
           path="/login"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
+            isAuthenticated ? <DashboardRedirect /> : <LoginPage />
           }
         />
 
-        {/* Rutas protegidas */}
+        {/* Rutas protegidas - Dashboard de usuarios */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <Layout>
                 <DashboardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Rutas protegidas - Dashboard de administradores */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminDashboardPage />
               </Layout>
             </ProtectedRoute>
           }
