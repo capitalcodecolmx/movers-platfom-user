@@ -1,0 +1,40 @@
+---
+alwaysApply: true
+---
+
+# Cursor Rules for Movers Platform
+
+## Project Database Tables
+
+### Always Read Project Tables
+When starting any task that involves database operations, schema changes, or data modeling, ALWAYS read the project tables from:
+- `migrations/migrations.sql` - Contains the complete database schema
+
+### Project Tables Reference
+The project uses Supabase with the following tables:
+1. **users** - User accounts (customers, admins, repartidores)
+2. **user_profiles** - Extended user information
+3. **orders** - Shipping orders with tracking
+4. **quotes** - Order quotes and pricing
+5. **order_tracking** - Order tracking history
+6. **messages** - User messaging system
+7. **notifications** - System notifications
+8. **vehicles** - Vehicle fleet management
+9. **pricing_config** - Pricing configuration
+
+### Supabase Project Configuration
+- Project Reference: `dthrctnmrerpxtzvjoab`
+- URL: `https://dthrctnmrerpxtzvjoab.supabase.co`
+- Schema file: `migrations/migrations.sql`
+
+### Database Operations
+- Always reference `migrations/migrations.sql` for table structures
+- Use Supabase MCP tools when available to query actual database state
+- When making schema changes, update `migrations/migrations.sql` accordingly
+
+### Key Relationships
+- `users` ← `user_profiles`, `orders`, `messages`, `notifications`, `order_tracking`
+- `orders` ← `quotes`, `messages`, `notifications`, `order_tracking`
+- `vehicles` referenced by `orders.assigned_vehicle_id`
+
+

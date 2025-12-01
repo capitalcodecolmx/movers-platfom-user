@@ -14,45 +14,35 @@ const ContactPage: React.FC = () => {
     return (
         <PublicLayout>
             <div className="relative min-h-screen bg-slate-50 overflow-hidden pt-20 pb-12 flex items-center">
-                {/* Background Map & Watermark - Visible but unobtrusive */}
-                <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                    <div className="relative w-full h-full flex items-center justify-center">
-                        <img
-                            src={mexicoMap}
-                            alt="Mexico Map"
-                            className="absolute w-[95%] max-w-6xl h-auto object-contain opacity-[0.2] filter grayscale contrast-125"
-                        />
-                        <img
-                            src="/LOGO AZUL MONITA COMPLETO.png"
-                            alt="Watermark Logo"
-                            className="absolute w-[40%] max-w-2xl h-auto object-contain opacity-[0.1] mix-blend-multiply"
-                        />
-                    </div>
+                {/* Background Map - More visible but contained */}
+                <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+                    <img
+                        src={mexicoMap}
+                        alt="Mexico Map"
+                        className="w-[90%] max-w-4xl h-auto object-contain opacity-15"
+                    />
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                    {/* Header - Compact & Professional */}
+                <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    {/* Header - Compact */}
                     <div className="text-center mb-10">
-                        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight">
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">
                             CONTÁCTANOS
                         </h1>
-                        <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto rounded-full"></div>
-                        <p className="text-slate-600 mt-4 max-w-2xl mx-auto font-medium text-sm uppercase tracking-wide">
-                            Calidad mundial, <span className="text-cyan-700 font-bold">orgullosamente en México</span>.
-                        </p>
+                        <div className="w-16 h-1 bg-cyan-500 mx-auto rounded-full"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                        {/* Left Side: Contact Info - Compact & High Contrast */}
-                        <div className="lg:col-span-5 space-y-6 order-2 lg:order-1 pt-2">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        {/* Left Side: Contact Info - Compact & Professional */}
+                        <div className="lg:col-span-5 space-y-6 order-2 lg:order-1 bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-100 shadow-sm">
                             {/* Location */}
                             <div className="flex items-start gap-4 group">
-                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 group-hover:border-cyan-500 group-hover:text-cyan-600 transition-all duration-300 flex-shrink-0 shadow-sm group-hover:shadow-cyan-100">
-                                    <MapPin size={22} strokeWidth={2} />
+                                <div className="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 flex-shrink-0 mt-1">
+                                    <MapPin size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Ubicación</h3>
-                                    <p className="text-sm text-slate-900 font-bold leading-relaxed">
+                                    <h3 className="text-base font-bold text-slate-900">Ubicación</h3>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
                                         {COMPANY_INFO.address}
                                     </p>
                                 </div>
@@ -60,92 +50,93 @@ const ContactPage: React.FC = () => {
 
                             {/* Email */}
                             <div className="flex items-start gap-4 group">
-                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 group-hover:border-cyan-500 group-hover:text-cyan-600 transition-all duration-300 flex-shrink-0 shadow-sm group-hover:shadow-cyan-100">
-                                    <Mail size={22} strokeWidth={2} />
+                                <div className="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 flex-shrink-0 mt-1">
+                                    <Mail size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email</h3>
-                                    <a href={`mailto:${COMPANY_INFO.email}`} className="text-sm text-slate-900 font-bold hover:text-cyan-600 transition-colors block">
+                                    <h3 className="text-base font-bold text-slate-900">Email</h3>
+                                    <p className="text-sm text-slate-600 font-medium">
                                         {COMPANY_INFO.email}
-                                    </a>
+                                    </p>
+                                    <p className="text-xs text-slate-400">orders@mouvers.com</p>
                                 </div>
                             </div>
 
                             {/* Call */}
                             <div className="flex items-start gap-4 group">
-                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 group-hover:border-cyan-500 group-hover:text-cyan-600 transition-all duration-300 flex-shrink-0 shadow-sm group-hover:shadow-cyan-100">
-                                    <Phone size={22} strokeWidth={2} />
+                                <div className="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 flex-shrink-0 mt-1">
+                                    <Phone size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Teléfono</h3>
-                                    <a href={`tel:${COMPANY_INFO.phone}`} className="text-sm text-slate-900 font-bold hover:text-cyan-600 transition-colors block">
+                                    <h3 className="text-base font-bold text-slate-900">Llámanos</h3>
+                                    <p className="text-sm text-slate-600 font-medium">
                                         {COMPANY_INFO.phone}
-                                    </a>
+                                    </p>
                                 </div>
                             </div>
 
                             {/* Whatsapp */}
                             <div className="flex items-start gap-4 group">
-                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 group-hover:border-cyan-500 group-hover:text-cyan-600 transition-all duration-300 flex-shrink-0 shadow-sm group-hover:shadow-cyan-100">
-                                    <Icon icon="logos:whatsapp-icon" className="w-6 h-6 grayscale group-hover:grayscale-0 transition-all" />
+                                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-all duration-300 flex-shrink-0 mt-1">
+                                    <Icon icon="logos:whatsapp-icon" className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">WhatsApp</h3>
-                                    <a href={`https://wa.me/${COMPANY_INFO.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-900 font-bold hover:text-cyan-600 transition-colors block">
-                                        Enviar mensaje
-                                    </a>
+                                    <h3 className="text-base font-bold text-slate-900">Whatsapp</h3>
+                                    <p className="text-sm text-slate-600 font-medium">
+                                        Envíanos un mensaje directo
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Right Side: Contact Form - Compact & Professional */}
-                        <div className="lg:col-span-7 order-1 lg:order-2 bg-white rounded-2xl shadow-md border border-slate-200 p-6 sm:p-8">
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div className="group">
-                                        <label className="block text-xs font-extrabold text-slate-600 uppercase tracking-wider mb-2 group-focus-within:text-cyan-600 transition-colors">Nombre</label>
+                        {/* Right Side: Contact Form - Clean & Compact */}
+                        <div className="lg:col-span-7 bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100 order-1 lg:order-2 relative z-20">
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wide ml-1">Nombre</label>
                                         <input
                                             type="text"
                                             required
-                                            className="w-full py-3 px-0 bg-transparent border-b-2 border-slate-300 focus:border-cyan-500 transition-all outline-none text-slate-900 font-bold placeholder-slate-400 text-sm"
-                                            placeholder="TU NOMBRE"
+                                            className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10 transition-all outline-none text-sm"
+                                            placeholder="Tu nombre completo"
                                         />
                                     </div>
-                                    <div className="group">
-                                        <label className="block text-xs font-extrabold text-slate-600 uppercase tracking-wider mb-2 group-focus-within:text-cyan-600 transition-colors">Email</label>
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wide ml-1">Email</label>
                                         <input
                                             type="email"
                                             required
-                                            className="w-full py-3 px-0 bg-transparent border-b-2 border-slate-300 focus:border-cyan-500 transition-all outline-none text-slate-900 font-bold placeholder-slate-400 text-sm"
-                                            placeholder="TU@EMAIL.COM"
+                                            className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10 transition-all outline-none text-sm"
+                                            placeholder="tu@email.com"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="group">
-                                    <label className="block text-xs font-extrabold text-slate-600 uppercase tracking-wider mb-2 group-focus-within:text-cyan-600 transition-colors">Asunto</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wide ml-1">Asunto</label>
                                     <input
                                         type="text"
-                                        className="w-full py-3 px-0 bg-transparent border-b-2 border-slate-300 focus:border-cyan-500 transition-all outline-none text-slate-900 font-bold placeholder-slate-400 text-sm"
-                                        placeholder="¿CÓMO PODEMOS AYUDARTE?"
+                                        className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10 transition-all outline-none text-sm"
+                                        placeholder="¿Cómo podemos ayudarte?"
                                     />
                                 </div>
 
-                                <div className="group">
-                                    <label className="block text-xs font-extrabold text-slate-600 uppercase tracking-wider mb-2 group-focus-within:text-cyan-600 transition-colors">Mensaje</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wide ml-1">Mensaje</label>
                                     <textarea
                                         rows={4}
-                                        className="w-full py-3 px-0 bg-transparent border-b-2 border-slate-300 focus:border-cyan-500 transition-all outline-none resize-none text-slate-900 font-bold placeholder-slate-400 text-sm"
-                                        placeholder="ESCRIBE TU MENSAJE..."
+                                        className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10 transition-all outline-none resize-none text-sm"
+                                        placeholder="Escribe tu mensaje aquí..."
                                     ></textarea>
                                 </div>
 
                                 <div className="pt-2 flex justify-end">
                                     <button
                                         type="submit"
-                                        className="px-10 py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-extrabold tracking-widest uppercase transition-all transform hover:translate-y-[-1px] shadow-lg shadow-cyan-500/30 rounded-xl flex items-center gap-2"
+                                        className="px-8 py-3 bg-slate-900 hover:bg-cyan-600 text-white rounded-lg font-bold transition-all transform hover:scale-[1.02] shadow-lg flex items-center gap-2 text-sm"
                                     >
-                                        <Send size={15} strokeWidth={2.5} /> Enviar
+                                        <Send size={16} /> Enviar Mensaje
                                     </button>
                                 </div>
                             </form>
