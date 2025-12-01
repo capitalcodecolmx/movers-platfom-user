@@ -79,7 +79,7 @@ const LoginPage: React.FC = () => {
             </h2>
             <p className="text-gray-600">
               {isSignUp
-                ? 'Regístrate para comenzar a enviar paquetes'
+                ? 'Regístrate como cliente para comenzar a enviar paquetes'
                 : 'Accede a tu cuenta para gestionar tus envíos'
               }
             </p>

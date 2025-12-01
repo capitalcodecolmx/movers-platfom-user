@@ -81,6 +81,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // Registrarse
+  // NOTA: Solo permite registro de usuarios normales ('user')
+  // Los administradores deben crearse manualmente desde Supabase Dashboard
+  // Ver: ADMIN_SETUP_GUIDE.md para instrucciones
   const signUp = async (email: string, password: string, fullName: string, phone?: string) => {
     setIsLoading(true);
     setError(null);
@@ -93,7 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           data: {
             full_name: fullName,
             phone: phone || null,
-            role: 'user',
+            role: 'user', // Siempre 'user' - admins se crean manualmente
           },
         },
       });
