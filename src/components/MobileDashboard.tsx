@@ -149,15 +149,17 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
         className="relative min-h-screen bg-cover bg-center bg-no-repeat hero-mobile"
         style={{ backgroundImage: 'url(/back.png)' }}
       >
-        {/* Overlay para mejorar legibilidad */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        {/* Overlay con gradiente de marca para mejorar legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/80 via-blue-900/75 to-indigo-900/80"></div>
         
+        {/* Overlay adicional para contraste */}
+        <div className="absolute inset-0 bg-black/30"></div>
 
         {/* Contenido del hero */}
         <div className="relative z-10 flex flex-col h-full px-4 pt-24 pb-8">
           <div className="w-full flex-1 flex flex-col justify-center">
             <div className="text-center mb-8">
-              <p className="text-lg text-white/90">
+              <p className="text-lg font-medium text-white drop-shadow-lg">
                 Gestiona tus envíos de manera fácil y rápida
               </p>
             </div>
@@ -165,42 +167,42 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
             {/* Estadísticas integradas en el hero */}
             <div className="space-y-6">
               {/* Saludo personalizado - Adaptado para hero móvil */}
-              <div className="glass-effect rounded-xl p-4 text-white mobile-hero-card">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-xl border border-white/20 mobile-hero-card">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-xl font-bold mb-1">
+                    <h2 className="text-xl font-bold mb-1 text-gray-900">
                       ¡Hola, {user?.user_metadata?.full_name?.split(' ')[0] || 'Usuario'}! 👋
                     </h2>
-                    <p className="text-white/80 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Aquí tienes un resumen de tus envíos
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-white/70">Gastado este mes</p>
-                    <p className="text-lg font-bold">${stats.thisMonthSpent.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500 font-medium">Gastado este mes</p>
+                    <p className="text-lg font-bold text-cyan-600">${stats.thisMonthSpent.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
 
               {/* Estadísticas principales - Compactas para móvil */}
               <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-white">Estado de envíos</h2>
+                <h2 className="text-lg font-semibold text-white drop-shadow-md">Estado de envíos</h2>
                 <div className="grid grid-cols-2 gap-3">
                   {statCards.slice(0, 4).map((stat, index) => (
                     <div
                       key={index}
-                      className="glass-effect rounded-xl p-3 mobile-hero-card"
+                      className="bg-white/95 backdrop-blur-md rounded-xl p-3 shadow-xl border border-white/20 mobile-hero-card"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <div className="p-1.5 rounded-lg bg-white">
-                          <stat.icon className="w-4 h-4 text-black" />
+                        <div className={`p-1.5 rounded-lg ${stat.bgColor}`}>
+                          <stat.icon className={`w-4 h-4 ${stat.textColor}`} />
                         </div>
                         <div className="text-right">
-                          <p className="text-lg font-bold text-white">{stat.value}</p>
+                          <p className="text-lg font-bold text-gray-900">{stat.value}</p>
                         </div>
                       </div>
-                      <p className="text-xs font-medium text-white mb-1">{stat.title}</p>
-                      <p className="text-xs text-white/70">{stat.description}</p>
+                      <p className="text-xs font-semibold text-gray-900 mb-1">{stat.title}</p>
+                      <p className="text-xs text-gray-600">{stat.description}</p>
                     </div>
                   ))}
                 </div>
@@ -208,7 +210,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
 
               {/* Acciones principales - Integradas en el hero */}
               <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-white">Acciones principales</h2>
+                <h2 className="text-lg font-semibold text-white drop-shadow-md">Acciones principales</h2>
                 
                 <ScrollIndicator className="pb-2" showArrows={true}>
                   {actionCards.filter(action => action.id !== 'estadisticas').map((action) => (
