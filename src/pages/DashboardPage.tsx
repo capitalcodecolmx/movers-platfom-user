@@ -69,7 +69,7 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50">
       {/* Versión móvil - Visible solo en pantallas pequeñas */}
       <div className="block md:hidden">
         <MobileDashboard user={user} />
@@ -82,15 +82,20 @@ const DashboardPage: React.FC = () => {
           className="relative h-[500px] bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/back.png)' }}
         >
-          {/* Overlay para mejorar legibilidad */}
-          <div className="absolute inset-0 bg-black/10"></div>
+          {/* Overlay con gradiente de marca mejorado para mejor legibilidad */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/85 via-blue-700/80 to-indigo-800/85"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          {/* Efecto de brillo sutil */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
           
           {/* Contenido del hero */}
           <div className="relative z-10 h-full flex items-start pt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-                <p className="text-lg text-white/90">
+                <h1 className="text-4xl font-bold mb-2 drop-shadow-2xl bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+                  Dashboard
+                </h1>
+                <p className="text-lg text-white/95 font-medium drop-shadow-lg">
                   Gestiona tus envíos de manera fácil y rápida
                 </p>
               </div>
@@ -105,13 +110,13 @@ const DashboardPage: React.FC = () => {
 
           {/* Acciones principales */}
           <div className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-8">Acciones principales</h2>
+            <h2 className="text-2xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-8">Acciones principales</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {mainActions.map((action) => (
                 <button
                   key={action.id}
                   onClick={action.onClick}
-                  className="group relative rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 text-left hover:-translate-y-1 overflow-hidden"
+                  className="group relative rounded-3xl p-8 shadow-lg border border-cyan-100 hover:shadow-xl hover:border-cyan-200 transition-all duration-300 text-left hover:-translate-y-1 overflow-hidden"
                   style={{
                     backgroundImage: `url(${action.backgroundImage})`,
                     backgroundSize: 'cover',
