@@ -6,6 +6,21 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../config/supabase';
 import { NotificationService } from '../services/notificationService';
 
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id: string;
+  quantity: number;
+  unit_price: number;
+  subtotal: number;
+  product?: {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+  };
+}
+
 export interface Order {
   id: string;
   tracking_code: string;
@@ -37,6 +52,7 @@ export interface Order {
   admin_notes?: string;
   customer_notes?: string;
   attachments?: any;
+  order_items?: OrderItem[];
 }
 
 export const useOrders = () => {
@@ -44,7 +60,108 @@ export const useOrders = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Crear nueva orden
+  // Generate unique tracking code
+  const generateTrackingCode = (): string => {
+    const prefix = 'ORD';
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `${prefix}-${timestamp}-${random}`;
+  };
+
+  // Create ecommerce order with order items
+  const createEcommerceOrder = async (orderData: {
+    items: Array<{ id: string; quantity: number; price: number }>;
+    deliveryAddress: any;
+    deliveryContact: any;
+    deliveryDate: string;
+    deliveryTime: string;
+    total: number;
+  }) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Verify authentication
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError) {
+        throw new Error('Error de autenticación: ' + authError.message);
+      }
+      
+      if (!user) {
+        throw new Error('Usuario no autenticado');
+      }
+
+      const trackingCode = generateTrackingCode();
+
+      // Create order
+      const orderPayload = {
+        user_id: user.id,
+        tracking_code: trackingCode,
+        status: 'pending',
+        payment_status: 'pending',
+        delivery_address: orderData.deliveryAddress,
+        delivery_contact: orderData.deliveryContact,
+        delivery_date: orderData.deliveryDate,
+        delivery_time: orderData.deliveryTime,
+        estimated_cost: orderData.total,
+        final_cost: orderData.total,
+        customer_notes: `Orden de productos - ${orderData.items.length} artículo(s)`,
+      };
+
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert([orderPayload])
+        .select()
+        .single();
+
+      if (orderError) {
+        throw orderError;
+      }
+
+      // Create order items
+      const orderItems = orderData.items.map(item => ({
+        order_id: order.id,
+        product_id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price,
+        subtotal: item.price * item.quantity,
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) {
+        // If order items fail, try to delete the order
+        await supabase.from('orders').delete().eq('id', order.id);
+        throw itemsError;
+      }
+
+      // Create notification
+      try {
+        await NotificationService.notifyOrderCreated(
+          order.id,
+          user.id,
+          order.tracking_code
+        );
+      } catch (notificationError) {
+        console.error('Error creating notification:', notificationError);
+      }
+
+      // Update local list
+      setOrders(prev => [order, ...prev]);
+      
+      return order;
+    } catch (err: any) {
+      setError(err.message || 'Error al crear la orden');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Crear nueva orden (shipping order)
   const createOrder = async (orderData: any) => {
     setIsLoading(true);
     setError(null);
@@ -80,9 +197,13 @@ export const useOrders = () => {
         initialPaymentStatus = 'pending';
       }
 
+      // Generate tracking code
+      const trackingCode = generateTrackingCode();
+
       // Preparar los datos para la base de datos con el nuevo formato
       const orderPayload = {
         user_id: user.id,
+        tracking_code: trackingCode,
         status: initialStatus,
         payment_status: initialPaymentStatus,
         package_data: {
@@ -207,7 +328,7 @@ export const useOrders = () => {
       console.log('Fetching orders for user:', user.id, 'email:', user.email);
 
       // Obtener órdenes del usuario
-      const { data, error } = await supabase
+      const { data: ordersData, error } = await supabase
         .from('orders')
         .select('*')
         .eq('user_id', user.id)
@@ -218,8 +339,26 @@ export const useOrders = () => {
         throw new Error('Error al obtener órdenes: ' + error.message);
       }
       
-      console.log('Orders fetched successfully:', data?.length || 0, 'orders');
-      setOrders(data || []);
+      // Fetch order_items for each order
+      const ordersWithItems = await Promise.all(
+        (ordersData || []).map(async (order) => {
+          const { data: itemsData } = await supabase
+            .from('order_items')
+            .select(`
+              *,
+              product:products(id, name, image, price)
+            `)
+            .eq('order_id', order.id);
+
+          return {
+            ...order,
+            order_items: itemsData || []
+          };
+        })
+      );
+      
+      console.log('Orders fetched successfully:', ordersWithItems.length, 'orders');
+      setOrders(ordersWithItems);
     } catch (err: any) {
       console.error('Error in fetchOrders:', err);
       setError(err.message || 'Error al obtener las órdenes');
@@ -235,15 +374,27 @@ export const useOrders = () => {
     setError(null);
     
     try {
-      const { data, error } = await supabase
+      const { data: orderData, error } = await supabase
         .from('orders')
         .select('*')
         .eq('id', orderId)
         .single();
 
       if (error) throw error;
-      
-      return data;
+
+      // Fetch order_items for this order
+      const { data: itemsData } = await supabase
+        .from('order_items')
+        .select(`
+          *,
+          product:products(id, name, image, price)
+        `)
+        .eq('order_id', orderId);
+
+      return {
+        ...orderData,
+        order_items: itemsData || []
+      };
     } catch (err: any) {
       setError(err.message || 'Error al obtener la orden');
       throw err;
@@ -317,6 +468,7 @@ export const useOrders = () => {
     isLoading,
     error,
     createOrder,
+    createEcommerceOrder,
     fetchOrders,
     getOrder,
     updateOrderStatus,

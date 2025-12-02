@@ -8,6 +8,7 @@ import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import AdminDashboardPage from './pages/admin/dashboard'
+import AdminProductsPage from './pages/admin/products/AdminProductsPage'
 import OrdersPage from './pages/OrdersPage'
 import CreateOrderPage from './pages/CreateOrderPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
@@ -17,6 +18,7 @@ import TestOrderFlow from './components/TestOrderFlow'
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
 import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
 import AguacentrosPage from './pages/AguacentrosPage'
@@ -77,6 +79,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/aguacentros" element={<AguacentrosPage />} />
@@ -108,6 +111,17 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <Layout>
                 <AdminDashboardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminProductsPage />
               </Layout>
             </ProtectedRoute>
           }

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Product } from '../data/mockData';
-import { PRODUCTS } from '../data/mockData';
+import { supabase } from '../config/supabase';
 
 export type SortField = 'price' | 'name';
 export type SortDirection = 'asc' | 'desc';
@@ -27,8 +27,11 @@ interface ProductsState {
   sortField: SortField;
   sortDirection: SortDirection;
   imageCache: ImageCache;
+  isLoading: boolean;
+  error: string | null;
   
   // Actions
+  fetchProducts: () => Promise<void>;
   setFilters: (filters: Partial<ProductFilters>) => void;
   clearFilters: () => void;
   setSort: (field: SortField, direction: SortDirection) => void;
@@ -78,11 +81,48 @@ const imageToBase64 = (imagePath: string): Promise<string> => {
 export const useProductsStore = create<ProductsState>()(
   persist(
     (set, get) => ({
-      products: PRODUCTS,
+      products: [],
       filters: defaultFilters,
       sortField: 'name',
       sortDirection: 'asc',
       imageCache: {},
+      isLoading: false,
+      error: null,
+
+      fetchProducts: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('is_active', true)
+            .order('created_at', { ascending: true });
+
+          if (error) throw error;
+
+          // Transform database products to match Product interface
+          const transformedProducts: Product[] = (data || []).map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            price: parseFloat(p.price),
+            image: p.image || '',
+            category: p.category as 'garrafon' | 'botella' | 'hielo',
+            description: p.description || '',
+            marca: p.marca || '',
+            submarca: p.submarca || undefined,
+            sabor: p.sabor || undefined,
+            presentacion: p.presentacion || '',
+            tamaño: p.tamaño || '',
+            tipoAgua: p.tipoAgua || '',
+            tipoProducto: p.tipoProducto || '',
+          }));
+
+          set({ products: transformedProducts, isLoading: false });
+        } catch (error: any) {
+          console.error('Error fetching products:', error);
+          set({ error: error.message || 'Error al cargar productos', isLoading: false });
+        }
+      },
 
       setFilters: (newFilters) => {
         set((state) => ({
@@ -182,7 +222,12 @@ export const useProductsStore = create<ProductsState>()(
 export const initializeImageCache = async () => {
   const store = useProductsStore.getState();
   
-  for (const product of PRODUCTS) {
+  // Fetch products first if not loaded
+  if (store.products.length === 0) {
+    await store.fetchProducts();
+  }
+  
+  for (const product of store.products) {
     const cached = store.getCachedImage(product.id);
     if (!cached && product.image) {
       try {

@@ -10,7 +10,11 @@ import {
   CheckCircle, 
   AlertCircle,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  ShoppingBag,
+  FileText,
+  CreditCard,
+  Zap
 } from 'lucide-react';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 
@@ -57,6 +61,46 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
       cardGradient: 'from-amber-500/20 to-orange-600/20',
       borderColor: 'border-amber-400/40',
       change: stats.pending > 0 ? 'En proceso' : 'Sin pendientes'
+    }
+  ];
+
+  // Business-specific stat cards
+  const businessStatCards = [
+    {
+      title: 'Órdenes de Envío',
+      value: stats.shippingOrders,
+      icon: Truck,
+      iconGradient: 'from-blue-400 to-indigo-500',
+      cardGradient: 'from-blue-500/20 to-indigo-600/20',
+      borderColor: 'border-blue-400/40',
+      change: `${stats.serviceTypeBreakdown.ftl} FTL, ${stats.serviceTypeBreakdown.ltl} LTL, ${stats.serviceTypeBreakdown.lastMile} Last Mile`
+    },
+    {
+      title: 'Órdenes Ecommerce',
+      value: stats.ecommerceOrders,
+      icon: ShoppingBag,
+      iconGradient: 'from-purple-400 to-pink-500',
+      cardGradient: 'from-purple-500/20 to-pink-600/20',
+      borderColor: 'border-purple-400/40',
+      change: stats.ecommerceOrders > 0 ? 'Productos' : 'Sin pedidos'
+    },
+    {
+      title: 'Cotizaciones',
+      value: stats.quotePending + stats.quoteReady,
+      icon: FileText,
+      iconGradient: 'from-yellow-400 to-orange-500',
+      cardGradient: 'from-yellow-500/20 to-orange-600/20',
+      borderColor: 'border-yellow-400/40',
+      change: `${stats.quotePending} pendientes, ${stats.quoteReady} listas`
+    },
+    {
+      title: 'Pagos',
+      value: stats.paymentConfirmed,
+      icon: CreditCard,
+      iconGradient: 'from-green-400 to-emerald-500',
+      cardGradient: 'from-green-500/20 to-emerald-600/20',
+      borderColor: 'border-green-400/40',
+      change: `${stats.paymentPending} pendientes`
     }
   ];
 
@@ -136,7 +180,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
       </div>
 
       {/* Estadísticas principales - Adaptadas para hero con colores mejorados */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {statCards.map((stat, index) => (
           <div
             key={index}
@@ -157,6 +201,58 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
             <p className="text-xs text-white/85 font-medium relative z-10">{stat.change}</p>
           </div>
         ))}
+      </div>
+
+      {/* Estadísticas de negocio - Desglose por tipo de servicio y prioridad */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-white drop-shadow-md">Desglose de Negocio</h3>
+        
+        {/* Cards de negocio */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {businessStatCards.map((stat, index) => (
+            <div
+              key={index}
+              className={`relative bg-gradient-to-br ${stat.cardGradient} backdrop-blur-xl rounded-xl p-4 border ${stat.borderColor} hover:border-opacity-60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 overflow-hidden group`}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.iconGradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+              
+              <div className="relative z-10 flex items-center justify-between mb-3">
+                <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.iconGradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <stat.icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-white drop-shadow-lg">{stat.value}</p>
+                  <p className="text-xs text-white/95 font-semibold">{stat.title}</p>
+                </div>
+              </div>
+              <p className="text-xs text-white/85 font-medium relative z-10">{stat.change}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Desglose por prioridad (solo si hay órdenes de envío) */}
+        {stats.shippingOrders > 0 && (
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20">
+            <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
+              <Zap className="w-4 h-4 mr-2" />
+              Prioridad de Envíos
+            </h4>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white drop-shadow-lg">{stats.priorityBreakdown.economico}</p>
+                <p className="text-xs text-white/90 font-medium">Económico</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white drop-shadow-lg">{stats.priorityBreakdown.estandar}</p>
+                <p className="text-xs text-white/90 font-medium">Estándar</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white drop-shadow-lg">{stats.priorityBreakdown.urgente}</p>
+                <p className="text-xs text-white/90 font-medium">Urgente</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
     </div>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
 import { useCartStore } from '../store/useCartStore';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from 'lucide-react';
 
 const CartPage: React.FC = () => {
+    const navigate = useNavigate();
     const { items, removeItem, updateQuantity, getTotal } = useCartStore();
     const total = getTotal();
 
@@ -112,7 +113,10 @@ const CartPage: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <button className="w-full py-4 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                <button
+                                    onClick={() => navigate('/checkout')}
+                                    className="w-full py-4 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                                >
                                     Proceder al Pago
                                 </button>
 

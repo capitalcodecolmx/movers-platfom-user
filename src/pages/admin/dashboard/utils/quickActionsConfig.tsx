@@ -6,13 +6,21 @@ import {
   Package, 
   Users, 
   Truck, 
-  DollarSign
+  DollarSign,
+  ShoppingBag
 } from 'lucide-react';
 import type { QuickAction } from '../types';
 
 export const createQuickActions = (
   navigate: (path: string) => void
 ): QuickAction[] => [
+  {
+    title: 'Gestionar Productos',
+    description: 'Administrar catálogo de productos',
+    icon: ShoppingBag,
+    onClick: () => navigate('/admin/products'),
+    color: 'bg-cyan-500 hover:bg-cyan-600',
+  },
   {
     title: 'Gestionar Órdenes',
     description: 'Ver y administrar todas las órdenes',

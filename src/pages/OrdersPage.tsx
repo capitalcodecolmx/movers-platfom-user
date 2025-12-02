@@ -305,6 +305,34 @@ const OrdersPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Order Items (Products) - Ecommerce orders */}
+              {order.order_items && order.order_items.length > 0 && (
+                <div className="mb-4 p-3 bg-cyan-50 rounded-xl border border-cyan-100">
+                  <div className="text-xs font-semibold text-cyan-700 mb-2">Productos en esta orden:</div>
+                  <div className="space-y-2">
+                    {order.order_items.map((item: any) => (
+                      <div key={item.id} className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          {item.product?.image && (
+                            <img
+                              src={item.product.image}
+                              alt={item.product.name}
+                              className="w-8 h-8 object-contain rounded"
+                            />
+                          )}
+                          <span className="text-gray-700">
+                            {item.product?.name || 'Producto'} x {item.quantity}
+                          </span>
+                        </div>
+                        <span className="font-semibold text-gray-900">
+                          ${item.subtotal.toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Prioridad y Costo - Más prominentes */}
               <div className="flex items-center justify-between mb-4">
                 <div className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(order.package_data?.priority)}`}>

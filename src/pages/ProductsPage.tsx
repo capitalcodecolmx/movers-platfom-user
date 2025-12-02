@@ -13,6 +13,9 @@ const ProductsPage: React.FC = () => {
     const sortField = useProductsStore((state) => state.sortField);
     const sortDirection = useProductsStore((state) => state.sortDirection);
     const getFilteredAndSortedProducts = useProductsStore((state) => state.getFilteredAndSortedProducts);
+    const fetchProducts = useProductsStore((state) => state.fetchProducts);
+    const isLoading = useProductsStore((state) => state.isLoading);
+    const error = useProductsStore((state) => state.error);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
     // Compute filtered and sorted products reactively
@@ -21,9 +24,16 @@ const ProductsPage: React.FC = () => {
     }, [filters, sortField, sortDirection, getFilteredAndSortedProducts]);
 
     useEffect(() => {
-        // Initialize image cache on mount
-        initializeImageCache();
-    }, []);
+        // Fetch products from database on mount
+        fetchProducts();
+    }, [fetchProducts]);
+
+    useEffect(() => {
+        // Initialize image cache after products are loaded
+        if (filteredAndSortedProducts.length > 0) {
+            initializeImageCache();
+        }
+    }, [filteredAndSortedProducts.length]);
 
     return (
         <PublicLayout>
@@ -118,7 +128,22 @@ const ProductsPage: React.FC = () => {
                             <ProductSort />
                         </div>
 
-                        {filteredAndSortedProducts.length > 0 ? (
+                        {isLoading ? (
+                            <div className="flex flex-col items-center justify-center py-20">
+                                <div className="w-12 h-12 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                                <p className="text-gray-600">Cargando productos...</p>
+                            </div>
+                        ) : error ? (
+                            <div className="flex flex-col items-center justify-center py-20 bg-red-50 rounded-2xl border border-red-200">
+                                <p className="text-red-600 mb-4">{error}</p>
+                                <button
+                                    onClick={() => fetchProducts()}
+                                    className="px-6 py-2.5 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors"
+                                >
+                                    Reintentar
+                                </button>
+                            </div>
+                        ) : filteredAndSortedProducts.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {filteredAndSortedProducts.map((product, index) => (
                                     <ProductCard key={product.id} product={product} index={index} />

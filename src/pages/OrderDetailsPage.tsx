@@ -282,6 +282,52 @@ const OrderDetailsPage: React.FC = () => {
               </div>
             )}
 
+            {/* Order Items (Products) - Ecommerce orders */}
+            {order.order_items && order.order_items.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Package className="w-5 h-5 mr-2" />
+                  Productos en esta Orden
+                </h2>
+                <div className="space-y-4">
+                  {order.order_items.map((item: any) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-50/50 to-blue-50/50 rounded-xl border border-cyan-100"
+                    >
+                      <div className="flex items-center gap-4">
+                        {item.product?.image && (
+                          <img
+                            src={item.product.image}
+                            alt={item.product.name}
+                            className="w-16 h-16 object-contain rounded-lg bg-white p-2 shadow-sm"
+                          />
+                        )}
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {item.product?.name || 'Producto'}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            Cantidad: {item.quantity} × ${item.unit_price.toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+                          ${item.subtotal.toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
+                    <span className="text-lg font-semibold text-gray-900">Total de productos:</span>
+                    <span className="text-xl font-bold text-gray-900">
+                      ${order.order_items.reduce((sum: number, item: any) => sum + item.subtotal, 0).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Direcciones */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">

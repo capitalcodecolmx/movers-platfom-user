@@ -13,6 +13,11 @@ export interface AdminStats {
   totalUsers: number;
   totalRevenue: number;
   activeVehicles: number;
+  totalProducts: number;
+  activeProducts: number;
+  lowStockProducts: number;
+  totalProductOrders: number;
+  productRevenue: number;
 }
 
 interface AdminState {
@@ -32,6 +37,11 @@ const initialStats: AdminStats = {
   totalUsers: 0,
   totalRevenue: 0,
   activeVehicles: 0,
+  totalProducts: 0,
+  activeProducts: 0,
+  lowStockProducts: 0,
+  totalProductOrders: 0,
+  productRevenue: 0,
 };
 
 // Cache duration: 30 seconds
@@ -56,24 +66,43 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
     try {
       // Fetch all data in parallel for better performance
-      const [ordersResult, usersResult, vehiclesResult] = await Promise.all([
+      const [ordersResult, usersResult, vehiclesResult, productsResult, orderItemsResult] = await Promise.all([
         supabase.from('orders').select('*'),
         supabase.from('users').select('id'),
         supabase.from('vehicles').select('id').eq('is_active', true),
+        supabase.from('products').select('*'),
+        supabase.from('order_items').select('*'),
       ]);
 
       if (ordersResult.error) throw ordersResult.error;
       if (usersResult.error) throw usersResult.error;
       if (vehiclesResult.error) throw vehiclesResult.error;
+      if (productsResult.error) throw productsResult.error;
+      if (orderItemsResult.error) throw orderItemsResult.error;
 
       const ordersList = ordersResult.data || [];
       const usersList = usersResult.data || [];
       const vehiclesList = vehiclesResult.data || [];
+      const productsList = productsResult.data || [];
+      const orderItemsList = orderItemsResult.data || [];
 
-      // Calculate revenue
+      // Calculate revenue (shipping orders)
       const totalRevenue = ordersList.reduce((sum, order) => {
         return sum + (Number(order.final_cost) || Number(order.estimated_cost) || 0);
       }, 0);
+
+      // Calculate product revenue (from order_items)
+      const productRevenue = orderItemsList.reduce((sum, item) => {
+        return sum + (Number(item.subtotal) || 0);
+      }, 0);
+
+      // Get orders that have order_items (ecommerce orders)
+      const orderIdsWithItems = new Set(orderItemsList.map(item => item.order_id));
+      const productOrders = ordersList.filter(order => orderIdsWithItems.has(order.id));
+
+      // Calculate product statistics
+      const activeProducts = productsList.filter(p => p.is_active).length;
+      const lowStockProducts = productsList.filter(p => p.is_active && (p.stock_quantity || 0) < 10).length;
 
       // Calculate order statistics
       const stats: AdminStats = {
@@ -88,6 +117,11 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         totalUsers: usersList.length,
         totalRevenue,
         activeVehicles: vehiclesList.length,
+        totalProducts: productsList.length,
+        activeProducts,
+        lowStockProducts,
+        totalProductOrders: productOrders.length,
+        productRevenue,
       };
 
       set({
