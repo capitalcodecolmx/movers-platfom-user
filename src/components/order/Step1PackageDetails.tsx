@@ -3,11 +3,11 @@
 // =====================================================
 
 import React, { useState, useEffect } from 'react';
-import { 
-  ArrowRight, 
+import {
+  ArrowRight,
   Check
 } from 'lucide-react';
-import { 
+import {
   MdCheckCircle,
   MdLocalShipping,
   MdInventory,
@@ -27,25 +27,18 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 }) => {
   const [serviceTypes] = useState([
     {
-      id: 'ftl',
-      name: 'Carga Completa (FTL)',
+      id: 'delivery',
+      name: 'Pedido a Domicilio',
       icon: MdLocalShipping,
-      description: 'Ideal para envíos que llenan una unidad completa (camión o camioneta).',
-      example: 'Ejemplo: distribución de productos por pallets o grandes volúmenes.'
+      description: 'Recibimos tu pedido y lo llevamos hasta la puerta de tu casa.',
+      example: 'Ideal para hogares y oficinas.'
     },
     {
-      id: 'ltl',
-      name: 'Carga Parcial (LTL)',
-      icon: MdInventory,
-      description: 'Perfecto para envíos menores a una unidad completa (menos de 12 pallets o cajas sueltas).',
-      example: 'Ejemplo: pedidos fraccionados o entregas a varios puntos.'
-    },
-    {
-      id: 'last-mile',
-      name: 'Última Milla / Entregas Urbanas',
+      id: 'pickup',
+      name: 'Recoge Agua Centro',
       icon: MdLocationCity,
-      description: 'Ideal para e-commerce, restaurantes, farmacias o tiendas de conveniencia.',
-      example: 'Servicio con motocicleta, small van o unidad ligera.'
+      description: 'Realiza tu pedido y pasa a recogerlo en nuestro centro de distribución.',
+      example: 'Ahorra tiempo y asegura tu pedido.'
     }
   ]);
 
@@ -88,46 +81,41 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 
         <div className="space-y-6 sm:space-y-8">
           {/* Tipos de servicio - Estilo Apple con React Icons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {serviceTypes.map((service) => {
               const IconComponent = service.icon;
               return (
                 <button
                   key={service.id}
                   onClick={() => handleServiceSelect(service.id)}
-                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${
-                    data.serviceType === service.id
-                      ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
-                      : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
-                  }`}
+                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${data.serviceType === service.id
+                    ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
+                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
+                    }`}
                 >
                   {/* Icono con gradiente */}
-                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${
-                    data.serviceType === service.id 
-                      ? 'text-white' 
-                      : `text-gray-600 group-hover:scale-110`
-                  }`}>
+                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${data.serviceType === service.id
+                    ? 'text-white'
+                    : `text-gray-600 group-hover:scale-110`
+                    }`}>
                     <IconComponent className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" />
                   </div>
-                  
+
                   {/* Título */}
-                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${
-                    data.serviceType === service.id ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${data.serviceType === service.id ? 'text-white' : 'text-gray-900'
+                    }`}>
                     {service.name}
                   </h3>
-                  
+
                   {/* Descripción */}
-                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${
-                    data.serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
+                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${data.serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
                     {service.description}
                   </p>
-                  
+
                   {/* Ejemplo */}
-                  <p className={`text-xs italic transition-colors duration-300 ${
-                    data.serviceType === service.id ? 'text-gray-400' : 'text-gray-500'
-                  }`}>
+                  <p className={`text-xs italic transition-colors duration-300 ${data.serviceType === service.id ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
                     {service.example}
                   </p>
 
