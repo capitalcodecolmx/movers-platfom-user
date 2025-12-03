@@ -30,37 +30,37 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
       title: 'Envíos Activos',
       value: stats.activeOrders,
       icon: Package,
-      iconGradient: 'from-blue-400 to-blue-500',
-      cardGradient: 'from-blue-500/15 to-blue-600/15',
-      borderColor: 'border-blue-300/30',
-      change: stats.activeOrders > 0 ? 'En progreso' : 'Sin envíos activos'
+      iconBg: 'bg-blue-500',
+      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      borderColor: 'border-blue-400/20',
+      change: stats.activeOrders > 0 ? 'Sin envíos activos' : 'Sin envíos activos'
     },
     {
       title: 'En Tránsito',
       value: stats.inTransit,
       icon: Truck,
-      iconGradient: 'from-sky-400 to-sky-500',
-      cardGradient: 'from-sky-500/15 to-sky-600/15',
-      borderColor: 'border-sky-300/30',
-      change: stats.inTransit > 0 ? 'Llegando pronto' : 'Ninguno en tránsito'
+      iconBg: 'bg-cyan-500',
+      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      borderColor: 'border-blue-400/20',
+      change: stats.inTransit > 0 ? 'Ninguno en tránsito' : 'Ninguno en tránsito'
     },
     {
       title: 'Entregados',
       value: stats.delivered,
       icon: CheckCircle,
-      iconGradient: 'from-emerald-400 to-emerald-500',
-      cardGradient: 'from-emerald-500/15 to-emerald-600/15',
-      borderColor: 'border-emerald-300/30',
-      change: `${stats.delivered} completados`
+      iconBg: 'bg-green-500',
+      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      borderColor: 'border-blue-400/20',
+      change: `0 completados`
     },
     {
       title: 'Pendientes',
       value: stats.pending,
       icon: Clock,
-      iconGradient: 'from-orange-400 to-orange-500',
-      cardGradient: 'from-orange-500/15 to-orange-600/15',
-      borderColor: 'border-orange-300/30',
-      change: stats.pending > 0 ? 'En proceso' : 'Sin pendientes'
+      iconBg: 'bg-orange-500',
+      cardGradient: 'from-blue-500/10 to-purple-600/10',
+      borderColor: 'border-blue-400/20',
+      change: stats.pending > 0 ? 'Sin pendientes' : 'Sin pendientes'
     }
   ];
 
@@ -184,21 +184,18 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
         {statCards.map((stat, index) => (
           <div
             key={index}
-            className={`relative bg-gradient-to-br ${stat.cardGradient} backdrop-blur-xl rounded-xl p-4 border ${stat.borderColor} hover:border-opacity-60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 overflow-hidden group`}
+            className={`relative bg-gradient-to-br ${stat.cardGradient} backdrop-blur-xl rounded-2xl p-5 border ${stat.borderColor} hover:border-opacity-60 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105`}
           >
-            {/* Efecto de brillo en hover */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${stat.iconGradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-
             <div className="relative z-10 flex items-center justify-between mb-3">
-              <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.iconGradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                <stat.icon className="w-5 h-5 text-white" />
+              <div className={`p-3 rounded-2xl ${stat.iconBg} shadow-md`}>
+                <stat.icon className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-white drop-shadow-lg">{stat.value}</p>
-                <p className="text-xs text-white/95 font-semibold">{stat.title}</p>
+                <p className="text-3xl font-bold text-white drop-shadow-lg">{stat.value}</p>
+                <p className="text-xs text-white/90 font-medium mt-1">{stat.title}</p>
               </div>
             </div>
-            <p className="text-xs text-white/85 font-medium relative z-10">{stat.change}</p>
+            <p className="text-xs text-white/75 font-medium relative z-10">{stat.change}</p>
           </div>
         ))}
       </div>
