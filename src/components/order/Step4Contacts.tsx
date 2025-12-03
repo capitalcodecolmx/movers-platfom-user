@@ -271,7 +271,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
               <div className="inline-flex items-center space-x-4 text-sm text-gray-500">
                 <span>Servicio: {data.serviceType === 'ftl' ? 'Carga Completa' : data.serviceType === 'ltl' ? 'Carga Parcial' : 'Última Milla'}</span>
                 <span>•</span>
-                <span>Unidad: {data.selectedVehicleType.name}</span>
+                <span>Producto: {data.selectedProduct ? data.selectedProduct.name : data.selectedVehicleType.name}</span>
                 <span>•</span>
                 <span>Ruta: {data.pickupAddress?.city} → {data.deliveryAddress?.city}</span>
               </div>
@@ -352,8 +352,8 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                 key={priority.id}
                 onClick={() => handlePrioritySelect(priority.id)}
                 className={`relative p-8 rounded-2xl transition-all duration-300 text-left group border-2 ${selectedPriority === priority.id
-                    ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
-                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
+                  ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
+                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
                   } ${priority.recommended ? 'ring-2 ring-gray-300' : ''}`}
               >
                 {/* Badge recomendado */}
@@ -367,8 +367,8 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
 
                 {/* Icono */}
                 <div className={`mb-6 transition-all duration-300 ${selectedPriority === priority.id
-                    ? 'text-white'
-                    : 'text-gray-500 group-hover:text-gray-700 group-hover:scale-110'
+                  ? 'text-white'
+                  : 'text-gray-500 group-hover:text-gray-700 group-hover:scale-110'
                   }`}>
                   <priority.icon className="w-12 h-12" />
                 </div>

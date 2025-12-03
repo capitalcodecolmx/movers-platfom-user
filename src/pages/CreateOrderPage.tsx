@@ -11,7 +11,7 @@ import PaymentModal from '../components/PaymentModal';
 
 // Componentes de los pasos
 import Step1PackageDetails from '../components/order/Step1PackageDetails';
-import Step2VehicleSelection from '../components/order/Step2VehicleSelection';
+import Step2ProductSelection from '../components/order/Step2ProductSelection';
 import Step3SimpleRoute from '../components/order/Step3SimpleRoute';
 import Step4Contacts from '../components/order/Step4Contacts';
 
@@ -31,8 +31,9 @@ interface OrderData {
   fragile: boolean;
   urgent: boolean;
 
-  // Paso 2: Vehículo seleccionado
-  selectedVehicle: any;
+  // Paso 2: Producto seleccionado
+  selectedProduct?: any;
+  selectedVehicle: any; // Mantener por compatibilidad
   vehicleType: string;
 
   // Paso 3: Direcciones y mapa
@@ -72,6 +73,7 @@ const CreateOrderPage: React.FC = () => {
     insuranceRequired: false,
     fragile: false,
     urgent: false,
+    selectedProduct: null,
     selectedVehicle: null,
     vehicleType: '',
     pickupAddress: null,
@@ -99,9 +101,9 @@ const CreateOrderPage: React.FC = () => {
     },
     {
       number: 2,
-      title: 'Tipo de Unidad',
-      description: 'Selecciona la unidad adecuada',
-      icon: Truck,
+      title: 'Productos',
+      description: 'Selecciona tus productos',
+      icon: Package,
       color: 'bg-blue-500',
     },
     {
@@ -188,7 +190,7 @@ const CreateOrderPage: React.FC = () => {
         );
       case 2:
         return (
-          <Step2VehicleSelection
+          <Step2ProductSelection
             data={orderData}
             onUpdate={updateOrderData}
             onNext={nextStep}

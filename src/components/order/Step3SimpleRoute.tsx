@@ -4,8 +4,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { MapPin, ArrowLeft, ArrowRight, Package } from 'lucide-react';
-import { 
-  MdLocationOn, 
+import {
+  MdLocationOn,
   MdLocalShipping,
   MdCheckCircle,
   MdPlace
@@ -69,7 +69,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   const [pickupCity, setPickupCity] = useState('');
   const [pickupState, setPickupState] = useState('');
   const [pickupPostalCode, setPickupPostalCode] = useState('');
-  
+
   // Estados para campos separados de entrega
   const [deliveryStreet, setDeliveryStreet] = useState('');
   const [deliveryNumber, setDeliveryNumber] = useState('');
@@ -77,7 +77,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   const [deliveryCity, setDeliveryCity] = useState('');
   const [deliveryState, setDeliveryState] = useState('');
   const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
-  
+
   // Estados para validación
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -174,7 +174,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
               <div className="inline-flex items-center space-x-4 text-sm text-gray-500">
                 <span>Servicio: {data.serviceType === 'ftl' ? 'Carga Completa' : data.serviceType === 'ltl' ? 'Carga Parcial' : 'Última Milla'}</span>
                 <span>•</span>
-                <span>Unidad: {data.selectedVehicleType.name}</span>
+                <span>Producto: {data.selectedProduct ? data.selectedProduct.name : data.selectedVehicleType.name}</span>
               </div>
             </div>
           )}
@@ -189,7 +189,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                 Recolección
               </span>
             </h3>
-              
+
             <div className="space-y-4">
               {/* Ejemplo de dirección */}
               <div className="text-sm text-gray-500 mb-4 italic">
@@ -207,7 +207,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={pickupStreet}
                     onChange={(e) => setPickupStreet(e.target.value)}
                     placeholder="Ej: Av. Revolución"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.pickupStreet && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupStreet}</p>
@@ -224,7 +224,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={pickupNumber}
                     onChange={(e) => setPickupNumber(e.target.value)}
                     placeholder="Ej: 1203"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.pickupNumber && (
                     <p className="text-red-500 text-sm mt-1">{errors.pickupNumber}</p>
@@ -241,7 +241,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={pickupNeighborhood}
                     onChange={(e) => setPickupNeighborhood(e.target.value)}
                     placeholder="Ej: Col. Centro"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
 
@@ -307,7 +307,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                 Entrega
               </span>
             </h3>
-              
+
             <div className="space-y-4">
               {/* Ejemplo de dirección */}
               <div className="text-sm text-gray-500 mb-4 italic">
@@ -325,7 +325,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={deliveryStreet}
                     onChange={(e) => setDeliveryStreet(e.target.value)}
                     placeholder="Ej: Blvd. Díaz Ordaz"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.deliveryStreet && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryStreet}</p>
@@ -342,7 +342,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={deliveryNumber}
                     onChange={(e) => setDeliveryNumber(e.target.value)}
                     placeholder="Ej: 4500"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.deliveryNumber && (
                     <p className="text-red-500 text-sm mt-1">{errors.deliveryNumber}</p>
@@ -359,7 +359,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                     value={deliveryNeighborhood}
                     onChange={(e) => setDeliveryNeighborhood(e.target.value)}
                     placeholder="Ej: Valle Oriente"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
 
@@ -416,20 +416,20 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
           </div>
 
           {/* Indicador de progreso */}
-          {pickupStreet && pickupNumber && pickupCity && pickupState && 
-           deliveryStreet && deliveryNumber && deliveryCity && deliveryState && (
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm">
-              <div className="flex items-center text-gray-700">
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center mr-4 shadow-sm">
-                  <MdCheckCircle className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-800">¡Direcciones completas!</p>
-                  <p className="text-sm text-gray-600">Listo para continuar al siguiente paso</p>
+          {pickupStreet && pickupNumber && pickupCity && pickupState &&
+            deliveryStreet && deliveryNumber && deliveryCity && deliveryState && (
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm">
+                <div className="flex items-center text-gray-700">
+                  <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center mr-4 shadow-sm">
+                    <MdCheckCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">¡Direcciones completas!</p>
+                    <p className="text-sm text-gray-600">Listo para continuar al siguiente paso</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         {/* Botones de navegación - Estilo Apple */}
@@ -443,8 +443,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
           <button
             onClick={handleNext}
-            disabled={!pickupStreet || !pickupNumber || !pickupCity || !pickupState || 
-                     !deliveryStreet || !deliveryNumber || !deliveryCity || !deliveryState}
+            disabled={!pickupStreet || !pickupNumber || !pickupCity || !pickupState ||
+              !deliveryStreet || !deliveryNumber || !deliveryCity || !deliveryState}
             className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
           >
             Continuar
