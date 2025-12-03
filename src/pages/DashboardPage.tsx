@@ -78,7 +78,7 @@ const DashboardPage: React.FC = () => {
       {/* Versión desktop - Visible solo en pantallas grandes */}
       <div className="hidden md:block">
         {/* Hero Section con fondo de imagen */}
-        <div 
+        <div
           className="relative h-[500px] bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/back.png)' }}
         >
@@ -87,7 +87,7 @@ const DashboardPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
           {/* Efecto de brillo sutil */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
-          
+
           {/* Contenido del hero */}
           <div className="relative z-10 h-full flex items-start pt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -107,45 +107,6 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-          {/* Acciones principales */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-8">Acciones principales</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {mainActions.map((action) => (
-                <button
-                  key={action.id}
-                  onClick={action.onClick}
-                  className="group relative rounded-3xl p-8 shadow-lg border border-cyan-100 hover:shadow-xl hover:border-cyan-200 transition-all duration-300 text-left hover:-translate-y-1 overflow-hidden"
-                  style={{
-                    backgroundImage: `url(${action.backgroundImage})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
-                  }}
-                >
-                  {/* Overlay negro para mejorar legibilidad */}
-                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-300"></div>
-                  
-                  {/* Contenido */}
-                  <div className="relative z-10">
-                    <div className="flex items-center mb-6">
-                      <div className={`p-4 rounded-2xl bg-white/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-300`}>
-                        <action.icon className={`w-8 h-8 text-white`} />
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-white/90 transition-colors">
-                      {action.title}
-                    </h3>
-                    <p className="text-white/80 group-hover:text-white/90 transition-colors leading-relaxed">
-                      {action.description}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Órdenes recientes con datos reales */}
           <RecentOrders orders={stats.recentOrders} isLoading={isLoading} />
         </div>
