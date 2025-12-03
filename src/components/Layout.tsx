@@ -32,8 +32,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: MdDashboard },
-    { name: 'Mis Órdenes', href: '/orders', icon: MdInventory },
-    { name: 'Crear Orden', href: '/orders/create', icon: MdAdd },
+    { name: 'Mis Pedidos', href: '/orders', icon: MdInventory },
+    { name: 'Hacer Pedido', href: '/orders/create', icon: MdAdd },
     { name: 'Seguimiento', href: '/tracking', icon: MdSearch },
   ];
 
@@ -57,10 +57,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Header con branding */}
           <div className="flex h-16 items-center justify-between px-6 bg-gradient-to-r from-cyan-600 to-blue-600">
             <Link to="/dashboard" className="flex items-center">
-              <img 
-                src={COMPANY_INFO.logo} 
-                alt={COMPANY_INFO.name} 
-                className="h-10 w-auto brightness-0 invert drop-shadow-sm" 
+              <img
+                src={COMPANY_INFO.logo}
+                alt={COMPANY_INFO.name}
+                className="h-10 w-auto brightness-0 invert drop-shadow-sm"
               />
             </Link>
             <button
@@ -117,10 +117,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Header con branding */}
           <div className="flex h-16 items-center justify-between px-6 bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-600 shadow-md">
             <Link to="/dashboard" className="flex items-center space-x-2 group">
-              <img 
-                src={COMPANY_INFO.logo} 
-                alt={COMPANY_INFO.name} 
-                className="h-10 w-auto brightness-0 invert drop-shadow-sm group-hover:scale-105 transition-transform duration-200" 
+              <img
+                src={COMPANY_INFO.logo}
+                alt={COMPANY_INFO.name}
+                className="h-10 w-auto brightness-0 invert drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
               />
               <span className="text-white font-semibold text-sm hidden xl:block opacity-90">
                 {COMPANY_INFO.name.split(' ')[0]}
@@ -188,10 +188,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* Logo en mobile/tablet cuando no es dashboard */}
               {location.pathname !== '/dashboard' && (
                 <Link to="/dashboard" className="lg:hidden">
-                  <img 
-                    src={COMPANY_INFO.logo} 
-                    alt={COMPANY_INFO.name} 
-                    className="h-8 w-auto" 
+                  <img
+                    src={COMPANY_INFO.logo}
+                    alt={COMPANY_INFO.name}
+                    className="h-8 w-auto"
                   />
                 </Link>
               )}

@@ -29,7 +29,7 @@ const DashboardPage: React.FC = () => {
   const mainActions = [
     {
       id: 'crear-orden',
-      title: 'Crear Orden',
+      title: 'Hacer Pedido',
       description: 'Solicita un nuevo envío de paquete',
       icon: Plus,
       color: 'bg-gray-200',
@@ -40,7 +40,7 @@ const DashboardPage: React.FC = () => {
     },
     {
       id: 'mis-ordenes',
-      title: 'Mis Órdenes',
+      title: 'Mis Pedidos',
       description: 'Gestiona y revisa todos tus envíos',
       icon: Package,
       color: 'bg-gray-200',

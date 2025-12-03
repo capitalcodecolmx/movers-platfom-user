@@ -13,7 +13,7 @@ const CheckOrders: React.FC = () => {
   const checkOrders = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Obtener todas las órdenes (sin filtro de usuario para debugging)
       const { data, error } = await supabase
@@ -41,7 +41,7 @@ const CheckOrders: React.FC = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       console.log('Current user:', user);
-      
+
       if (user) {
         // Obtener órdenes del usuario actual
         const { data, error } = await supabase
@@ -72,7 +72,7 @@ const CheckOrders: React.FC = () => {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Verificación de Órdenes</h3>
-      
+
       <div className="space-y-4">
         <div className="flex space-x-4">
           <button
@@ -82,13 +82,13 @@ const CheckOrders: React.FC = () => {
           >
             Ver Todas las Órdenes
           </button>
-          
+
           <button
             onClick={checkUser}
             disabled={isLoading}
             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
           >
-            Ver Mis Órdenes
+            Ver Mis Pedidos
           </button>
         </div>
 
@@ -120,7 +120,7 @@ const CheckOrders: React.FC = () => {
         {orders.length === 0 && !isLoading && (
           <div className="text-center py-8 text-gray-500">
             <p>No se encontraron órdenes en la base de datos.</p>
-            <p className="text-sm mt-2">Usa el botón "Crear Orden de Prueba" para agregar una orden.</p>
+            <p className="text-sm mt-2">Usa el botón "Hacer Pedido de Prueba" para agregar una orden.</p>
           </div>
         )}
       </div>

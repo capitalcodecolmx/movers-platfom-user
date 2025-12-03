@@ -4,10 +4,10 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Package, 
-  Truck, 
-  Clock, 
+import {
+  Package,
+  Truck,
+  Clock,
   CheckCircle,
   AlertCircle,
   ArrowRight,
@@ -105,7 +105,7 @@ const OrderSummaryCards: React.FC<OrderSummaryCardsProps> = ({ orders, isLoading
   if (isLoading) {
     return (
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-gray-900">Órdenes recientes</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Pedidos recientes</h2>
         <ScrollIndicator className="pb-2" showArrows={false}>
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex-shrink-0 w-80 bg-gray-100 rounded-xl p-4 animate-pulse">
@@ -126,13 +126,13 @@ const OrderSummaryCards: React.FC<OrderSummaryCardsProps> = ({ orders, isLoading
     return (
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center">
         <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No tienes órdenes</h3>
-        <p className="text-gray-500 text-sm mb-4">Crea tu primera orden para comenzar</p>
-        <button 
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No tienes pedidos</h3>
+        <p className="text-gray-500 text-sm mb-4">Haz tu primer pedido para comenzar</p>
+        <button
           onClick={() => navigate('/orders/create')}
           className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition-colors"
         >
-          Crear Orden
+          Hacer Pedido
         </button>
       </div>
     );
@@ -141,8 +141,8 @@ const OrderSummaryCards: React.FC<OrderSummaryCardsProps> = ({ orders, isLoading
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Órdenes recientes</h2>
-        <button 
+        <h2 className="text-lg font-semibold text-gray-900">Pedidos recientes</h2>
+        <button
           onClick={() => navigate('/orders')}
           className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
         >
@@ -150,7 +150,7 @@ const OrderSummaryCards: React.FC<OrderSummaryCardsProps> = ({ orders, isLoading
           <ArrowRight className="w-4 h-4 ml-1" />
         </button>
       </div>
-      
+
       <ScrollIndicator className="pb-2" showArrows={true}>
         {orders.slice(0, 5).map((order) => {
           const statusInfo = getStatusInfo(order.status);

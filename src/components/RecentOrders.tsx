@@ -72,12 +72,12 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders, isLoading = false }
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 1) return 'Ayer';
     if (diffDays < 7) return `Hace ${diffDays} días`;
-    return date.toLocaleDateString('es-MX', { 
-      day: 'numeric', 
-      month: 'short' 
+    return date.toLocaleDateString('es-MX', {
+      day: 'numeric',
+      month: 'short'
     });
   };
 
@@ -85,7 +85,7 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders, isLoading = false }
     return (
       <div className="bg-white rounded-2xl shadow-lg border border-cyan-100">
         <div className="p-6 border-b border-cyan-100">
-          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Órdenes recientes</h2>
+          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Pedidos recientes</h2>
         </div>
         <div className="p-6">
           <div className="space-y-4">
@@ -116,20 +116,20 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders, isLoading = false }
     return (
       <div className="bg-white rounded-2xl shadow-lg border border-cyan-100">
         <div className="p-6 border-b border-cyan-100">
-          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Órdenes recientes</h2>
+          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Pedidos recientes</h2>
         </div>
         <div className="p-6">
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Package className="w-8 h-8 text-cyan-600" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tienes órdenes aún</h3>
-            <p className="text-gray-600 mb-6">Crea tu primera orden para comenzar a enviar paquetes</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No tienes pedidos aún</h3>
+            <p className="text-gray-600 mb-6">Haz tu primer pedido para comenzar a enviar paquetes</p>
             <button
               onClick={() => navigate('/orders/create')}
               className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:from-cyan-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
             >
-              Crear primera orden
+              Hacer primer pedido
             </button>
           </div>
         </div>
@@ -141,7 +141,7 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders, isLoading = false }
     <div className="bg-white rounded-2xl shadow-lg border border-cyan-100">
       <div className="p-6 border-b border-cyan-100">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Órdenes recientes</h2>
+          <h2 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Pedidos recientes</h2>
           <button
             onClick={() => navigate('/orders')}
             className="text-cyan-600 hover:text-cyan-700 font-medium transition-colors text-sm"

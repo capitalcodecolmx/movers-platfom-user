@@ -55,16 +55,16 @@ const TestOrders: React.FC = () => {
       };
 
       await createOrder(testOrderData);
-      alert('Orden de prueba creada exitosamente');
+      alert('Pedido de prueba creado exitosamente');
     } catch (error: any) {
-      alert(`Error al crear orden de prueba: ${error.message}`);
+      alert(`Error al crear pedido de prueba: ${error.message}`);
     }
   };
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Prueba de Órdenes</h3>
-      
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Prueba de Pedidos</h3>
+
       <div className="space-y-4">
         <div className="flex space-x-4">
           <button
@@ -72,27 +72,27 @@ const TestOrders: React.FC = () => {
             disabled={isLoading}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
           >
-            Crear Orden de Prueba
+            Hacer Pedido de Prueba
           </button>
-          
+
           <button
             onClick={fetchOrders}
             disabled={isLoading}
             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
           >
-            Recargar Órdenes
+            Recargar Pedidos
           </button>
         </div>
 
         <div className="text-sm text-gray-600">
           <p><strong>Estado:</strong> {isLoading ? 'Cargando...' : 'Listo'}</p>
-          <p><strong>Órdenes encontradas:</strong> {orders.length}</p>
+          <p><strong>Pedidos encontrados:</strong> {orders.length}</p>
           {error && <p className="text-red-600"><strong>Error:</strong> {error}</p>}
         </div>
 
         {orders.length > 0 && (
           <div className="mt-4">
-            <h4 className="font-medium text-gray-900 mb-2">Órdenes en la base de datos:</h4>
+            <h4 className="font-medium text-gray-900 mb-2">Pedidos en la base de datos:</h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {orders.map((order) => (
                 <div key={order.id} className="p-2 bg-gray-50 rounded text-xs">

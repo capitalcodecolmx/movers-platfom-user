@@ -4,11 +4,11 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Package, 
-  Truck, 
-  Clock, 
-  CheckCircle, 
+import {
+  Package,
+  Truck,
+  Clock,
+  CheckCircle,
   Plus,
   Search,
   ArrowRight,
@@ -75,7 +75,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
   const actionCards = [
     {
       id: 'crear-orden',
-      title: 'Crear Orden',
+      title: 'Hacer Pedido',
       subtitle: 'Nuevo envío',
       icon: Plus,
       color: 'bg-gray-800',
@@ -84,7 +84,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
     },
     {
       id: 'mis-ordenes',
-      title: 'Mis Órdenes',
+      title: 'Mis Pedidos',
       subtitle: `${stats.totalOrders} total`,
       icon: Package,
       color: 'bg-blue-500',
@@ -119,7 +119,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
           <div className="h-8 bg-gray-200 rounded w-48 mb-2"></div>
           <div className="h-4 bg-gray-200 rounded w-32"></div>
         </div>
-        
+
         {/* Stats skeleton */}
         <div className="flex space-x-4 overflow-x-auto pb-2">
           {[1, 2, 3, 4].map((i) => (
@@ -129,7 +129,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
             </div>
           ))}
         </div>
-        
+
         {/* Actions skeleton */}
         <div className="space-y-3">
           <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
@@ -149,13 +149,13 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section con fondo de imagen - Adaptado para móvil */}
-      <div 
+      <div
         className="relative min-h-screen bg-cover bg-center bg-no-repeat hero-mobile"
         style={{ backgroundImage: 'url(/back.png)' }}
       >
         {/* Overlay con gradiente de marca para mejorar legibilidad */}
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/80 via-blue-900/75 to-indigo-900/80"></div>
-        
+
         {/* Overlay adicional para contraste */}
         <div className="absolute inset-0 bg-black/30"></div>
 
@@ -215,7 +215,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
               {/* Acciones principales - Integradas en el hero */}
               <div className="space-y-3">
                 <h2 className="text-lg font-semibold text-white drop-shadow-md">Acciones principales</h2>
-                
+
                 <ScrollIndicator className="pb-2" showArrows={true}>
                   {actionCards.filter(action => action.id !== 'estadisticas').map((action) => (
                     <button
@@ -246,16 +246,16 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
               <Zap className="w-4 h-4 mr-2 text-cyan-600" />
               Desglose de Negocio
             </h3>
-            
+
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
                 <div className="flex items-center justify-between mb-1">
                   <Truck className="w-4 h-4 text-blue-600" />
                   <span className="text-lg font-bold text-blue-600">{stats.shippingOrders}</span>
                 </div>
-                <p className="text-xs text-gray-600">Órdenes Envío</p>
+                <p className="text-xs text-gray-600">Pedidos Envío</p>
               </div>
-              
+
               <div className="bg-purple-50 rounded-lg p-3 border border-purple-100">
                 <div className="flex items-center justify-between mb-1">
                   <ShoppingBag className="w-4 h-4 text-purple-600" />
@@ -320,7 +320,7 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ user }) => {
                       <p className="text-xs text-yellow-600">Cotizaciones</p>
                     </div>
                   )}
-                  
+
                   {stats.paymentPending > 0 && (
                     <div className="bg-orange-50 rounded-lg p-2 border border-orange-100">
                       <div className="flex items-center justify-between mb-1">

@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Clock, DollarSign, Zap, ArrowLeft, Check, User, Phone, Mail, Calendar, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { 
+import {
   MdAccessTime,
   MdAttachMoney,
   MdFlashOn,
@@ -72,7 +72,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   // Estados para cotización automática
   const [isCalculatingPrice, setIsCalculatingPrice] = useState(false);
   const [pricingResult, setPricingResult] = useState<any>(null);
@@ -98,7 +98,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
     }
 
     setIsCalculatingPrice(true);
-    
+
     try {
       console.log('💰 Llamando a pricingService.calculatePrice con:', {
         pickupCity: data.pickupAddress.city,
@@ -122,7 +122,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
 
       setPricingResult(result);
       setIsRouteAvailable(result.found);
-      
+
       if (result.found && result.finalPrice !== undefined) {
         console.log('✅ Precio calculado exitosamente:', result.finalPrice);
         setEstimatedCost(result.finalPrice);
@@ -166,7 +166,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
       pickupDate,
       pickupTime
     });
-    
+
     const newErrors: Record<string, string> = {};
 
     if (!selectedPriority) {
@@ -199,7 +199,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
 
     console.log('Step4 - Validation errors:', newErrors);
     console.log('Step4 - Validation passed:', Object.keys(newErrors).length === 0);
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -219,7 +219,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
     console.log('Step4 - recipientInfo:', recipientInfo);
     console.log('Step4 - pickupDate:', pickupDate);
     console.log('Step4 - pickupTime:', pickupTime);
-    
+
     if (validateStep()) {
       const updateData = {
         priority: selectedPriority,
@@ -234,12 +234,12 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
         pricingResult: pricingResult,
         quoteStatus: isRouteAvailable ? 'auto_ready' : 'manual_pending'
       };
-      
+
       console.log('Step4 - Sending data:', updateData);
-      
+
       // Actualizar los datos primero
       onUpdate(updateData);
-      
+
       // Esperar un momento para que se complete la actualización del estado
       // y luego llamar onSubmit con los datos completos
       setTimeout(() => {
@@ -297,7 +297,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                   )}
                 </div>
               </div>
-              
+
               {isRouteAvailable ? (
                 <div className="space-y-3">
                   <p className="text-sm text-gray-600">
@@ -351,11 +351,10 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
               <button
                 key={priority.id}
                 onClick={() => handlePrioritySelect(priority.id)}
-                className={`relative p-8 rounded-2xl transition-all duration-300 text-left group border-2 ${
-                  selectedPriority === priority.id
+                className={`relative p-8 rounded-2xl transition-all duration-300 text-left group border-2 ${selectedPriority === priority.id
                     ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
                     : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
-                } ${priority.recommended ? 'ring-2 ring-gray-300' : ''}`}
+                  } ${priority.recommended ? 'ring-2 ring-gray-300' : ''}`}
               >
                 {/* Badge recomendado */}
                 {priority.recommended && (
@@ -367,26 +366,23 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                 )}
 
                 {/* Icono */}
-                <div className={`mb-6 transition-all duration-300 ${
-                  selectedPriority === priority.id 
+                <div className={`mb-6 transition-all duration-300 ${selectedPriority === priority.id
                     ? 'text-white'
                     : 'text-gray-500 group-hover:text-gray-700 group-hover:scale-110'
-                }`}>
+                  }`}>
                   <priority.icon className="w-12 h-12" />
                 </div>
 
-                
+
                 {/* Título */}
-                <h3 className={`font-semibold text-lg mb-3 transition-colors duration-300 ${
-                  selectedPriority === priority.id ? 'text-white' : 'text-gray-900'
-                }`}>
+                <h3 className={`font-semibold text-lg mb-3 transition-colors duration-300 ${selectedPriority === priority.id ? 'text-white' : 'text-gray-900'
+                  }`}>
                   {priority.name}
                 </h3>
-                
+
                 {/* Descripción */}
-                <p className={`text-sm leading-relaxed transition-colors duration-300 ${
-                  selectedPriority === priority.id ? 'text-gray-300' : 'text-gray-600'
-                }`}>
+                <p className={`text-sm leading-relaxed transition-colors duration-300 ${selectedPriority === priority.id ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
                   {priority.description}
                 </p>
 
@@ -433,7 +429,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                 </div>
                 Quien Entrega
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -444,7 +440,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={senderInfo.name}
                     onChange={(e) => setSenderInfo({ ...senderInfo, name: e.target.value })}
                     placeholder="Nombre completo del remitente"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.senderName && (
                     <p className="text-red-500 text-sm mt-1">{errors.senderName}</p>
@@ -460,7 +456,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={senderInfo.phone}
                     onChange={(e) => setSenderInfo({ ...senderInfo, phone: e.target.value })}
                     placeholder="+52 55 1234 5678"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.senderPhone && (
                     <p className="text-red-500 text-sm mt-1">{errors.senderPhone}</p>
@@ -476,7 +472,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={senderInfo.email}
                     onChange={(e) => setSenderInfo({ ...senderInfo, email: e.target.value })}
                     placeholder="remitente@ejemplo.com"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -490,7 +486,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                 </div>
                 Quien Recibe
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -501,7 +497,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={recipientInfo.name}
                     onChange={(e) => setRecipientInfo({ ...recipientInfo, name: e.target.value })}
                     placeholder="Nombre completo del destinatario"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.recipientName && (
                     <p className="text-red-500 text-sm mt-1">{errors.recipientName}</p>
@@ -517,7 +513,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={recipientInfo.phone}
                     onChange={(e) => setRecipientInfo({ ...recipientInfo, phone: e.target.value })}
                     placeholder="+52 55 1234 5678"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.recipientPhone && (
                     <p className="text-red-500 text-sm mt-1">{errors.recipientPhone}</p>
@@ -533,7 +529,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                     value={recipientInfo.email}
                     onChange={(e) => setRecipientInfo({ ...recipientInfo, email: e.target.value })}
                     placeholder="destinatario@ejemplo.com"
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -548,7 +544,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
               </div>
               Fecha y hora de recogida
             </h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -559,7 +555,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                   value={pickupDate}
                   onChange={(e) => setPickupDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
                 {errors.pickupDate && (
                   <p className="text-red-500 text-sm mt-1">{errors.pickupDate}</p>
@@ -573,7 +569,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
                   type="time"
                   value={pickupTime}
                   onChange={(e) => setPickupTime(e.target.value)}
-                            className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
                 {errors.pickupTime && (
                   <p className="text-red-500 text-sm mt-1">{errors.pickupTime}</p>
@@ -605,7 +601,7 @@ const Step4Contacts: React.FC<Step4ContactsProps> = ({
             ) : (
               <>
                 <Check className="w-4 h-4" />
-                <span>Crear Orden</span>
+                <span>Hacer Pedido</span>
               </>
             )}
           </button>

@@ -45,7 +45,7 @@ interface OrderData {
   distance: number;
   estimatedCost: number;
   route: any;
-  
+
   // Paso 4: Contactos y prioridad
   senderInfo: any;
   recipientInfo: any;
@@ -59,7 +59,7 @@ const CreateOrderPage: React.FC = () => {
   const { createOrder, isLoading: isCreatingOrder } = useOrders();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Estados para la orden creada
   const [createdOrder, setCreatedOrder] = useState<any>(null);
   const [orderData, setOrderData] = useState<OrderData>({
@@ -143,29 +143,29 @@ const CreateOrderPage: React.FC = () => {
 
   const handleSubmit = async (step4Data?: any) => {
     if (isSubmitting) return;
-    
+
     setIsSubmitting(true);
     try {
       // Si tenemos datos del Step4, combinarlos con orderData
       const finalOrderData = step4Data ? { ...orderData, ...step4Data } : orderData;
-      
+
       console.log('Creando orden:', finalOrderData);
       console.log('Step4 data received:', step4Data);
-      
+
       // Crear la orden en la base de datos
       const newOrder = await createOrder(finalOrderData);
-      
+
       console.log('Orden creada exitosamente:', newOrder);
       setCreatedOrder(newOrder);
-      
+
       // Mostrar mensaje de éxito y redirigir (sin modal de pago)
       if (finalOrderData.isAutomaticQuote && finalOrderData.estimatedCost) {
         // Cotización automática - orden lista para pago
-        alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nPuedes proceder al pago desde la sección "Mis Órdenes".`);
+        alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nPuedes proceder al pago desde la sección "Mis Pedidos".`);
         navigate('/orders');
       } else {
         // Cotización manual - esperando cotización
-        alert(`¡Orden creada exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nUn administrador revisará tu solicitud y te contactará con la cotización.`);
+        alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nUn administrador revisará tu solicitud y te contactará con la cotización.`);
         navigate('/orders');
       }
     } catch (error: any) {
@@ -233,7 +233,7 @@ const CreateOrderPage: React.FC = () => {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Crear Nueva Orden</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hacer Nuevo Pedido</h1>
                 <p className="text-gray-600 mt-1 text-sm sm:text-base">
                   Sigue los pasos para solicitar tu envío
                 </p>
@@ -260,16 +260,14 @@ const CreateOrderPage: React.FC = () => {
             {steps.map((step, index) => (
               <div
                 key={step.number}
-                className={`flex flex-col items-center ${
-                  currentStep >= step.number ? 'opacity-100' : 'opacity-50'
-                }`}
+                className={`flex flex-col items-center ${currentStep >= step.number ? 'opacity-100' : 'opacity-50'
+                  }`}
               >
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    currentStep >= step.number
-                      ? step.color
-                      : 'bg-gray-200'
-                  } text-white`}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= step.number
+                    ? step.color
+                    : 'bg-gray-200'
+                    } text-white`}
                 >
                   <step.icon className="w-4 h-4" />
                 </div>
@@ -288,16 +286,14 @@ const CreateOrderPage: React.FC = () => {
             {steps.map((step, index) => (
               <div
                 key={step.number}
-                className={`flex items-center space-x-3 ${
-                  currentStep >= step.number ? 'opacity-100' : 'opacity-50'
-                }`}
+                className={`flex items-center space-x-3 ${currentStep >= step.number ? 'opacity-100' : 'opacity-50'
+                  }`}
               >
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    currentStep >= step.number
-                      ? step.color
-                      : 'bg-gray-200'
-                  } text-white`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= step.number
+                    ? step.color
+                    : 'bg-gray-200'
+                    } text-white`}
                 >
                   <step.icon className="w-5 h-5" />
                 </div>
