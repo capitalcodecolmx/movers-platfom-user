@@ -115,16 +115,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col z-40">
         <div className="flex flex-col flex-grow bg-white border-r border-gray-200 shadow-lg">
           {/* Header con branding */}
-          <div className="flex h-16 items-center justify-between px-6 bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-600 shadow-md">
-            <Link to="/dashboard" className="flex items-center space-x-2 group">
+          <div className="flex h-16 items-center justify-center px-6 bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-600 shadow-md">
+            <Link to="/dashboard" className="flex items-center group">
               <img
                 src={COMPANY_INFO.logo}
                 alt={COMPANY_INFO.name}
-                className="h-10 w-auto brightness-0 invert drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
+                className="h-12 w-auto brightness-0 invert drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
               />
-              <span className="text-white font-semibold text-sm hidden xl:block opacity-90">
-                {COMPANY_INFO.name.split(' ')[0]}
-              </span>
             </Link>
           </div>
           <nav className="flex-1 px-4 py-6 space-y-1 bg-gradient-to-b from-white to-gray-50/50">
