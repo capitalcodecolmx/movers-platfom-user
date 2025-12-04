@@ -1,9 +1,6 @@
-// =====================================================
-// ZUSTAND STORE PARA ADMIN DASHBOARD
-// =====================================================
-
 import { create } from 'zustand';
 import { supabase } from '../config/supabase';
+import type { OrderWithDetails, OrderStatus } from '../types/database';
 
 export interface AdminStats {
   totalOrders: number;
@@ -22,11 +19,17 @@ export interface AdminStats {
 
 interface AdminState {
   stats: AdminStats;
+  orders: OrderWithDetails[];
+  currentOrder: OrderWithDetails | null;
   isLoading: boolean;
   error: string | null;
   lastFetched: number | null;
   fetchStats: () => Promise<void>;
   refreshStats: () => Promise<void>;
+  fetchOrders: () => Promise<void>;
+  fetchOrder: (id: string) => Promise<void>;
+  assignOrder: (orderId: string, driverId: string, vehicleId: string) => Promise<void>;
+  updateOrderStatus: (orderId: string, status: OrderStatus) => Promise<void>;
 }
 
 const initialStats: AdminStats = {
@@ -49,6 +52,8 @@ const CACHE_DURATION = 30 * 1000;
 
 export const useAdminStore = create<AdminState>((set, get) => ({
   stats: initialStats,
+  orders: [],
+  currentOrder: null,
   isLoading: false,
   error: null,
   lastFetched: null,
@@ -145,5 +150,146 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     set({ lastFetched: null });
     await get().fetchStats();
   },
+
+  fetchOrders: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          user:users!user_id (
+            id,
+            full_name,
+            email,
+            phone
+          ),
+          assigned_repartidor:users!assigned_repartidor_id (
+            id,
+            full_name,
+            email,
+            phone
+          ),
+          vehicle:vehicles!assigned_vehicle_id (
+            id,
+            name,
+            type,
+            license_plate
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      set({ orders: data as OrderWithDetails[], isLoading: false });
+    } catch (error: any) {
+      console.error('Error fetching orders:', error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  fetchOrder: async (id: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          user:users!user_id (
+            id,
+            full_name,
+            email,
+            phone
+          ),
+          assigned_repartidor:users!assigned_repartidor_id (
+            id,
+            full_name,
+            email,
+            phone
+          ),
+          vehicle:vehicles!assigned_vehicle_id (
+            id,
+            name,
+            type,
+            license_plate
+          )
+        `)
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+
+      set({ currentOrder: data as OrderWithDetails, isLoading: false });
+    } catch (error: any) {
+      console.error('Error fetching order:', error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  assignOrder: async (orderId: string, repartidorId: string, vehicleId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          assigned_repartidor_id: repartidorId,
+          assigned_vehicle_id: vehicleId,
+          status: 'assigned',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      // Update local state
+      const { orders } = get();
+      const updatedOrders = orders.map(order => 
+        order.id === orderId 
+          ? { ...order, assigned_repartidor_id: repartidorId, assigned_vehicle_id: vehicleId, status: 'assigned' as OrderStatus } 
+          : order
+      );
+      
+      set({ orders: updatedOrders, isLoading: false });
+      
+      // Refresh stats to reflect status change
+      get().refreshStats();
+    } catch (error: any) {
+      console.error('Error assigning order:', error);
+      set({ isLoading: false, error: error.message || 'Error al asignar orden' });
+      throw error;
+    }
+  },
+
+  updateOrderStatus: async (orderId: string, status: OrderStatus) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          status,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      // Update local state
+      const { orders } = get();
+      const updatedOrders = orders.map(order => 
+        order.id === orderId 
+          ? { ...order, status } 
+          : order
+      );
+      
+      set({ orders: updatedOrders, isLoading: false });
+      
+      // Refresh stats
+      get().refreshStats();
+    } catch (error: any) {
+      console.error('Error updating order status:', error);
+      set({ isLoading: false, error: error.message || 'Error al actualizar estado' });
+      throw error;
+    }
+  }
 }));
 

@@ -9,6 +9,8 @@ import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import AdminDashboardPage from './pages/admin/dashboard'
 import AdminProductsPage from './pages/admin/products/AdminProductsPage'
+import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage'
+import AdminOrderDetailsPage from './pages/admin/orders/AdminOrderDetailsPage'
 import OrdersPage from './pages/OrdersPage'
 import CreateOrderPage from './pages/CreateOrderPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
@@ -122,6 +124,28 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <Layout>
                 <AdminProductsPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminOrdersPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders/:id"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminOrderDetailsPage />
               </Layout>
             </ProtectedRoute>
           }

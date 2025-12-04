@@ -30,8 +30,8 @@ const LoginPage: React.FC = () => {
         // El usuario debe confirmar su email primero
       } else {
         await signIn(email, password);
-        // Redirigir a dashboard - el DashboardRedirect component verificará el rol
-        navigate('/dashboard');
+        // No explicit navigation needed; App component will re-render and DashboardRedirect will handle it
+        // based on the new isAuthenticated state.
       }
     } catch (error) {
       // El error se maneja en el store
