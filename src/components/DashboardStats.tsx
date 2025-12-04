@@ -3,19 +3,7 @@
 // =====================================================
 
 import React from 'react';
-import {
-  Package,
-  Truck,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  TrendingUp,
-  DollarSign,
-  ShoppingBag,
-  FileText,
-  CreditCard,
-  Zap
-} from 'lucide-react';
+import { Icon } from '@iconify/react';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 
 interface DashboardStatsProps {
@@ -29,34 +17,34 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
     {
       title: 'Envíos Activos',
       value: stats.activeOrders,
-      icon: Package,
+      iconName: 'mdi:package-variant',
       iconBg: 'bg-blue-500',
-      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      cardGradient: 'from-blue-500/10 to-blue-600/10',
       borderColor: 'border-blue-400/20',
       change: stats.activeOrders > 0 ? 'Sin envíos activos' : 'Sin envíos activos'
     },
     {
       title: 'En Tránsito',
       value: stats.inTransit,
-      icon: Truck,
+      iconName: 'mdi:truck-delivery',
       iconBg: 'bg-cyan-500',
-      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      cardGradient: 'from-blue-500/10 to-blue-600/10',
       borderColor: 'border-blue-400/20',
       change: stats.inTransit > 0 ? 'Ninguno en tránsito' : 'Ninguno en tránsito'
     },
     {
       title: 'Entregados',
       value: stats.delivered,
-      icon: CheckCircle,
+      iconName: 'mdi:check-circle',
       iconBg: 'bg-green-500',
-      cardGradient: 'from-blue-500/10 to-indigo-600/10',
+      cardGradient: 'from-blue-500/10 to-blue-600/10',
       borderColor: 'border-blue-400/20',
       change: `0 completados`
     },
     {
       title: 'Pendientes',
       value: stats.pending,
-      icon: Clock,
+      iconName: 'mdi:clock-outline',
       iconBg: 'bg-orange-500',
       cardGradient: 'from-blue-500/10 to-purple-600/10',
       borderColor: 'border-blue-400/20',
@@ -64,45 +52,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
     }
   ];
 
-  // Business-specific stat cards
-  const businessStatCards = [
-    {
-      title: 'Órdenes de Envío',
-      value: stats.shippingOrders,
-      icon: Truck,
-      iconGradient: 'from-blue-400 to-indigo-500',
-      cardGradient: 'from-blue-500/20 to-indigo-600/20',
-      borderColor: 'border-blue-400/40',
-      change: `${stats.serviceTypeBreakdown.ftl} FTL, ${stats.serviceTypeBreakdown.ltl} LTL, ${stats.serviceTypeBreakdown.lastMile} Last Mile`
-    },
-    {
-      title: 'Órdenes Ecommerce',
-      value: stats.ecommerceOrders,
-      icon: ShoppingBag,
-      iconGradient: 'from-purple-400 to-pink-500',
-      cardGradient: 'from-purple-500/20 to-pink-600/20',
-      borderColor: 'border-purple-400/40',
-      change: stats.ecommerceOrders > 0 ? 'Productos' : 'Sin pedidos'
-    },
-    {
-      title: 'Cotizaciones',
-      value: stats.quotePending + stats.quoteReady,
-      icon: FileText,
-      iconGradient: 'from-yellow-400 to-orange-500',
-      cardGradient: 'from-yellow-500/20 to-orange-600/20',
-      borderColor: 'border-yellow-400/40',
-      change: `${stats.quotePending} pendientes, ${stats.quoteReady} listas`
-    },
-    {
-      title: 'Pagos',
-      value: stats.paymentConfirmed,
-      icon: CreditCard,
-      iconGradient: 'from-green-400 to-emerald-500',
-      cardGradient: 'from-green-500/20 to-emerald-600/20',
-      borderColor: 'border-green-400/40',
-      change: `${stats.paymentPending} pendientes`
-    }
-  ];
 
 
   if (isLoading) {
@@ -145,7 +94,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
     return (
       <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
         <div className="flex items-center">
-          <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
+          <Icon icon="mdi:alert-circle" className="w-5 h-5 text-red-600 mr-3" />
           <div>
             <h3 className="text-lg font-medium text-red-800">Error al cargar estadísticas</h3>
             <p className="text-red-600 mt-1">{error}</p>
@@ -188,7 +137,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
           >
             <div className="relative z-10 flex items-center justify-between mb-3">
               <div className={`p-3 rounded-2xl ${stat.iconBg} shadow-md`}>
-                <stat.icon className="w-6 h-6 text-white" />
+                <Icon icon={stat.iconName} className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
                 <p className="text-3xl font-bold text-white drop-shadow-lg">{stat.value}</p>
