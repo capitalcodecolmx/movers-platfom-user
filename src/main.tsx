@@ -11,6 +11,9 @@ import AdminDashboardPage from './pages/admin/dashboard'
 import AdminProductsPage from './pages/admin/products/AdminProductsPage'
 import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage'
 import AdminOrderDetailsPage from './pages/admin/orders/AdminOrderDetailsPage'
+import AdminVehiclesPage from './pages/admin/vehicles/AdminVehiclesPage'
+import AdminUsersPage from './pages/admin/users/AdminUsersPage'
+import AdminSettingsPage from './pages/admin/settings/AdminSettingsPage'
 import OrdersPage from './pages/OrdersPage'
 import CreateOrderPage from './pages/CreateOrderPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
@@ -178,6 +181,39 @@ const App: React.FC = () => {
             <AdminRoute>
               <Layout>
                 <AdminOrderDetailsPage />
+              </Layout>
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/vehicles"
+          element={
+            <AdminRoute>
+              <Layout>
+                <AdminVehiclesPage />
+              </Layout>
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <AdminRoute>
+              <Layout>
+                <AdminUsersPage />
+              </Layout>
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={
+            <AdminRoute>
+              <Layout>
+                <AdminSettingsPage />
               </Layout>
             </AdminRoute>
           }

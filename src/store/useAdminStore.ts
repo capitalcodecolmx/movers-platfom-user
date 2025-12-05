@@ -154,24 +154,24 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   fetchOrders: async () => {
     set({ isLoading: true, error: null });
     try {
-      // Use left joins (without !) to handle nullable foreign keys
+      // Use explicit table references with foreign key names
       const { data, error } = await supabase
         .from('orders')
         .select(`
           *,
-          user:user_id (
+          user:users!orders_user_id_fkey (
             id,
             full_name,
             email,
             phone
           ),
-          assigned_repartidor:assigned_repartidor_id (
+          assigned_repartidor:users!orders_assigned_repartidor_id_fkey (
             id,
             full_name,
             email,
             phone
           ),
-          vehicle:assigned_vehicle_id (
+          vehicle:vehicles!orders_assigned_vehicle_id_fkey (
             id,
             name,
             type,
@@ -197,19 +197,19 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         .from('orders')
         .select(`
           *,
-          user:user_id (
+          user:users!orders_user_id_fkey (
             id,
             full_name,
             email,
             phone
           ),
-          assigned_repartidor:assigned_repartidor_id (
+          assigned_repartidor:users!orders_assigned_repartidor_id_fkey (
             id,
             full_name,
             email,
             phone
           ),
-          vehicle:assigned_vehicle_id (
+          vehicle:vehicles!orders_assigned_vehicle_id_fkey (
             id,
             name,
             type,
