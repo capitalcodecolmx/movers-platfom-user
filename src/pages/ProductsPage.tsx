@@ -24,9 +24,15 @@ const ProductsPage: React.FC = () => {
     }, [filters, sortField, sortDirection, getFilteredAndSortedProducts]);
 
     useEffect(() => {
-        // Fetch products from database on mount
-        fetchProducts();
-    }, [fetchProducts]);
+        // Fetch products from database on mount and subscribe to realtime updates
+        const store = useProductsStore.getState();
+        store.fetchProducts();
+        store.subscribeToProducts();
+
+        return () => {
+            store.unsubscribeFromProducts();
+        };
+    }, []);
 
     useEffect(() => {
         // Initialize image cache after products are loaded

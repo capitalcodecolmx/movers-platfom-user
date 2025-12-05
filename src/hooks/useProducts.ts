@@ -66,12 +66,12 @@ export const useProducts = () => {
           image: productData.image,
           category: productData.category,
           marca: productData.marca,
-          submarca: productData.submarca,
-          sabor: productData.sabor,
-          presentacion: productData.presentacion,
-          tamaño: productData.tamaño,
-          tipoAgua: productData.tipoAgua,
-          tipoProducto: productData.tipoProducto,
+          // submarca: productData.submarca,
+          // sabor: productData.sabor,
+          // presentacion: productData.presentacion,
+          // tamaño: productData.tamaño,
+          // tipoAgua: productData.tipoAgua,
+          // tipoProducto: productData.tipoProducto,
           stock_quantity: productData.stock_quantity || 0,
           is_active: true,
         }])
@@ -105,12 +105,12 @@ export const useProducts = () => {
       if (productData.image !== undefined) updatePayload.image = productData.image;
       if (productData.category !== undefined) updatePayload.category = productData.category;
       if (productData.marca !== undefined) updatePayload.marca = productData.marca;
-      if (productData.submarca !== undefined) updatePayload.submarca = productData.submarca;
-      if (productData.sabor !== undefined) updatePayload.sabor = productData.sabor;
-      if (productData.presentacion !== undefined) updatePayload.presentacion = productData.presentacion;
-      if (productData.tamaño !== undefined) updatePayload.tamaño = productData.tamaño;
-      if (productData.tipoAgua !== undefined) updatePayload.tipoAgua = productData.tipoAgua;
-      if (productData.tipoProducto !== undefined) updatePayload.tipoProducto = productData.tipoProducto;
+      // if (productData.submarca !== undefined) updatePayload.submarca = productData.submarca;
+      // if (productData.sabor !== undefined) updatePayload.sabor = productData.sabor;
+      // if (productData.presentacion !== undefined) updatePayload.presentacion = productData.presentacion;
+      // if (productData.tamaño !== undefined) updatePayload.tamaño = productData.tamaño;
+      // if (productData.tipoAgua !== undefined) updatePayload.tipoAgua = productData.tipoAgua;
+      // if (productData.tipoProducto !== undefined) updatePayload.tipoProducto = productData.tipoProducto;
       if (productData.stock_quantity !== undefined) updatePayload.stock_quantity = productData.stock_quantity;
       if (productData.is_active !== undefined) updatePayload.is_active = productData.is_active;
 

@@ -38,6 +38,11 @@ interface ProductsState {
   cacheImage: (productId: string, imageData: string) => void;
   getCachedImage: (productId: string) => string | null;
   getFilteredAndSortedProducts: () => Product[];
+  
+  // Realtime
+  subscription: any | null;
+  subscribeToProducts: () => void;
+  unsubscribeFromProducts: () => void;
 }
 
 const defaultFilters: ProductFilters = {
@@ -86,6 +91,7 @@ export const useProductsStore = create<ProductsState>()(
       sortField: 'name',
       sortDirection: 'asc',
       imageCache: {},
+      subscription: null,
       isLoading: false,
       error: null,
 
@@ -204,6 +210,35 @@ export const useProductsStore = create<ProductsState>()(
         });
 
         return sorted;
+      },
+      subscribeToProducts: () => {
+        const state = get();
+        // If already subscribed, don't subscribe again
+        if (state.subscription) return;
+
+        const subscription = supabase
+          .channel('public:products')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'products' },
+            async (payload) => {
+              console.log('Realtime product update:', payload);
+              // Fetch fresh data on any change and re-verify image cache
+              await get().fetchProducts();
+              await initializeImageCache();
+            }
+          )
+          .subscribe();
+
+        set({ subscription });
+      },
+
+      unsubscribeFromProducts: () => {
+        const { subscription } = get();
+        if (subscription) {
+          subscription.unsubscribe();
+          set({ subscription: null });
+        }
       }
     }),
     {
