@@ -84,7 +84,7 @@ const DashboardPage: React.FC = () => {
               </h1>
               <p className="text-slate-400 mt-1">Gestiona tus envíos de manera fácil y rápida</p>
             </div>
-            <div className="flex items-center space-x-3 hidden sm:flex">
+            <div className="hidden sm:flex sm:items-center sm:space-x-3">
               <button
                 onClick={() => navigate('/orders/create')}
                 className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-900/20"

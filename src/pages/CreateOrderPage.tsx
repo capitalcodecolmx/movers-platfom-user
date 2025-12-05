@@ -4,120 +4,91 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Package, Truck, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Package, MapPin, CreditCard } from 'lucide-react';
 import { useAuth } from '../contexts/SupabaseAuthContext';
 import { useOrders } from '../hooks/useOrders';
-import PaymentModal from '../components/PaymentModal';
 
 // Componentes de los pasos
 import Step1PackageDetails from '../components/order/Step1PackageDetails';
 import Step2ProductSelection from '../components/order/Step2ProductSelection';
-import Step3SimpleRoute from '../components/order/Step3SimpleRoute';
-import Step4Contacts from '../components/order/Step4Contacts';
+import Step3DeliveryDetails from '../components/order/Step3SimpleRoute';
+import Step4PaymentSummary from '../components/order/Step4Contacts';
+
+interface OrderItemSelection {
+  productId: string;
+  name: string;
+  price: number;
+  image: string;
+  presentacion?: string;
+  quantity: number;
+}
+
+interface ContactInfo {
+  name: string;
+  phone: string;
+  email?: string;
+}
 
 interface OrderData {
-  // Paso 1: Detalles del paquete
-  packageType: string;
-  packageDescription: string;
-  weight: number;
-  dimensions: {
-    length: number;
-    width: number;
-    height: number;
-  };
-  packageValue: number;
-  specialInstructions: string;
-  insuranceRequired: boolean;
-  fragile: boolean;
-  urgent: boolean;
-
-  // Paso 2: Producto seleccionado
-  selectedProduct?: any;
-  selectedVehicle: any; // Mantener por compatibilidad
-  vehicleType: string;
-
-  // Paso 3: Direcciones y mapa
-  pickupAddress: any;
-  deliveryAddress: any;
-  pickupDate: string;
-  pickupTime: string;
-  deliveryDate: string;
-  deliveryTime: string;
-  distance: number;
+  serviceType: 'delivery' | 'pickup' | '';
+  orderItems: OrderItemSelection[];
   estimatedCost: number;
-  route: any;
-
-  // Paso 4: Contactos y prioridad
-  senderInfo: any;
-  recipientInfo: any;
-  priority: string;
-  priorityData: any;
+  pickupAddress: any;
+  pickupLocation: any;
+  deliveryAddress: any;
+  deliveryInstructions: string;
+  contactInfo: ContactInfo | null;
+  paymentMethod: 'cash' | 'online' | '';
 }
 
 const CreateOrderPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { createOrder, isLoading: isCreatingOrder } = useOrders();
+  const { createOrder } = useOrders();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Estados para la orden creada
   const [createdOrder, setCreatedOrder] = useState<any>(null);
   const [orderData, setOrderData] = useState<OrderData>({
-    packageType: '',
-    packageDescription: '',
-    weight: 0,
-    dimensions: { length: 0, width: 0, height: 0 },
-    packageValue: 0,
-    specialInstructions: '',
-    insuranceRequired: false,
-    fragile: false,
-    urgent: false,
-    selectedProduct: null,
-    selectedVehicle: null,
-    vehicleType: '',
-    pickupAddress: null,
-    deliveryAddress: null,
-    pickupDate: '',
-    pickupTime: '',
-    deliveryDate: '',
-    deliveryTime: '',
-    distance: 0,
+    serviceType: '',
+    orderItems: [],
     estimatedCost: 0,
-    route: null,
-    senderInfo: null,
-    recipientInfo: null,
-    priority: '',
-    priorityData: null,
+    pickupAddress: null,
+    pickupLocation: null,
+    deliveryAddress: null,
+    deliveryInstructions: '',
+    contactInfo: null,
+    paymentMethod: '',
   });
 
   const steps = [
     {
       number: 1,
-      title: 'Tipo de Servicio',
-      description: 'Elige tu tipo de servicio',
+      title: 'Tipo de servicio',
+      description: 'Entrega a domicilio o recolección en Aguacentro',
       icon: Package,
       color: 'bg-blue-500',
     },
     {
       number: 2,
-      title: 'Productos',
-      description: 'Selecciona tus productos',
+      title: 'Productos y cantidades',
+      description: 'Arma tu pedido y revisa el total',
       icon: Package,
       color: 'bg-blue-500',
     },
     {
       number: 3,
-      title: 'Origen y Destino',
-      description: 'Especifica las direcciones',
+      title: 'Entrega o recolección',
+      description: 'Indica la dirección o el Aguacentro',
       icon: MapPin,
       color: 'bg-blue-500',
     },
     {
       number: 4,
-      title: 'Prioridad de Envío',
-      description: 'Selecciona la prioridad',
-      icon: Users,
+      title: 'Pago y confirmación',
+      description: 'Datos de contacto y método de pago',
+      icon: CreditCard,
       color: 'bg-blue-500',
     },
   ];
@@ -154,22 +125,18 @@ const CreateOrderPage: React.FC = () => {
       console.log('Creando orden:', finalOrderData);
       console.log('Step4 data received:', step4Data);
 
+      if (finalOrderData.orderItems.length === 0) {
+        throw new Error('Agrega al menos un producto antes de confirmar.');
+      }
+
       // Crear la orden en la base de datos
       const newOrder = await createOrder(finalOrderData);
 
       console.log('Orden creada exitosamente:', newOrder);
       setCreatedOrder(newOrder);
 
-      // Mostrar mensaje de éxito y redirigir (sin modal de pago)
-      if (finalOrderData.isAutomaticQuote && finalOrderData.estimatedCost) {
-        // Cotización automática - orden lista para pago
-        alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nPuedes proceder al pago desde la sección "Mis Pedidos".`);
-        navigate('/orders');
-      } else {
-        // Cotización manual - esperando cotización
-        alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}\n\nUn administrador revisará tu solicitud y te contactará con la cotización.`);
-        navigate('/orders');
-      }
+      alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}`);
+      navigate('/orders');
     } catch (error: any) {
       console.error('Error creating order:', error);
       alert(`Error al crear la orden: ${error.message}`);
@@ -199,7 +166,7 @@ const CreateOrderPage: React.FC = () => {
         );
       case 3:
         return (
-          <Step3SimpleRoute
+          <Step3DeliveryDetails
             data={orderData}
             onUpdate={updateOrderData}
             onNext={nextStep}
@@ -208,7 +175,7 @@ const CreateOrderPage: React.FC = () => {
         );
       case 4:
         return (
-          <Step4Contacts
+          <Step4PaymentSummary
             data={orderData}
             onUpdate={updateOrderData}
             onSubmit={handleSubmit}
