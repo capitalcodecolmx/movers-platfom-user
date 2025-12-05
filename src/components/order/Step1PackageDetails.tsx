@@ -2,29 +2,19 @@
 // PASO 1: ELIGE TU TIPO DE SERVICIO
 // =====================================================
 
-import React, { useState, useEffect } from 'react';
-import {
-  ArrowRight,
-  Check
-} from 'lucide-react';
-import {
-  MdCheckCircle,
-  MdLocalShipping,
-  MdInventory,
-  MdLocationCity
-} from 'react-icons/md';
+import React, { useState } from 'react';
+import { MdCheckCircle, MdLocalShipping, MdLocationCity } from 'react-icons/md';
+import { useOrderStore } from '../../store/useOrderStore'; // Import Store
 
 interface Step1PackageDetailsProps {
-  data: any;
-  onUpdate: (data: any) => void;
   onNext: () => void;
 }
 
 const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
-  data,
-  onUpdate,
   onNext,
 }) => {
+  const { serviceType, setServiceType } = useOrderStore(); // Use Store
+
   const [serviceTypes] = useState([
     {
       id: 'delivery',
@@ -47,7 +37,7 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!data.serviceType) {
+    if (!serviceType) {
       newErrors.serviceType = 'Selecciona un tipo de servicio';
     }
 
@@ -61,11 +51,7 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
     }
   };
 
-  const selectedServiceType = serviceTypes.find(type => type.id === data.serviceType);
-
-  const handleServiceSelect = (serviceId: string) => {
-    onUpdate({ serviceType: serviceId });
-  };
+  const selectedServiceType = serviceTypes.find(type => type.id === serviceType);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -87,14 +73,14 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
               return (
                 <button
                   key={service.id}
-                  onClick={() => handleServiceSelect(service.id)}
-                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${data.serviceType === service.id
+                  onClick={() => setServiceType(service.id as any)}
+                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${serviceType === service.id
                     ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
                     : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
                     }`}
                 >
                   {/* Icono con gradiente */}
-                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${data.serviceType === service.id
+                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${serviceType === service.id
                     ? 'text-white'
                     : `text-gray-600 group-hover:scale-110`
                     }`}>
@@ -102,25 +88,25 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
                   </div>
 
                   {/* Título */}
-                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${data.serviceType === service.id ? 'text-white' : 'text-gray-900'
+                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${serviceType === service.id ? 'text-white' : 'text-gray-900'
                     }`}>
                     {service.name}
                   </h3>
 
                   {/* Descripción */}
-                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${data.serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
+                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
                     }`}>
                     {service.description}
                   </p>
 
                   {/* Ejemplo */}
-                  <p className={`text-xs italic transition-colors duration-300 ${data.serviceType === service.id ? 'text-gray-400' : 'text-gray-500'
+                  <p className={`text-xs italic transition-colors duration-300 ${serviceType === service.id ? 'text-gray-400' : 'text-gray-500'
                     }`}>
                     {service.example}
                   </p>
 
                   {/* Indicador de selección */}
-                  {data.serviceType === service.id && (
+                  {serviceType === service.id && (
                     <div className="absolute top-2 sm:top-4 right-2 sm:right-4 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full flex items-center justify-center shadow-md">
                       <MdCheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-gray-800" />
                     </div>

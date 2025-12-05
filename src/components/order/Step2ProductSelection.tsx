@@ -2,26 +2,31 @@
 // PASO 2: SELECCIÓN DE PRODUCTOS Y CANTIDADES
 // =====================================================
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader2, AlertCircle, Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useProductsStore } from '../../store/useProductsStore';
+import { useOrderStore, type OrderItem } from '../../store/useOrderStore'; // Import Order Store
 import { PRODUCTS, type Product } from '../../data/mockData';
 
 interface Step2ProductSelectionProps {
-  data: any;
-  onUpdate: (data: any) => void;
   onNext: () => void;
   onPrev: () => void;
 }
 
 const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
-  data,
-  onUpdate,
   onNext,
   onPrev,
 }) => {
   const { products, isLoading, error, fetchProducts } = useProductsStore();
-  const orderItems = data.orderItems || [];
+  const {
+    orderItems,
+    addItem,
+    updateItemQuantity,
+    removeItem,
+    getTotalPrice,
+    serviceType
+  } = useOrderStore(); // Use Order Store
+
   const [showValidationError, setShowValidationError] = useState(false);
 
   useEffect(() => {
@@ -31,56 +36,34 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
   }, [products.length, fetchProducts]);
 
   const displayProducts = products.length > 0 ? products : PRODUCTS;
-
-  const orderTotal = useMemo(
-    () => orderItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0),
-    [orderItems]
-  );
-
-  const updateItems = (items: any[]) => {
-    onUpdate({
-      orderItems: items,
-      estimatedCost: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    });
-  };
+  const orderTotal = getTotalPrice();
 
   const handleQuantityChange = (product: Product, newQuantity: number) => {
-    const clonedItems = [...orderItems];
-    const existingIndex = clonedItems.findIndex((item: any) => item.productId === product.id);
-
     if (newQuantity <= 0) {
-      if (existingIndex >= 0) {
-        clonedItems.splice(existingIndex, 1);
-      }
-    } else if (existingIndex >= 0) {
-      clonedItems[existingIndex] = {
-        ...clonedItems[existingIndex],
-        quantity: newQuantity,
-      };
+      removeItem(product.id);
     } else {
-      clonedItems.push({
-        productId: product.id,
-        name: product.name,
-        price: Number(product.price),
-        image: product.image,
-        presentacion: product.presentacion,
-        tamaño: product.tamaño,
-        quantity: newQuantity,
-      });
+      // Check if exists to update or add
+      const existing = orderItems.find(i => i.productId === product.id);
+      if (existing) {
+        updateItemQuantity(product.id, newQuantity);
+      } else {
+        addItem({
+          productId: product.id,
+          name: product.name,
+          price: Number(product.price),
+          image: product.image,
+          presentacion: product.presentacion,
+          tamaño: product.tamaño,
+          quantity: newQuantity,
+        });
+      }
     }
-
-    updateItems(clonedItems);
     setShowValidationError(false);
   };
 
   const handleCardClick = (product: Product) => {
-    const currentQty = orderItems.find((item: any) => item.productId === product.id)?.quantity || 0;
+    const currentQty = orderItems.find((item) => item.productId === product.id)?.quantity || 0;
     handleQuantityChange(product, currentQty + 1);
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    const filtered = orderItems.filter((item: any) => item.productId !== productId);
-    updateItems(filtered);
   };
 
   const handleNext = () => {
@@ -129,12 +112,12 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
         </div>
 
         <div className="space-y-8">
-          {data.serviceType && (
+          {serviceType && (
             <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 border border-gray-200 text-center">
               <p className="text-sm text-gray-600">
                 Servicio seleccionado:&nbsp;
                 <span className="font-semibold text-gray-900">
-                  {data.serviceType === 'delivery' ? 'Entrega a domicilio' : 'Recolección en Aguacentro'}
+                  {serviceType === 'delivery' ? 'Entrega a domicilio' : 'Recolección en Aguacentro'}
                 </span>
               </p>
             </div>
@@ -146,7 +129,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4 sm:gap-6">
                 {displayProducts.map((product) => {
                   const quantity = orderItems.find(
-                    (item: any) => item.productId === product.id
+                    (item) => item.productId === product.id
                   )?.quantity || 0;
 
                   return (
@@ -154,11 +137,10 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                       key={product.id}
                       type="button"
                       onClick={() => handleCardClick(product)}
-                      className={`relative flex flex-col h-full p-4 rounded-2xl text-left border-2 transition-all duration-300 ${
-                        quantity > 0
+                      className={`relative flex flex-col h-full p-4 rounded-2xl text-left border-2 transition-all duration-300 ${quantity > 0
                           ? 'bg-gray-900 border-gray-900 text-white shadow-xl scale-[1.01]'
                           : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md text-gray-900'
-                      }`}
+                        }`}
                     >
                       <div className="relative aspect-square mb-4 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center p-4">
                         <img
@@ -173,17 +155,15 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
 
                       <div className="flex-1 flex flex-col">
                         <span
-                          className={`text-[11px] uppercase tracking-[0.2em] font-semibold mb-3 ${
-                            quantity > 0 ? 'text-gray-300' : 'text-gray-500'
-                          }`}
+                          className={`text-[11px] uppercase tracking-[0.2em] font-semibold mb-3 ${quantity > 0 ? 'text-gray-300' : 'text-gray-500'
+                            }`}
                         >
                           {product.presentacion} • {product.tamaño}
                         </span>
                         <h3 className="font-semibold text-lg leading-snug mb-2">{product.name}</h3>
                         <p
-                          className={`text-sm mb-4 line-clamp-2 ${
-                            quantity > 0 ? 'text-gray-300' : 'text-gray-500'
-                          }`}
+                          className={`text-sm mb-4 line-clamp-2 ${quantity > 0 ? 'text-gray-300' : 'text-gray-500'
+                            }`}
                         >
                           {product.description}
                         </p>
@@ -250,7 +230,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                 ) : (
                   <div className="space-y-4">
                     <ul className="divide-y divide-white/10">
-                      {orderItems.map((item: any) => (
+                      {orderItems.map((item) => (
                         <li key={item.productId} className="py-3 flex items-start justify-between">
                           <div>
                             <p className="font-semibold">{item.name}</p>
@@ -264,7 +244,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                             </p>
                             <button
                               type="button"
-                              onClick={() => handleRemoveItem(item.productId)}
+                              onClick={() => removeItem(item.productId)}
                               className="p-1 rounded-full bg-white/10 hover:bg-white/20 transition"
                               aria-label={`Eliminar ${item.name}`}
                             >
@@ -282,7 +262,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                       </div>
                       <div className="flex items-center justify-between text-sm text-gray-300">
                         <span>Entrega</span>
-                        <span>{data.serviceType === 'delivery' ? '$0.00' : 'N/A'}</span>
+                        <span>{serviceType === 'delivery' ? '$0.00' : 'N/A'}</span>
                       </div>
                       <div className="flex items-center justify-between text-lg font-bold mt-3">
                         <span>Total</span>

@@ -7,100 +7,56 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Package, MapPin, CreditCard } from 'lucide-react';
 import { useAuth } from '../contexts/SupabaseAuthContext';
 import { useOrders } from '../hooks/useOrders';
+import { useOrderStore } from '../store/useOrderStore';
 
 // Componentes de los pasos
 import Step1PackageDetails from '../components/order/Step1PackageDetails';
 import Step2ProductSelection from '../components/order/Step2ProductSelection';
-import Step3DeliveryDetails from '../components/order/Step3SimpleRoute';
+import Step3DeliveryDetails from '../components/order/Step3SimpleRoute'; // Keeping the import name but logic inside will change
 import Step4PaymentSummary from '../components/order/Step4Contacts';
-
-interface OrderItemSelection {
-  productId: string;
-  name: string;
-  price: number;
-  image: string;
-  presentacion?: string;
-  quantity: number;
-}
-
-interface ContactInfo {
-  name: string;
-  phone: string;
-  email?: string;
-}
-
-interface OrderData {
-  serviceType: 'delivery' | 'pickup' | '';
-  orderItems: OrderItemSelection[];
-  estimatedCost: number;
-  pickupAddress: any;
-  pickupLocation: any;
-  deliveryAddress: any;
-  deliveryInstructions: string;
-  contactInfo: ContactInfo | null;
-  paymentMethod: 'cash' | 'online' | '';
-}
 
 const CreateOrderPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { createOrder } = useOrders();
+  // const { createOrder } = useOrders(); // logic moved to Step 4 or handled here if preferred via store data
+  const { resetOrder } = useOrderStore(); // We might want to reset order on mount or unmount
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Estados para la orden creada
-  const [createdOrder, setCreatedOrder] = useState<any>(null);
-  const [orderData, setOrderData] = useState<OrderData>({
-    serviceType: '',
-    orderItems: [],
-    estimatedCost: 0,
-    pickupAddress: null,
-    pickupLocation: null,
-    deliveryAddress: null,
-    deliveryInstructions: '',
-    contactInfo: null,
-    paymentMethod: '',
-  });
+  // Reset order on validation mismatch or fresh start? 
+  // For now let's keep persistence but maybe add a clear button or clear on success.
 
   const steps = [
     {
       number: 1,
       title: 'Tipo de servicio',
-      description: 'Entrega a domicilio o recolección en Aguacentro',
+      description: 'Entrega a domicilio o recolección',
       icon: Package,
       color: 'bg-blue-500',
     },
     {
       number: 2,
-      title: 'Productos y cantidades',
-      description: 'Arma tu pedido y revisa el total',
+      title: 'Productos',
+      description: 'Selecciona tus productos',
       icon: Package,
       color: 'bg-blue-500',
     },
     {
       number: 3,
-      title: 'Entrega o recolección',
-      description: 'Indica la dirección o el Aguacentro',
+      title: 'Ubicación',
+      description: 'Dirección de entrega o recolección',
       icon: MapPin,
       color: 'bg-blue-500',
     },
     {
       number: 4,
-      title: 'Pago y confirmación',
-      description: 'Datos de contacto y método de pago',
+      title: 'Pago',
+      description: 'Confirmación y pago',
       icon: CreditCard,
       color: 'bg-blue-500',
     },
   ];
-
-  const updateOrderData = (data: Partial<OrderData>) => {
-    console.log('CreateOrderPage - Updating data:', data);
-    setOrderData(prev => {
-      const newData = { ...prev, ...data };
-      console.log('CreateOrderPage - New orderData:', newData);
-      return newData;
-    });
-  };
 
   const nextStep = () => {
     if (currentStep < 4) {
@@ -114,52 +70,24 @@ const CreateOrderPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (step4Data?: any) => {
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
-    try {
-      // Si tenemos datos del Step4, combinarlos con orderData
-      const finalOrderData = step4Data ? { ...orderData, ...step4Data } : orderData;
-
-      console.log('Creando orden:', finalOrderData);
-      console.log('Step4 data received:', step4Data);
-
-      if (finalOrderData.orderItems.length === 0) {
-        throw new Error('Agrega al menos un producto antes de confirmar.');
-      }
-
-      // Crear la orden en la base de datos
-      const newOrder = await createOrder(finalOrderData);
-
-      console.log('Orden creada exitosamente:', newOrder);
-      setCreatedOrder(newOrder);
-
-      alert(`¡Pedido creado exitosamente! Código de seguimiento: ${newOrder.tracking_code}`);
-      navigate('/orders');
-    } catch (error: any) {
-      console.error('Error creating order:', error);
-      alert(`Error al crear la orden: ${error.message}`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // The submit logic will likely be triggered from Step 4 using store data
+  // But we can keep a handler here if Step 4 passes data back up, 
+  // however Step 4 should probably handle the submission using useOrders hook itself 
+  // OR call a prop function that uses the store.
+  // We'll pass a dummy handler or remove it if Step 4 handles it.
+  // For consistency with existing code, let's keep the submit handler here but it pulls from store.
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
         return (
           <Step1PackageDetails
-            data={orderData}
-            onUpdate={updateOrderData}
             onNext={nextStep}
           />
         );
       case 2:
         return (
           <Step2ProductSelection
-            data={orderData}
-            onUpdate={updateOrderData}
             onNext={nextStep}
             onPrev={prevStep}
           />
@@ -167,8 +95,6 @@ const CreateOrderPage: React.FC = () => {
       case 3:
         return (
           <Step3DeliveryDetails
-            data={orderData}
-            onUpdate={updateOrderData}
             onNext={nextStep}
             onPrev={prevStep}
           />
@@ -176,11 +102,12 @@ const CreateOrderPage: React.FC = () => {
       case 4:
         return (
           <Step4PaymentSummary
-            data={orderData}
-            onUpdate={updateOrderData}
-            onSubmit={handleSubmit}
             onPrev={prevStep}
-            isSubmitting={isSubmitting}
+            // Logic for submission is now inside Step 4 or passed here
+            onSuccess={() => {
+              resetOrder();
+              navigate('/orders');
+            }}
           />
         );
       default:
