@@ -14,6 +14,15 @@ interface PendingOrdersTableProps {
     onRefresh: () => void;
 }
 
+const formatOrderDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-MX', {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+};
+
 const PendingOrdersTable: React.FC<PendingOrdersTableProps> = ({
     orders,
     isLoading,
@@ -114,90 +123,142 @@ const PendingOrdersTable: React.FC<PendingOrdersTableProps> = ({
                         <p className="text-gray-400 text-sm mt-1">No hay órdenes pendientes de asignación</p>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Pedido
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Cliente
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Destino
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Estado
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Acciones
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {pendingOrders.slice(0, 5).map((order) => (
-                                    <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div>
-                                                <p className="font-semibold text-gray-900">{order.tracking_code}</p>
-                                                <p className="text-xs text-gray-500">
-                                                    {new Date(order.created_at).toLocaleDateString('es-MX', {
-                                                        day: 'numeric',
-                                                        month: 'short',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    })}
-                                                </p>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                                    <User className="w-4 h-4 text-blue-600" />
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-900">
-                                                        {(order.user as any)?.full_name || 'Cliente'}
-                                                    </p>
-                                                    <p className="text-xs text-gray-500">
-                                                        {(order.user as any)?.email || ''}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center text-sm text-gray-600">
-                                                <MapPin className="w-4 h-4 mr-1 text-gray-400" />
-                                                {order.delivery_address?.city || order.delivery_address?.street || 'Sin destino'}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {getStatusBadge(order.status)}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center justify-end space-x-2">
-                                                <button
-                                                    onClick={() => handleAssignClick(order)}
-                                                    className="inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
-                                                >
-                                                    <Truck className="w-4 h-4 mr-1.5" />
-                                                    Asignar
-                                                </button>
-                                                <button
-                                                    onClick={() => navigate(`/admin/orders/${order.id}`)}
-                                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                                                    title="Ver detalles"
-                                                >
-                                                    <Eye className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </td>
+                    <>
+                        <div className="hidden md:block overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Pedido
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Cliente
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Destino
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Estado
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Acciones
+                                        </th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {pendingOrders.slice(0, 5).map((order) => (
+                                        <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div>
+                                                    <p className="font-semibold text-gray-900">{order.tracking_code}</p>
+                                                    <p className="text-xs text-gray-500">
+                                                        {formatOrderDate(order.created_at)}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center">
+                                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                        <User className="w-4 h-4 text-blue-600" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-900">
+                                                            {(order.user as any)?.full_name || 'Cliente'}
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            {(order.user as any)?.email || ''}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center text-sm text-gray-600">
+                                                    <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                                                    {order.delivery_address?.city || order.delivery_address?.street || 'Sin destino'}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {getStatusBadge(order.status)}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <button
+                                                        onClick={() => handleAssignClick(order)}
+                                                        className="inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                                                    >
+                                                        <Truck className="w-4 h-4 mr-1.5" />
+                                                        Asignar
+                                                    </button>
+                                                    <button
+                                                        onClick={() => navigate(`/admin/orders/${order.id}`)}
+                                                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                                        title="Ver detalles"
+                                                    >
+                                                        <Eye className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="md:hidden space-y-4 p-4">
+                            {pendingOrders.slice(0, 5).map((order) => (
+                                <div
+                                    key={order.id}
+                                    className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
+                                >
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-900">#{order.tracking_code}</p>
+                                            <p className="text-xs text-gray-500">{formatOrderDate(order.created_at)}</p>
+                                        </div>
+                                        {getStatusBadge(order.status)}
+                                    </div>
+
+                                    <div className="mt-4 flex items-center space-x-3">
+                                        <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                                            <User className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {(order.user as any)?.full_name || 'Cliente'}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {(order.user as any)?.email || ''}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 flex items-center text-sm text-gray-600">
+                                        <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                                        <span className="truncate">
+                                            {order.delivery_address?.city || order.delivery_address?.street || 'Sin destino'}
+                                        </span>
+                                    </div>
+
+                                    <div className="mt-4 flex flex-col sm:flex-row sm:space-x-3 space-y-2 sm:space-y-0">
+                                        <button
+                                            onClick={() => handleAssignClick(order)}
+                                            className="flex-1 inline-flex items-center justify-center px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                                        >
+                                            <Truck className="w-4 h-4 mr-1.5" />
+                                            Asignar
+                                        </button>
+                                        <button
+                                            onClick={() => navigate(`/admin/orders/${order.id}`)}
+                                            className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                                        >
+                                            <Eye className="w-4 h-4 mr-1.5" />
+                                            Ver detalles
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
 
                 {pendingOrders.length > 5 && (

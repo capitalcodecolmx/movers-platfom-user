@@ -65,50 +65,59 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Admin-style Header for User Dashboard */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center space-x-3 mb-2">
-                <div className="p-2 bg-indigo-500/20 rounded-lg">
-                  <Package className="w-6 h-6 text-indigo-400" />
+    <>
+      {/* Mobile-first dashboard */}
+      <div className="lg:hidden">
+        <MobileDashboard user={user} />
+      </div>
+
+      {/* Desktop / large screens */}
+      <div className="hidden lg:block min-h-screen bg-gray-100">
+        {/* Admin-style Header for User Dashboard */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="p-2 bg-indigo-500/20 rounded-lg">
+                    <Package className="w-6 h-6 text-indigo-400" />
+                  </div>
+                  <span className="px-3 py-1 bg-indigo-500/20 text-indigo-400 text-sm font-medium rounded-full">
+                    Panel de Control
+                  </span>
                 </div>
-                <span className="px-3 py-1 bg-indigo-500/20 text-indigo-400 text-sm font-medium rounded-full">
-                  Panel de Control
-                </span>
+                <h1 className="text-3xl font-bold text-white">
+                  ¡Hola, {user?.user_metadata?.full_name?.split(' ')[0] || 'Usuario'}! 👋
+                </h1>
+                <p className="text-slate-400 mt-1">Gestiona tus envíos de manera fácil y rápida</p>
               </div>
-              <h1 className="text-3xl font-bold text-white">
-                ¡Hola, {user?.user_metadata?.full_name?.split(' ')[0] || 'Usuario'}! 👋
-              </h1>
-              <p className="text-slate-400 mt-1">Gestiona tus envíos de manera fácil y rápida</p>
-            </div>
-            <div className="hidden sm:flex sm:items-center sm:space-x-3">
-              <button
-                onClick={() => navigate('/orders/create')}
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-900/20"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Nuevo Pedido
-              </button>
+              <div className="hidden sm:flex sm:items-center sm:space-x-3">
+                <button
+                  onClick={() => navigate('/orders/create')}
+                  className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-900/20"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Nuevo Pedido
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Estadísticas */}
-        <DashboardStats user={user} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Estadísticas */}
+          <DashboardStats user={user} />
 
-        {/* Órdenes recientes */}
-        <div className="mt-8">
-          <RecentOrders orders={stats.recentOrders} isLoading={isLoading} />
+          {/* Órdenes recientes */}
+          <div className="mt-8">
+            <RecentOrders orders={stats.recentOrders} isLoading={isLoading} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
+;
 
 export default DashboardPage;
 

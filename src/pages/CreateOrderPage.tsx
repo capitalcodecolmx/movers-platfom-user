@@ -77,6 +77,8 @@ const CreateOrderPage: React.FC = () => {
   // We'll pass a dummy handler or remove it if Step 4 handles it.
   // For consistency with existing code, let's keep the submit handler here but it pulls from store.
 
+  const progressPercentage = ((currentStep - 1) / (steps.length - 1)) * 100;
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -135,7 +137,7 @@ const CreateOrderPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-between sm:flex-col sm:items-end sm:justify-center">
+            <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
               <p className="text-sm text-gray-500">Paso {currentStep} de 4</p>
               <div className="w-24 sm:w-32 bg-gray-200 rounded-full h-2">
                 <div
@@ -151,30 +153,31 @@ const CreateOrderPage: React.FC = () => {
       {/* Indicadores de pasos */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          {/* Vista móvil - Solo iconos */}
-          <div className="flex items-center justify-between sm:hidden">
-            {steps.map((step, index) => (
-              <div
-                key={step.number}
-                className={`flex flex-col items-center ${currentStep >= step.number ? 'opacity-100' : 'opacity-50'
-                  }`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= step.number
-                    ? step.color
-                    : 'bg-gray-200'
-                    } text-white`}
-                >
-                  <step.icon className="w-4 h-4" />
+          {/* Vista móvil - Progreso compacto */}
+          <div className="sm:hidden">
+            <div className="flex items-center justify-between">
+              {steps.map((step) => (
+                <div key={step.number} className="flex flex-1 flex-col items-center text-center">
+                  <div
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep >= step.number
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-500'
+                      }`}
+                  >
+                    {step.number}
+                  </div>
+                  <span className="mt-1 text-[11px] font-medium text-gray-600">
+                    {step.title}
+                  </span>
                 </div>
-                <span className="text-xs text-gray-500 mt-1 text-center">
-                  {step.number}
-                </span>
-                {index < steps.length - 1 && (
-                  <div className="absolute w-full h-0.5 bg-gray-200 top-4 left-1/2 transform translate-x-4" />
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="mt-3 h-1 w-full rounded-full bg-gray-200">
+              <div
+                className="h-full rounded-full bg-blue-600 transition-all duration-300"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
           </div>
 
           {/* Vista desktop - Iconos con texto */}

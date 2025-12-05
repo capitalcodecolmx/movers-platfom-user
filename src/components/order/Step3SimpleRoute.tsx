@@ -135,12 +135,12 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-3">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8">
+        <div className="text-center mb-6 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-3">
             {serviceType === 'delivery' ? '3. Dirección de Entrega' : '3. Recolección en Agua Centro'}
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
             {serviceType === 'delivery'
               ? 'Indica dónde quieres recibir tu pedido'
               : 'Selecciona el Agua Centro donde recogerás tu pedido'}
@@ -151,9 +151,9 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
           {serviceType === 'delivery' && (
             /* Formulario de Dirección de Entrega */
-            <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="w-12 h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-4 shadow-sm">
+            <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-sm">
                   <MdPlace className="w-7 h-7 text-white" />
                 </div>
                 <span className="text-gray-900">
@@ -162,7 +162,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
               </h3>
 
               <div className="space-y-4">
-                <div className="text-sm text-gray-500 mb-4 italic">
+                <div className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-4 italic">
                   Ejemplo: Blvd. Díaz Ordaz 4500, San Pedro Garza García, N.L.
                 </div>
 
@@ -252,9 +252,9 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
           {serviceType === 'pickup' && (
             /* Selección de Agua Centro */
-            <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="w-12 h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-4 shadow-sm">
+            <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-sm">
                   <Store className="w-7 h-7 text-white" />
                 </div>
                 <span className="text-gray-900">
@@ -262,7 +262,7 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                 </span>
               </h3>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {AGUA_CENTROS.map((center) => (
                   <button
                     key={center.id}
