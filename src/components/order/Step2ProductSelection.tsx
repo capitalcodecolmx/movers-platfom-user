@@ -13,6 +13,8 @@ interface Step2ProductSelectionProps {
   onPrev: () => void;
 }
 
+const ITEMS_PER_PAGE = 6;
+
 const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
   onNext,
   onPrev,
@@ -31,12 +33,17 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [presentationFilter, setPresentationFilter] = useState<'all' | string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (products.length === 0) {
       fetchProducts();
     }
   }, [products.length, fetchProducts]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, presentationFilter, viewMode]);
 
   const displayProducts = products.length > 0 ? products : PRODUCTS;
   const orderTotal = getTotalPrice();
@@ -62,6 +69,25 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
 
     return matchesSearch && matchesPresentation;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const paginationInfo = useMemo(() => {
+    if (filteredProducts.length === 0) {
+      return { start: 0, end: 0 };
+    }
+    const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+    const end = Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length);
+    return { start, end };
+  }, [filteredProducts.length, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleQuantityChange = (product: Product, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -210,7 +236,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                  {filteredProducts.map((product) => {
+                  {paginatedProducts.map((product) => {
                     const quantity = orderItems.find(
                       (item) => item.productId === product.id
                     )?.quantity || 0;
@@ -295,7 +321,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {filteredProducts.map((product) => {
+                  {paginatedProducts.map((product) => {
                     const quantity = orderItems.find(
                       (item) => item.productId === product.id
                     )?.quantity || 0;
@@ -356,6 +382,53 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                       </div>
                     );
                   })}
+                </div>
+              )}
+
+              {filteredProducts.length > 0 && (
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-gray-100 rounded-2xl p-3">
+                  <p className="text-sm text-gray-500">
+                    Mostrando {paginationInfo.start} – {paginationInfo.end} de {filteredProducts.length} productos
+                  </p>
+                  {totalPages > 1 && (
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1}
+                        className="px-3 py-1.5 text-sm rounded-full border border-gray-200 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                      >
+                        Anterior
+                      </button>
+                      {Array.from({ length: totalPages }).map((_, index) => {
+                        const page = index + 1;
+                        const isActive = page === currentPage;
+                        return (
+                          <button
+                            type="button"
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`w-9 h-9 rounded-full text-sm font-medium transition ${
+                              isActive
+                                ? 'bg-black text-white'
+                                : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                            }`}
+                            aria-current={isActive ? 'page' : undefined}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages}
+                        className="px-3 py-1.5 text-sm rounded-full border border-gray-200 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                      >
+                        Siguiente
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
