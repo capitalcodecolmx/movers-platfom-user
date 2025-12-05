@@ -37,9 +37,37 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
+// Componente para rutas de administrador
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const { isAdmin, isLoading, role } = useUserRole();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Verificando permisos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin) {
+    console.log('AdminRoute - Access denied. Role:', role);
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 // Componente para verificar rol y redirigir al dashboard correcto
 const DashboardRedirect: React.FC = () => {
-  const { isAdmin, isLoading } = useUserRole();
+  const { isAdmin, isLoading, role } = useUserRole();
 
   if (isLoading) {
     return (
@@ -52,10 +80,14 @@ const DashboardRedirect: React.FC = () => {
     );
   }
 
+  console.log('DashboardRedirect - Role:', role, 'IsAdmin:', isAdmin);
+
   if (isAdmin) {
+    console.log('Redirecting admin to /admin/dashboard');
     return <Navigate to="/admin/dashboard" replace />;
   }
 
+  console.log('Redirecting user to /dashboard');
   return <Navigate to="/dashboard" replace />;
 };
 
@@ -110,44 +142,44 @@ const App: React.FC = () => {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Layout>
                 <AdminDashboardPage />
               </Layout>
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/products"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Layout>
                 <AdminProductsPage />
               </Layout>
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/orders"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Layout>
                 <AdminOrdersPage />
               </Layout>
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/orders/:id"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Layout>
                 <AdminOrderDetailsPage />
               </Layout>
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 

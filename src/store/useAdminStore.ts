@@ -154,23 +154,24 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   fetchOrders: async () => {
     set({ isLoading: true, error: null });
     try {
+      // Use left joins (without !) to handle nullable foreign keys
       const { data, error } = await supabase
         .from('orders')
         .select(`
           *,
-          user:users!user_id (
+          user:user_id (
             id,
             full_name,
             email,
             phone
           ),
-          assigned_repartidor:users!assigned_repartidor_id (
+          assigned_repartidor:assigned_repartidor_id (
             id,
             full_name,
             email,
             phone
           ),
-          vehicle:vehicles!assigned_vehicle_id (
+          vehicle:assigned_vehicle_id (
             id,
             name,
             type,
@@ -181,6 +182,7 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
       if (error) throw error;
 
+      console.log('Fetched orders:', data?.length || 0);
       set({ orders: data as OrderWithDetails[], isLoading: false });
     } catch (error: any) {
       console.error('Error fetching orders:', error);
@@ -195,19 +197,19 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         .from('orders')
         .select(`
           *,
-          user:users!user_id (
+          user:user_id (
             id,
             full_name,
             email,
             phone
           ),
-          assigned_repartidor:users!assigned_repartidor_id (
+          assigned_repartidor:assigned_repartidor_id (
             id,
             full_name,
             email,
             phone
           ),
-          vehicle:vehicles!assigned_vehicle_id (
+          vehicle:assigned_vehicle_id (
             id,
             name,
             type,

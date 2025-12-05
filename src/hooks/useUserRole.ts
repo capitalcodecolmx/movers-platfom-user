@@ -20,10 +20,13 @@ export const useUserRole = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (!user) {
+          console.log('useUserRole - No authenticated user found');
           setRole(null);
           setIsLoading(false);
           return;
         }
+
+        console.log('useUserRole - Fetching role for user:', user.id);
 
         // Obtener el rol desde public.users
         const { data, error: fetchError } = await supabase
@@ -33,11 +36,13 @@ export const useUserRole = () => {
           .single();
 
         if (fetchError) {
-          console.error('Error fetching user role:', fetchError);
+          console.error('Error fetching user role from DB:', fetchError);
           // Fallback a metadata si hay error
           const metadataRole = user.user_metadata?.role as UserRole;
+          console.log('useUserRole - Using metadata fallback role:', metadataRole);
           setRole(metadataRole || 'user');
         } else {
+          console.log('useUserRole - Role from database:', data?.role);
           setRole((data?.role as UserRole) || 'user');
         }
       } catch (err: any) {

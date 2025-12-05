@@ -19,12 +19,8 @@ const DashboardPage: React.FC = () => {
   const { isAdmin, isLoading: roleLoading } = useUserRole();
   const { stats, isLoading } = useDashboardStats();
 
-  // Redirigir admins al dashboard de administración
-  useEffect(() => {
-    if (!roleLoading && isAdmin) {
-      navigate('/admin/dashboard', { replace: true });
-    }
-  }, [isAdmin, roleLoading, navigate]);
+  // NO redirigir admins aquí - DashboardRedirect en main.tsx ya maneja esto
+  // Esto previene loops de redirección
 
   const mainActions = [
     {
