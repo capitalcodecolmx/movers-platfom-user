@@ -1,71 +1,71 @@
 // =====================================================
-// CONFIGURACIÓN DE TARJETAS DE ESTADÍSTICAS
+// CONFIGURACIÓN DE TARJETAS DE ESTADÍSTICAS - ADMIN
+// Focused on order management
 // =====================================================
 
-import { 
-  Package, 
-  Users, 
-  Truck, 
-  DollarSign, 
-  CheckCircle,
+import {
+  Package,
   Clock,
-  ShoppingBag,
+  Truck,
+  CheckCircle,
+  UserX,
   AlertTriangle
 } from 'lucide-react';
 import type { StatCard } from '../types';
 import type { AdminStats } from '../../../../store/useAdminStore';
 
-export const createStatCards = (stats: AdminStats): StatCard[] => [
-  {
-    title: 'Total Órdenes',
-    value: stats.totalOrders,
-    icon: Package,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-    href: '/admin/orders',
-  },
+// Primary stats - Order focused (displayed as large cards)
+export const createPrimaryStats = (stats: AdminStats): StatCard[] => [
   {
     title: 'Órdenes Pendientes',
     value: stats.pendingOrders,
     icon: Clock,
-    color: 'text-yellow-600',
-    bgColor: 'bg-yellow-50',
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-orange-50',
     href: '/admin/orders?status=pending',
+    description: 'Requieren revisión',
   },
   {
     title: 'En Tránsito',
     value: stats.inTransitOrders,
     icon: Truck,
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
+    color: 'text-blue-600',
+    bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
     href: '/admin/orders?status=in_transit',
+    description: 'En camino',
   },
   {
     title: 'Entregadas',
     value: stats.deliveredOrders,
     icon: CheckCircle,
     color: 'text-emerald-600',
-    bgColor: 'bg-emerald-50',
+    bgColor: 'bg-gradient-to-br from-emerald-50 to-green-50',
     href: '/admin/orders?status=delivered',
+    description: 'Completadas',
   },
   {
-    title: 'Total Usuarios',
+    title: 'Total Órdenes',
+    value: stats.totalOrders,
+    icon: Package,
+    color: 'text-indigo-600',
+    bgColor: 'bg-gradient-to-br from-indigo-50 to-purple-50',
+    href: '/admin/orders',
+    description: 'Todas las órdenes',
+  },
+];
+
+// Secondary stats - Supporting info (displayed as smaller cards)
+export const createSecondaryStats = (stats: AdminStats): StatCard[] => [
+  {
+    title: 'Usuarios',
     value: stats.totalUsers,
-    icon: Users,
+    icon: Package,
     color: 'text-purple-600',
     bgColor: 'bg-purple-50',
     href: '/admin/users',
   },
   {
-    title: 'Ingresos Totales',
-    value: `$${stats.totalRevenue.toFixed(2)}`,
-    icon: DollarSign,
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-    href: '/admin/revenue',
-  },
-  {
-    title: 'Vehículos Activos',
+    title: 'Vehículos',
     value: stats.activeVehicles,
     icon: Truck,
     color: 'text-indigo-600',
@@ -73,20 +73,12 @@ export const createStatCards = (stats: AdminStats): StatCard[] => [
     href: '/admin/vehicles',
   },
   {
-    title: 'Total Productos',
-    value: stats.totalProducts,
-    icon: ShoppingBag,
+    title: 'Productos',
+    value: stats.activeProducts,
+    icon: Package,
     color: 'text-cyan-600',
     bgColor: 'bg-cyan-50',
     href: '/admin/products',
-  },
-  {
-    title: 'Productos Activos',
-    value: stats.activeProducts,
-    icon: ShoppingBag,
-    color: 'text-teal-600',
-    bgColor: 'bg-teal-50',
-    href: '/admin/products?filter=active',
   },
   {
     title: 'Stock Bajo',
@@ -96,21 +88,10 @@ export const createStatCards = (stats: AdminStats): StatCard[] => [
     bgColor: 'bg-orange-50',
     href: '/admin/products?filter=low_stock',
   },
-  {
-    title: 'Órdenes de Productos',
-    value: stats.totalProductOrders,
-    icon: Package,
-    color: 'text-pink-600',
-    bgColor: 'bg-pink-50',
-    href: '/admin/orders?type=ecommerce',
-  },
-  {
-    title: 'Ingresos por Productos',
-    value: `$${stats.productRevenue.toFixed(2)}`,
-    icon: DollarSign,
-    color: 'text-emerald-600',
-    bgColor: 'bg-emerald-50',
-    href: '/admin/revenue?type=products',
-  },
 ];
 
+// Legacy export for backward compatibility
+export const createStatCards = (stats: AdminStats): StatCard[] => [
+  ...createPrimaryStats(stats),
+  ...createSecondaryStats(stats),
+];

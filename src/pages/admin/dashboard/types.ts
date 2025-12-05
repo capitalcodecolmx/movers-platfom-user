@@ -11,6 +11,7 @@ export interface StatCard {
   color: string;
   bgColor: string;
   href?: string;
+  description?: string;
 }
 
 export interface QuickAction {
