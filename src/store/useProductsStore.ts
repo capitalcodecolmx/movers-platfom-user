@@ -96,6 +96,7 @@ export const useProductsStore = create<ProductsState>()(
       error: null,
 
       fetchProducts: async () => {
+        console.log('fetchProducts: Starting...');
         set({ isLoading: true, error: null });
         try {
           const { data, error } = await supabase
@@ -103,6 +104,9 @@ export const useProductsStore = create<ProductsState>()(
             .select('*')
             .eq('is_active', true)
             .order('created_at', { ascending: true });
+
+          console.log('fetchProducts: Data received:', data);
+          console.log('fetchProducts: Error:', error);
 
           if (error) throw error;
 
@@ -119,10 +123,11 @@ export const useProductsStore = create<ProductsState>()(
             sabor: p.sabor || undefined,
             presentacion: p.presentacion || '',
             tamaño: p.tamaño || '',
-            tipoAgua: p.tipoAgua || '',
-            tipoProducto: p.tipoProducto || '',
+            tipoAgua: p.tipoagua || '', // Fixed: tipoagua not tipoAgua
+            tipoProducto: p.tipoproducto || '', // Fixed: tipoproducto not tipoProducto
           }));
 
+          console.log('fetchProducts: Transformed products:', transformedProducts);
           set({ products: transformedProducts, isLoading: false });
         } catch (error: any) {
           console.error('Error fetching products:', error);
