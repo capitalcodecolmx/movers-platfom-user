@@ -9,6 +9,7 @@ import { useProductsStore, initializeImageCache } from '../store/useProductsStor
 
 const ProductsPage: React.FC = () => {
     // Subscribe to all state that affects filtering/sorting to ensure reactivity
+    const products = useProductsStore((state) => state.products); // Add this subscription!
     const filters = useProductsStore((state) => state.filters);
     const sortField = useProductsStore((state) => state.sortField);
     const sortDirection = useProductsStore((state) => state.sortDirection);
@@ -21,7 +22,7 @@ const ProductsPage: React.FC = () => {
     // Compute filtered and sorted products reactively
     const filteredAndSortedProducts = React.useMemo(() => {
         return getFilteredAndSortedProducts();
-    }, [filters, sortField, sortDirection, getFilteredAndSortedProducts]);
+    }, [products, filters, sortField, sortDirection, getFilteredAndSortedProducts]); // Add products to dependency array
 
     useEffect(() => {
         // Fetch products from database on mount and subscribe to realtime updates

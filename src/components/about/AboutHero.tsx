@@ -34,7 +34,7 @@ const AboutHero: React.FC = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/about.avif"
+                    src="/about.webp"
                     alt="Nuestra Historia Background"
                     className="w-full h-full object-cover opacity-50"
                 />
@@ -43,7 +43,7 @@ const AboutHero: React.FC = () => {
                 {/* Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05]">
                     <img
-                        src="/LOGO AGUA NUEVO 2.png"
+                        src="/LOGO AGUA NUEVO 2.webp"
                         alt=""
                         className="w-[80%] h-auto object-contain"
                     />

@@ -7,7 +7,7 @@ const CTASection: React.FC = () => {
             {/* Watermark Logo */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <img
-                    src="/LOGO AGUA NUEVO 2.png"
+                    src="/LOGO AGUA NUEVO 2.webp"
                     alt=""
                     className="w-[120%] max-w-none opacity-[0.03] transform -rotate-12 scale-150 blur-sm"
                 />
@@ -66,7 +66,7 @@ const CTASection: React.FC = () => {
                     <div className="md:col-span-1 lg:col-span-2 flex items-center justify-center mt-4 md:mt-0">
                         <div className="relative">
                             <img
-                                src="/BLANQUITA_WATER_STILL_5L.png"
+                                src="/BLANQUITA_WATER_STILL_5L.webp"
                                 alt="Botella de agua"
                                 className="w-full max-w-[140px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[200px] xl:max-w-[240px] 2xl:max-w-[280px] h-auto object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-300 filter brightness-110"
                                 loading="lazy"

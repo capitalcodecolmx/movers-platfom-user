@@ -162,20 +162,24 @@ export const useProductsStore = create<ProductsState>()(
       getFilteredAndSortedProducts: () => {
         const state = get();
         let filtered = [...state.products];
+        console.log('DEBUG: Starting filter. Initial count:', filtered.length);
 
         // Apply filters
         const { filters } = state;
         
         if (filters.marca.length > 0) {
           filtered = filtered.filter(p => filters.marca.includes(p.marca));
+          console.log('DEBUG: After marca filter:', filtered.length);
         }
         
         if (filters.submarca.length > 0) {
           filtered = filtered.filter(p => p.submarca && filters.submarca.includes(p.submarca));
+          console.log('DEBUG: After submarca filter:', filtered.length);
         }
         
         if (filters.sabor.length > 0) {
           filtered = filtered.filter(p => p.sabor && filters.sabor.includes(p.sabor));
+          console.log('DEBUG: After sabor filter:', filtered.length);
         }
         
         if (filters.presentacion.length > 0) {
