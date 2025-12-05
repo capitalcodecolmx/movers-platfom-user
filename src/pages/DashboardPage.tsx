@@ -65,45 +65,44 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50">
-      {/* Versión móvil - Visible solo en pantallas pequeñas */}
-      <div className="block md:hidden">
-        <MobileDashboard user={user} />
-      </div>
-
-      {/* Versión desktop - Visible solo en pantallas grandes */}
-      <div className="hidden md:block">
-        {/* Hero Section con gradiente limpio y patrón sutil */}
-        <div className="relative h-[500px] bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600">
-          {/* Patrón de fondo sutil */}
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: '60px 60px'
-          }}></div>
-
-          {/* Overlay sutil para mejorar legibilidad */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
-
-          {/* Contenido del hero */}
-          <div className="relative z-10 h-full flex items-start pt-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="text-center mb-6">
-                <h1 className="text-4xl font-bold mb-2 drop-shadow-lg text-white">
-                  Dashboard
-                </h1>
-                <p className="text-lg text-white/95 font-medium drop-shadow-md">
-                  Gestiona tus envíos de manera fácil y rápida
-                </p>
+    <div className="min-h-screen bg-gray-100">
+      {/* Admin-style Header for User Dashboard */}
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center space-x-3 mb-2">
+                <div className="p-2 bg-indigo-500/20 rounded-lg">
+                  <Package className="w-6 h-6 text-indigo-400" />
+                </div>
+                <span className="px-3 py-1 bg-indigo-500/20 text-indigo-400 text-sm font-medium rounded-full">
+                  Panel de Control
+                </span>
               </div>
-
-              {/* Estadísticas integradas en el hero */}
-              <DashboardStats user={user} />
+              <h1 className="text-3xl font-bold text-white">
+                ¡Hola, {user?.user_metadata?.full_name?.split(' ')[0] || 'Usuario'}! 👋
+              </h1>
+              <p className="text-slate-400 mt-1">Gestiona tus envíos de manera fácil y rápida</p>
+            </div>
+            <div className="flex items-center space-x-3 hidden sm:flex">
+              <button
+                onClick={() => navigate('/orders/create')}
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-900/20"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Nuevo Pedido
+              </button>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Órdenes recientes con datos reales */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Estadísticas */}
+        <DashboardStats user={user} />
+
+        {/* Órdenes recientes */}
+        <div className="mt-8">
           <RecentOrders orders={stats.recentOrders} isLoading={isLoading} />
         </div>
       </div>

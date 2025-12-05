@@ -69,33 +69,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return location.pathname === path;
   };
 
-  // Styles based on role
-  const sidebarBg = isAdmin
-    ? 'bg-slate-900 border-slate-800'
-    : 'bg-white border-gray-200';
+  // Styles - Unified Dark Theme for ALL users (Admin & User)
+  const sidebarBg = 'bg-slate-900 border-slate-800';
 
-  const sidebarHeaderBg = isAdmin
-    ? 'bg-slate-900'
-    : 'bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-600';
+  const sidebarHeaderBg = 'bg-slate-900';
 
-  const navItemActive = isAdmin
-    ? 'bg-slate-800 text-cyan-400 border-l-4 border-cyan-500'
-    : 'bg-gradient-to-r from-cyan-50 to-blue-50 text-cyan-700 border-l-4 border-cyan-600 shadow-sm';
+  const navItemActive = 'bg-slate-800 text-cyan-400 border-l-4 border-cyan-500';
 
-  const navItemInactive = isAdmin
-    ? 'text-slate-400 hover:bg-slate-800 hover:text-white'
-    : 'text-gray-600 hover:bg-gradient-to-r hover:from-cyan-50/50 hover:to-blue-50/50 hover:text-cyan-700';
+  const navItemInactive = 'text-slate-400 hover:bg-slate-800 hover:text-white';
 
-  const mobileHeaderBg = isAdmin
-    ? 'bg-slate-900'
-    : 'bg-gradient-to-r from-cyan-600 to-blue-600';
+  const mobileHeaderBg = 'bg-slate-900';
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar móvil */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
-        <div className={`fixed inset-y-0 left-0 flex w-64 flex-col shadow-2xl ${isAdmin ? 'bg-slate-900' : 'bg-white'}`}>
+        <div className={`fixed inset-y-0 left-0 flex w-64 flex-col shadow-2xl bg-slate-900`}>
           {/* Header con branding */}
           <div className={`flex h-16 items-center justify-between px-6 ${mobileHeaderBg}`}>
             <Link to={isAdmin ? "/admin/dashboard" : "/dashboard"} className="flex items-center">
@@ -123,15 +113,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }`}
               >
                 <item.icon className={`w-5 h-5 mr-4 ${isActive(item.href)
-                    ? (isAdmin ? 'text-cyan-400' : 'text-cyan-600')
-                    : ''
+                  ? (isAdmin ? 'text-cyan-400' : 'text-cyan-600')
+                  : ''
                   }`} />
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          <div className={`p-6 border-t ${isAdmin ? 'border-slate-800 bg-slate-900' : 'border-gray-200 bg-gradient-to-b from-white to-gray-50'}`}>
+          <div className="p-6 border-t border-slate-800 bg-slate-900">
             <div className="flex items-center space-x-3 mb-4">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md ${isAdmin ? 'bg-slate-800' : 'bg-gradient-to-br from-cyan-500 to-blue-500'
                 }`}>
@@ -148,10 +138,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <button
               onClick={handleSignOut}
-              className={`flex items-center w-full px-4 py-3 text-sm rounded-lg transition-all duration-200 border ${isAdmin
-                  ? 'text-slate-400 hover:bg-slate-800 hover:text-red-400 border-slate-700'
-                  : 'text-gray-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 border-gray-200'
-                }`}
+              className="flex items-center w-full px-4 py-3 text-sm rounded-lg transition-all duration-200 border text-slate-400 hover:bg-slate-800 hover:text-red-400 border-slate-700"
             >
               <MdLogout className="w-4 h-4 mr-3" />
               Cerrar sesión
@@ -174,7 +161,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
           </div>
 
-          <nav className={`flex-1 px-4 py-6 space-y-1 ${isAdmin ? 'bg-slate-900' : 'bg-gradient-to-b from-white to-gray-50/50'}`}>
+          <nav className={`flex-1 px-4 py-6 space-y-1 bg-slate-900`}>
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -183,35 +170,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }`}
               >
                 <item.icon className={`w-5 h-5 mr-4 ${isActive(item.href)
-                    ? (isAdmin ? 'text-cyan-400' : 'text-cyan-600')
-                    : ''
+                  ? (isAdmin ? 'text-cyan-400' : 'text-cyan-600')
+                  : ''
                   }`} />
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          <div className={`p-6 border-t ${isAdmin ? 'border-slate-800 bg-slate-900' : 'border-gray-200 bg-gradient-to-b from-white to-gray-50'}`}>
+          <div className="p-6 border-t border-slate-800 bg-slate-900">
             <div className="flex items-center space-x-3 mb-4">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md ${isAdmin ? 'bg-slate-800' : 'bg-gradient-to-br from-cyan-500 to-blue-500'
-                }`}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-slate-800">
                 <MdPerson className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium truncate ${isAdmin ? 'text-white' : 'text-gray-900'}`}>
+                <p className="text-sm font-medium truncate text-white">
                   {user?.user_metadata?.full_name || 'Usuario'}
                 </p>
-                <p className={`text-xs truncate ${isAdmin ? 'text-slate-400' : 'text-gray-500'}`}>
+                <p className="text-xs truncate text-slate-400">
                   {isAdmin ? 'Administrador' : user?.email}
                 </p>
               </div>
             </div>
             <button
               onClick={handleSignOut}
-              className={`flex items-center w-full px-4 py-3 text-sm rounded-lg transition-all duration-200 border ${isAdmin
-                  ? 'text-slate-400 hover:bg-slate-800 hover:text-red-400 border-slate-700'
-                  : 'text-gray-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 border-gray-200'
-                }`}
+              className="flex items-center w-full px-4 py-3 text-sm rounded-lg transition-all duration-200 border text-slate-400 hover:bg-slate-800 hover:text-red-400 border-slate-700"
             >
               <MdLogout className="w-4 h-4 mr-3" />
               Cerrar sesión
@@ -225,19 +208,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Top bar - Solo para usuarios no-admin dentro de su dashboard que quieran transparencia */}
         {/* Para admin, queremos que sea sólido o combine con el header */}
 
-        <div className={`z-40 ${location.pathname === '/dashboard' && !isAdmin
-            ? 'absolute inset-x-0 top-0 bg-transparent border-transparent'
-            : isAdmin
-              ? 'sticky top-0 bg-slate-900 border-b border-slate-800 lg:hidden' // En desktop admin tiene su propio header en página
-              : 'sticky top-0 bg-gradient-to-r from-white via-cyan-50/30 to-blue-50/30 border-b border-gray-200 backdrop-blur-sm'
-          }`}>
+        <div className={`z-40 sticky top-0 bg-slate-900 border-b border-slate-800 lg:hidden`}>
           <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setSidebarOpen(true)}
                 className={`lg:hidden ${location.pathname === '/dashboard' && !isAdmin
-                    ? 'text-white/70 hover:text-white'
-                    : isAdmin ? 'text-white hover:text-cyan-400' : 'text-cyan-600 hover:text-cyan-700'
+                  ? 'text-white/70 hover:text-white'
+                  : isAdmin ? 'text-white hover:text-cyan-400' : 'text-cyan-600 hover:text-cyan-700'
                   }`}
               >
                 <MdMenu className="w-6 h-6" />
@@ -259,8 +237,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* Notificaciones */}
               <NotificationsDropdown
                 className={`${location.pathname === '/dashboard' && !isAdmin
-                    ? 'text-white/70 hover:text-white'
-                    : isAdmin ? 'text-slate-300 hover:text-white' : 'text-cyan-600 hover:text-cyan-700'
+                  ? 'text-white/70 hover:text-white'
+                  : isAdmin ? 'text-slate-300 hover:text-white' : 'text-cyan-600 hover:text-cyan-700'
                   }`}
               />
 
@@ -268,8 +246,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {!isAdmin && (
                 <div className="flex items-center space-x-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${location.pathname === '/dashboard'
-                      ? 'bg-white/20 backdrop-blur-sm'
-                      : 'bg-gradient-to-br from-cyan-500 to-blue-500 shadow-md'
+                    ? 'bg-white/20 backdrop-blur-sm'
+                    : 'bg-gradient-to-br from-cyan-500 to-blue-500 shadow-md'
                     }`}>
                     <MdPerson className="w-4 h-4 text-white" />
                   </div>
