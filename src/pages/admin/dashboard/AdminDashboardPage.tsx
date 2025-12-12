@@ -95,32 +95,29 @@ const AdminDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Admin Header - Dark theme to distinguish from user dashboard */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gray-50">
+      {/* Minimalistic Admin Header */}
+      <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-2">
-                <div className="p-2 bg-cyan-500/20 rounded-lg">
-                  <Package className="w-6 h-6 text-cyan-400" />
-                </div>
-                <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm font-medium rounded-full">
+                <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg">
                   Administrador
                 </span>
               </div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-bold text-gray-900">
                 Panel de Administración
               </h1>
-              <p className="text-slate-400 mt-1">
+              <p className="text-gray-500 mt-2">
                 Bienvenido, {user?.user_metadata?.full_name || 'Admin'}
               </p>
             </div>
-            <div className="mt-4 md:mt-0 flex items-center space-x-3">
+            <div className="mt-4 md:mt-0 flex items-center">
               <button
                 onClick={handleRefresh}
                 disabled={isLoading}
-                className="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors disabled:opacity-50"
+                className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Actualizar
@@ -144,18 +141,18 @@ const AdminDashboardPage: React.FC = () => {
                 <div
                   key={index}
                   onClick={() => stat.href && navigate(stat.href)}
-                  className={`${stat.bgColor} rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-white/50`}
+                  className="bg-white rounded-lg p-6 cursor-pointer hover:border-gray-300 transition-all duration-300 border border-gray-200"
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
+                      <p className="text-sm font-medium text-gray-500 mb-2">{stat.title}</p>
                       <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                       {stat.description && (
-                        <p className="text-xs text-gray-500 mt-1">{stat.description}</p>
+                        <p className="text-xs text-gray-400 mt-1">{stat.description}</p>
                       )}
                     </div>
-                    <div className={`p-3 rounded-xl bg-white shadow-sm`}>
-                      <StatIcon className={`w-6 h-6 ${stat.color}`} />
+                    <div className="p-2">
+                      <StatIcon className="w-6 h-6 text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -178,7 +175,7 @@ const AdminDashboardPage: React.FC = () => {
           {/* Quick Actions Sidebar */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
               <div className="p-6 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Acciones Rápidas</h3>
               </div>
@@ -189,11 +186,11 @@ const AdminDashboardPage: React.FC = () => {
                     <button
                       key={index}
                       onClick={action.onClick}
-                      className={`w-full ${action.color} text-white rounded-xl p-4 text-left transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg`}
+                      className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-lg p-4 text-left transition-all duration-200"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <div className="p-2 bg-white/20 rounded-lg mr-3">
+                          <div className="p-2 bg-white/10 rounded-lg mr-3">
                             <ActionIcon className="w-5 h-5" />
                           </div>
                           <div>
@@ -210,7 +207,7 @@ const AdminDashboardPage: React.FC = () => {
             </div>
 
             {/* System Stats */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
               <div className="p-6 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Estado del Sistema</h3>
               </div>
@@ -221,11 +218,11 @@ const AdminDashboardPage: React.FC = () => {
                     <div
                       key={index}
                       onClick={() => stat.href && navigate(stat.href)}
-                      className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-gray-100"
                     >
                       <div className="flex items-center">
-                        <div className={`p-2 ${stat.bgColor} rounded-lg mr-3`}>
-                          <StatIcon className={`w-4 h-4 ${stat.color}`} />
+                        <div className="p-2 bg-gray-100 rounded-lg mr-3">
+                          <StatIcon className="w-4 h-4 text-gray-600" />
                         </div>
                         <span className="text-sm font-medium text-gray-700">{stat.title}</span>
                       </div>
@@ -237,12 +234,12 @@ const AdminDashboardPage: React.FC = () => {
             </div>
 
             {/* Info Card */}
-            <div className="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl p-6 text-white">
+            <div className="bg-white rounded-lg p-6 border border-gray-200">
               <div className="flex items-center mb-4">
-                <AlertCircle className="w-5 h-5 mr-2" />
-                <span className="font-semibold">Información</span>
+                <AlertCircle className="w-5 h-5 mr-2 text-gray-500" />
+                <span className="font-semibold text-gray-900">Información</span>
               </div>
-              <p className="text-sm text-white/90 mb-4">
+              <p className="text-sm text-gray-600 mb-4">
                 {stats.pendingOrders > 0
                   ? `Tienes ${stats.pendingOrders} órdenes pendientes que requieren tu atención.`
                   : '¡Excelente! No hay órdenes pendientes de revisión.'
@@ -250,7 +247,7 @@ const AdminDashboardPage: React.FC = () => {
               </p>
               <button
                 onClick={() => navigate('/admin/orders?status=pending')}
-                className="w-full py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors"
+                className="w-full py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 Ver órdenes pendientes
               </button>

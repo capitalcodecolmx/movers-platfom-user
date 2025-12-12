@@ -18,36 +18,28 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
       title: 'Envíos Activos',
       value: stats.activeOrders,
       iconName: 'mdi:package-variant',
-      iconBg: 'bg-blue-500',
-      iconColor: 'text-blue-600',
-      bgClass: 'bg-blue-50',
+      iconColor: 'text-gray-500',
       change: stats.activeOrders > 0 ? 'Sin envíos activos' : 'Sin envíos activos'
     },
     {
       title: 'En Tránsito',
       value: stats.inTransit,
       iconName: 'mdi:truck-delivery',
-      iconBg: 'bg-cyan-500',
-      iconColor: 'text-cyan-600',
-      bgClass: 'bg-cyan-50',
+      iconColor: 'text-gray-500',
       change: stats.inTransit > 0 ? 'Ninguno en tránsito' : 'Ninguno en tránsito'
     },
     {
       title: 'Entregados',
       value: stats.delivered,
       iconName: 'mdi:check-circle',
-      iconBg: 'bg-green-500',
-      iconColor: 'text-green-600',
-      bgClass: 'bg-green-50',
+      iconColor: 'text-gray-500',
       change: `0 completados`
     },
     {
       title: 'Pendientes',
       value: stats.pending,
       iconName: 'mdi:clock-outline',
-      iconBg: 'bg-orange-500',
-      iconColor: 'text-orange-600',
-      bgClass: 'bg-orange-50',
+      iconColor: 'text-gray-500',
       change: stats.pending > 0 ? 'Sin pendientes' : 'Sin pendientes'
     }
   ];
@@ -90,32 +82,30 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
       {statCards.map((stat, index) => (
         <div
           key={index}
-          className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
+          className="bg-white rounded-lg p-8 border border-gray-200 hover:border-gray-300 transition-colors duration-200"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</h3>
-            </div>
-            <div className={`p-3 rounded-lg ${stat.bgClass}`}>
-              <Icon icon={stat.iconName} className={`w-6 h-6 ${stat.iconColor}`} />
-            </div>
+          <div className="flex items-start justify-between mb-4">
+            <Icon icon={stat.iconName} className={`w-6 h-6 ${stat.iconColor}`} />
           </div>
-          <div className="mt-4 flex items-center text-sm">
-            <span className="text-gray-400">{stat.change}</span>
+          <div>
+            <p className="text-sm font-medium text-gray-500 mb-2">{stat.title}</p>
+            <h3 className="text-3xl font-bold text-gray-900">{stat.value}</h3>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <span className="text-xs text-gray-400">{stat.change}</span>
           </div>
         </div>
       ))}
 
       {/* "Gastado este mes" moved to a card */}
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-6 border border-slate-700 shadow-sm text-white md:col-span-2 lg:col-span-1">
+      <div className="bg-white rounded-lg p-8 border border-gray-900 md:col-span-2 lg:col-span-1">
         <div className="flex flex-col h-full justify-between">
           <div>
-            <p className="text-slate-400 text-sm font-medium">Gastado este mes</p>
-            <h3 className="text-3xl font-bold mt-2">${stats.thisMonthSpent.toFixed(2)}</h3>
+            <p className="text-gray-500 text-sm font-medium mb-2">Gastado este mes</p>
+            <h3 className="text-3xl font-bold text-gray-900">${stats.thisMonthSpent.toFixed(2)}</h3>
           </div>
-          <div className="mt-4 pt-4 border-t border-slate-700">
-            <span className="text-xs text-slate-500">Actualizado recientemente</span>
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <span className="text-xs text-gray-400">Actualizado recientemente</span>
           </div>
         </div>
       </div>
