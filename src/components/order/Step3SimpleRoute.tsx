@@ -319,34 +319,90 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
           {serviceType === 'pickup' && (
             /* Selección de Agua Centro */
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {AGUA_CENTROS.map((center) => (
+            <div className="grid grid-cols-1 gap-6">
+
+              {/* Search and Sort Controls */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Buscar sucursal..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none"
+                  />
+                </div>
+
                 <button
-                  key={center.id}
-                  onClick={() => handleSelectLocation(center)}
-                  className={`group relative p-6 border rounded-2xl text-left transition-all duration-300 ${pickupLocation?.id === center.id
-                    ? 'border-black bg-gray-50 ring-1 ring-black'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                  onClick={handleLocateMe}
+                  className={`flex items-center justify-center px-6 py-4 rounded-2xl font-medium transition-all ${userLocation
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                      : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
                     }`}
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className={`p-3 rounded-xl ${pickupLocation?.id === center.id ? 'bg-black text-white' : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'}`}>
-                      <Store className="w-5 h-5" />
-                    </div>
-                    {pickupLocation?.id === center.id && (
-                      <MdCheckCircle className="w-6 h-6 text-black" />
-                    )}
-                  </div>
-
-                  <h4 className="font-bold text-gray-900 text-lg mb-1">{center.name}</h4>
-                  <p className="text-sm text-gray-500">{center.address}</p>
-
-                  <div className="mt-4 inline-flex items-center text-xs font-medium text-gray-500 bg-white border border-gray-100 px-2 py-1 rounded-lg">
-                    <Navigation className="w-3 h-3 mr-1" />
-                    {center.distance}
-                  </div>
+                  {isLocating ? (
+                    <span className="animate-spin mr-2">⟳</span>
+                  ) : (
+                    <Navigation className={`w-5 h-5 mr-2 ${userLocation ? 'fill-current' : ''}`} />
+                  )}
+                  {userLocation ? 'Cerca de mí' : 'Usar mi ubicación'}
                 </button>
-              ))}
+              </div>
+
+              {/* Stores Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                {sortedLocations.length > 0 ? (
+                  sortedLocations.map((center) => (
+                    <button
+                      key={center.id}
+                      onClick={() => handleSelectLocation(center)}
+                      className={`group relative p-6 border rounded-2xl text-left transition-all duration-300 ${pickupLocation?.id === center.id
+                          ? 'border-gray-900 bg-gray-900 text-white shadow-xl scale-[1.01]'
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                        }`}
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div className={`p-3 rounded-xl transition-colors ${pickupLocation?.id === center.id
+                            ? 'bg-white/10 text-white'
+                            : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'
+                          }`}>
+                          <Store className="w-5 h-5" />
+                        </div>
+                        {pickupLocation?.id === center.id && (
+                          <MdCheckCircle className="w-6 h-6 text-white" />
+                        )}
+                      </div>
+
+                      <h4 className={`font-bold text-lg mb-1 ${pickupLocation?.id === center.id ? 'text-white' : 'text-gray-900'
+                        }`}>
+                        {center.name}
+                      </h4>
+                      <p className={`text-sm mb-4 ${pickupLocation?.id === center.id ? 'text-gray-300' : 'text-gray-500'
+                        }`}>
+                        {center.address}
+                      </p>
+
+                      <div className={`inline-flex items-center text-xs font-medium px-2 py-1 rounded-lg ${pickupLocation?.id === center.id
+                          ? 'bg-white/10 text-gray-200 border border-white/10'
+                          : 'bg-gray-50 text-gray-500 border border-gray-100'
+                        }`}>
+                        <Navigation className="w-3 h-3 mr-1" />
+                        {userLocation ? (
+                          // Just a demo relative distance diff logic if we had real distance
+                          `${getDistanceFromLatLonInKm(userLocation.lat, userLocation.lng, center.lat, center.lng).toFixed(1)} km`
+                        ) : center.distance}
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="col-span-full py-12 text-center text-gray-500">
+                    <p>No se encontraron sucursales con ese nombre.</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
