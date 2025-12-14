@@ -119,102 +119,67 @@ const CreateOrderPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center space-x-3 sm:space-x-4">
+      {/* Minimal Header */}
+      <div className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-16 flex items-center justify-between">
+            <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                className="p-2 -ml-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-200 group"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
               </button>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hacer Nuevo Pedido</h1>
-                <p className="text-gray-600 mt-1 text-sm sm:text-base">
-                  Sigue los pasos para solicitar tu envío
-                </p>
+                <h1 className="text-lg font-semibold text-gray-900 tracking-tight">Nueva Orden</h1>
+                <p className="text-xs text-gray-500">Paso {currentStep} de {steps.length}</p>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
-              <p className="text-sm text-gray-500">Paso {currentStep} de 4</p>
-              <div className="w-24 sm:w-32 bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(currentStep / 4) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Indicadores de pasos */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          {/* Vista móvil - Progreso compacto */}
-          <div className="sm:hidden">
-            <div className="flex items-center justify-between">
-              {steps.map((step) => (
-                <div key={step.number} className="flex flex-1 flex-col items-center text-center">
-                  <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep >= step.number
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-500'
-                      }`}
-                  >
-                    {step.number}
+            {/* Desktop Stepper - Minimal */}
+            <div className="hidden md:flex items-center gap-2">
+              {steps.map((step, index) => (
+                <div key={step.number} className="flex items-center">
+                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentStep === step.number
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : currentStep > step.number
+                      ? 'text-green-600 bg-green-50'
+                      : 'text-gray-400'
+                    }`}>
+                    {currentStep > step.number ? (
+                      <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    ) : (
+                      <span className={`text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border ${currentStep === step.number ? 'border-transparent bg-white/20' : 'border-gray-200'
+                        }`}>
+                        {step.number}
+                      </span>
+                    )}
+                    <span className="text-sm font-medium">{step.title}</span>
                   </div>
-                  <span className="mt-1 text-[11px] font-medium text-gray-600">
-                    {step.title}
-                  </span>
+                  {index < steps.length - 1 && (
+                    <div className={`w-8 h-[1px] ${currentStep > index + 1 ? 'bg-green-500' : 'bg-gray-100'}`} />
+                  )}
                 </div>
               ))}
             </div>
-            <div className="mt-3 h-1 w-full rounded-full bg-gray-200">
-              <div
-                className="h-full rounded-full bg-blue-600 transition-all duration-300"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
           </div>
 
-          {/* Vista desktop - Iconos con texto */}
-          <div className="hidden sm:flex items-center justify-between">
-            {steps.map((step, index) => (
-              <div
-                key={step.number}
-                className={`flex items-center space-x-3 ${currentStep >= step.number ? 'opacity-100' : 'opacity-50'
-                  }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= step.number
-                    ? step.color
-                    : 'bg-gray-200'
-                    } text-white`}
-                >
-                  <step.icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {step.title}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {step.description}
-                  </p>
-                </div>
-                {index < steps.length - 1 && (
-                  <div className="w-8 h-0.5 bg-gray-200 mx-4" />
-                )}
-              </div>
-            ))}
+          {/* Mobile Progress Bar */}
+          <div className="md:hidden absolute bottom-0 left-0 w-full h-[2px] bg-gray-100">
+            <div
+              className="h-full bg-gray-900 transition-all duration-500 ease-out"
+              style={{ width: `${((currentStep) / 4) * 100}%` }}
+            />
           </div>
         </div>
       </div>
 
       {/* Contenido del paso actual */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {renderStep()}
       </div>
 

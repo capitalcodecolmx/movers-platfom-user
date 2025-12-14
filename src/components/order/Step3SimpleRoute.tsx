@@ -135,116 +135,116 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8">
-        <div className="text-center mb-6 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-3">
-            {serviceType === 'delivery' ? '3. Dirección de Entrega' : '3. Recolección en Agua Centro'}
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sm:p-12">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+            {serviceType === 'delivery' ? 'Dirección de Entrega' : 'Recolección'}
           </h2>
-          <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
+          <p className="text-gray-500 text-lg">
             {serviceType === 'delivery'
               ? 'Indica dónde quieres recibir tu pedido'
               : 'Selecciona el Agua Centro donde recogerás tu pedido'}
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-3xl mx-auto">
 
           {serviceType === 'delivery' && (
             /* Formulario de Dirección de Entrega */
-            <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-sm">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-sm">
-                  <MdPlace className="w-7 h-7 text-white" />
+            <div className="bg-gray-50 rounded-3xl p-6 sm:p-8">
+              <div className="flex items-center mb-6 text-gray-900">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3 shadow-sm border border-gray-100">
+                  <MdPlace className="w-5 h-5" />
                 </div>
-                <span className="text-gray-900">
-                  Datos de envío
-                </span>
-              </h3>
+                <h3 className="text-lg font-semibold">Datos de envío</h3>
+              </div>
 
-              <div className="space-y-4">
-                <div className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-4 italic">
-                  Ejemplo: Blvd. Díaz Ordaz 4500, San Pedro Garza García, N.L.
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Calle */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Calle *</label>
+                  <input
+                    type="text"
+                    value={deliveryStreet}
+                    onChange={(e) => setDeliveryStreet(e.target.value)}
+                    placeholder="Ej: Blvd. Díaz Ordaz"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none"
+                  />
+                  {errors.deliveryStreet && <p className="text-red-500 text-sm mt-1 ml-1">{errors.deliveryStreet}</p>}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Calle */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Calle *</label>
-                    <input
-                      type="text"
-                      value={deliveryStreet}
-                      onChange={(e) => setDeliveryStreet(e.target.value)}
-                      placeholder="Ej: Blvd. Díaz Ordaz"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    />
-                    {errors.deliveryStreet && <p className="text-red-500 text-sm mt-1">{errors.deliveryStreet}</p>}
-                  </div>
+                {/* Número */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Número *</label>
+                  <input
+                    type="text"
+                    value={deliveryNumber}
+                    onChange={(e) => setDeliveryNumber(e.target.value)}
+                    placeholder="Ej: 4500"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none"
+                  />
+                  {errors.deliveryNumber && <p className="text-red-500 text-sm mt-1 ml-1">{errors.deliveryNumber}</p>}
+                </div>
 
-                  {/* Número */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Número *</label>
-                    <input
-                      type="text"
-                      value={deliveryNumber}
-                      onChange={(e) => setDeliveryNumber(e.target.value)}
-                      placeholder="Ej: 4500"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    />
-                    {errors.deliveryNumber && <p className="text-red-500 text-sm mt-1">{errors.deliveryNumber}</p>}
-                  </div>
+                {/* Colonia */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Colonia</label>
+                  <input
+                    type="text"
+                    value={deliveryNeighborhood}
+                    onChange={(e) => setDeliveryNeighborhood(e.target.value)}
+                    placeholder="Ej: Valle Oriente"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none"
+                  />
+                </div>
 
-                  {/* Colonia */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Colonia</label>
-                    <input
-                      type="text"
-                      value={deliveryNeighborhood}
-                      onChange={(e) => setDeliveryNeighborhood(e.target.value)}
-                      placeholder="Ej: Valle Oriente"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Ciudad */}
-                  <div>
+                {/* Ciudad - Assuming CityAutocomplete accepts similar styling classes or we wrap it */}
+                <div>
+                  <div className="relative">
                     <CityAutocomplete
                       value={deliveryCity}
                       onChange={setDeliveryCity}
                       state={deliveryState}
-                      placeholder="Ej: San Pedro, Reynosa"
+                      placeholder="Ej: San Pedro"
                       label="Ciudad"
                       required={true}
+                    // Note: CityAutocomplete might need internal style updates if it doesn't accept className or uses hardcoded styles
                     />
-                    {errors.deliveryCity && <p className="text-red-500 text-sm mt-1">{errors.deliveryCity}</p>}
                   </div>
+                  {errors.deliveryCity && <p className="text-red-500 text-sm mt-1 ml-1">{errors.deliveryCity}</p>}
+                </div>
 
-                  {/* Estado */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Estado *</label>
+                {/* Estado */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Estado *</label>
+                  <div className="relative">
                     <select
                       value={deliveryState}
                       onChange={(e) => setDeliveryState(e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none bg-white"
+                      className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none appearance-none"
                     >
                       <option value="">Selecciona un estado</option>
                       {MEXICAN_STATES.map(state => (
                         <option key={state.abbrev} value={state.name}>{state.name}</option>
                       ))}
                     </select>
-                    {errors.deliveryState && <p className="text-red-500 text-sm mt-1">{errors.deliveryState}</p>}
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </div>
                   </div>
+                  {errors.deliveryState && <p className="text-red-500 text-sm mt-1 ml-1">{errors.deliveryState}</p>}
+                </div>
 
-                  {/* Código Postal */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Código Postal</label>
-                    <input
-                      type="text"
-                      value={deliveryPostalCode}
-                      onChange={(e) => setDeliveryPostalCode(e.target.value)}
-                      placeholder="Ej: 66200"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    />
-                  </div>
+                {/* Código Postal */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Código Postal</label>
+                  <input
+                    type="text"
+                    value={deliveryPostalCode}
+                    onChange={(e) => setDeliveryPostalCode(e.target.value)}
+                    placeholder="Ej: 66200"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-gray-100 focus:border-gray-300 transition-all outline-none"
+                  />
                 </div>
               </div>
             </div>
@@ -252,58 +252,53 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
 
           {serviceType === 'pickup' && (
             /* Selección de Agua Centro */
-            <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-sm">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-sm">
-                  <Store className="w-7 h-7 text-white" />
-                </div>
-                <span className="text-gray-900">
-                  Elige tu sucursal
-                </span>
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {AGUA_CENTROS.map((center) => (
-                  <button
-                    key={center.id}
-                    onClick={() => handleSelectLocation(center)}
-                    className={`p-4 border-2 rounded-xl text-left transition-all ${pickupLocation?.id === center.id
-                        ? 'border-gray-800 bg-white shadow-md'
-                        : 'border-white bg-white hover:border-gray-200'
-                      }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="font-bold text-gray-900">{center.name}</h4>
-                        <p className="text-sm text-gray-500 mt-1">{center.address}</p>
-                      </div>
-                      {pickupLocation?.id === center.id && (
-                        <MdCheckCircle className="w-6 h-6 text-green-600" />
-                      )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {AGUA_CENTROS.map((center) => (
+                <button
+                  key={center.id}
+                  onClick={() => handleSelectLocation(center)}
+                  className={`group relative p-6 border rounded-2xl text-left transition-all duration-300 ${pickupLocation?.id === center.id
+                      ? 'border-black bg-gray-50 ring-1 ring-black'
+                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                    }`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className={`p-3 rounded-xl ${pickupLocation?.id === center.id ? 'bg-black text-white' : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'}`}>
+                      <Store className="w-5 h-5" />
                     </div>
-                  </button>
-                ))}
-              </div>
-              {errors.pickupLocation && <p className="text-red-500 text-sm mt-4 text-center">{errors.pickupLocation}</p>}
+                    {pickupLocation?.id === center.id && (
+                      <MdCheckCircle className="w-6 h-6 text-black" />
+                    )}
+                  </div>
+
+                  <h4 className="font-bold text-gray-900 text-lg mb-1">{center.name}</h4>
+                  <p className="text-sm text-gray-500">{center.address}</p>
+
+                  <div className="mt-4 inline-flex items-center text-xs font-medium text-gray-500 bg-white border border-gray-100 px-2 py-1 rounded-lg">
+                    <Navigation className="w-3 h-3 mr-1" />
+                    {center.distance}
+                  </div>
+                </button>
+              ))}
             </div>
           )}
 
         </div>
 
-        {/* Botones de navegación - Estilo Apple */}
-        <div className="mt-8 flex justify-between items-center">
+        {/* Botones de navegación - Clean */}
+        <div className="mt-10 flex justify-between items-center max-w-3xl mx-auto border-t border-gray-100 pt-6">
           <button
             onClick={onPrev}
-            className="text-gray-500 hover:text-gray-700 transition-colors text-sm font-medium"
+            className="text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium px-4 py-2"
           >
-            ← Anterior
+            ← Volver
           </button>
 
           <button
             onClick={handleNext}
-            className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors text-sm"
+            className="bg-gray-900 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-black transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl text-sm"
           >
-            Continuar
+            Continuar para Pagar
           </button>
         </div>
       </div>

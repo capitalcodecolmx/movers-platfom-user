@@ -55,63 +55,58 @@ const Step1PackageDetails: React.FC<Step1PackageDetailsProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8">
-        <div className="text-center mb-6 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 mb-2 sm:mb-3">
-            1. Elige tu tipo de servicio
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sm:p-12">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+            ¿Cómo deseas recibir tu pedido?
           </h2>
-          <p className="text-gray-500 text-sm sm:text-base lg:text-lg">
-            Selecciona el tipo de servicio que mejor se adapte a tus necesidades de envío
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">
+            Podemos llevarlo hasta tu puerta o puedes recogerlo en una de nuestras sucursales.
           </p>
         </div>
 
         <div className="space-y-6 sm:space-y-8">
-          {/* Tipos de servicio - Estilo Apple con React Icons */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {serviceTypes.map((service) => {
               const IconComponent = service.icon;
+              const isSelected = serviceType === service.id;
+
               return (
                 <button
                   key={service.id}
                   onClick={() => setServiceType(service.id as any)}
-                  className={`relative p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 text-left group border-2 ${serviceType === service.id
-                    ? 'bg-gray-800 border-gray-800 shadow-lg scale-105'
-                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
+                  className={`group relative p-8 rounded-3xl text-left transition-all duration-300 ${isSelected
+                    ? 'bg-gray-900 text-white shadow-xl scale-[1.02] ring-0'
+                    : 'bg-white hover:bg-gray-50 border border-gray-100 hover:border-gray-200 hover:shadow-lg'
                     }`}
                 >
-                  {/* Icono con gradiente */}
-                  <div className={`mb-3 sm:mb-4 lg:mb-6 transition-all duration-300 ${serviceType === service.id
-                    ? 'text-white'
-                    : `text-gray-600 group-hover:scale-110`
+                  {/* Icono */}
+                  <div className={`mb-6 p-4 rounded-2xl w-fit transition-all duration-300 ${isSelected
+                    ? 'bg-white/10 text-white'
+                    : 'bg-gray-100 text-gray-900 group-hover:scale-110'
                     }`}>
-                    <IconComponent className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" />
+                    <IconComponent className="w-8 h-8" />
                   </div>
 
-                  {/* Título */}
-                  <h3 className={`font-semibold text-base sm:text-lg mb-2 sm:mb-3 transition-colors duration-300 ${serviceType === service.id ? 'text-white' : 'text-gray-900'
-                    }`}>
-                    {service.name}
-                  </h3>
+                  {/* Título y Texto */}
+                  <div className="space-y-2">
+                    <h3 className={`text-xl font-bold tracking-tight ${isSelected ? 'text-white' : 'text-gray-900'
+                      }`}>
+                      {service.name}
+                    </h3>
+                    <p className={`text-sm leading-relaxed ${isSelected ? 'text-gray-300' : 'text-gray-500'
+                      }`}>
+                      {service.description}
+                    </p>
+                  </div>
 
-                  {/* Descripción */}
-                  <p className={`text-xs sm:text-sm mb-2 sm:mb-4 leading-relaxed transition-colors duration-300 ${serviceType === service.id ? 'text-gray-300' : 'text-gray-600'
+                  {/* Check Indicator */}
+                  <div className={`absolute top-6 right-6 transition-all duration-300 ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
                     }`}>
-                    {service.description}
-                  </p>
-
-                  {/* Ejemplo */}
-                  <p className={`text-xs italic transition-colors duration-300 ${serviceType === service.id ? 'text-gray-400' : 'text-gray-500'
-                    }`}>
-                    {service.example}
-                  </p>
-
-                  {/* Indicador de selección */}
-                  {serviceType === service.id && (
-                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full flex items-center justify-center shadow-md">
-                      <MdCheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-gray-800" />
+                    <div className="bg-white rounded-full p-1">
+                      <MdCheckCircle className="w-6 h-6 text-black" />
                     </div>
-                  )}
-
+                  </div>
                 </button>
               );
             })}
