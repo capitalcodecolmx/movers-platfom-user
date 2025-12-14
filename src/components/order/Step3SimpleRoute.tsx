@@ -50,9 +50,16 @@ const MEXICAN_STATES = [
 ];
 
 const AGUA_CENTROS = [
-  { id: 1, name: 'Agua Centro Matriz', address: 'Av. Principal 123, Centro, Monterrey, NL', distance: '2.5 km' },
-  { id: 2, name: 'Agua Centro Norte', address: 'Carr. Laredo 450, Escobedo, NL', distance: '8.1 km' },
-  { id: 3, name: 'Agua Centro Sur', address: 'Av. Garza Sada 3000, Monterrey, NL', distance: '5.3 km' },
+  { id: 1, name: 'Agua Centro Río Purificación', address: 'Calle Nueva Ciudad Guerrero esq. #867. Prol. Río Purificación, col. Revolución Obrera, Reynosa, Tamps.', distance: '1.2 km' },
+  { id: 2, name: 'Agua Centro Cumbres', address: 'Av. Mil Cumbres 960, Las Cumbres, 88740 Reynosa, Tamps.', distance: '3.5 km' },
+  { id: 3, name: 'Agua Centro Las Fuentes', address: 'Blvd. Las Fuentes 913, Aztlán, 88740 Reynosa, Tamps.', distance: '4.1 km' },
+  { id: 4, name: 'Agua Centro Calle 20', address: 'Calle 20, Veinte 117, Aztlán, 88740 Reynosa, Tamps.', distance: '2.8 km' },
+  { id: 5, name: 'Agua Centro Petrolera', address: 'Poza Rica 1203, Refinería, 88640 Reynosa, Tamps.', distance: '5.6 km' },
+  { id: 6, name: 'Agua Centro Vista Hermosa', address: 'Av. Vista Hermosa y C. 13, Vista Hermosa, 88710 Reynosa, Tamps.', distance: '6.2 km' },
+  { id: 7, name: 'Agua Centro Pedro J. Méndez', address: 'Enrique Canseco y C. 13, Pedro J. Méndez, 88799 Reynosa, Tamps.', distance: '7.4 km' },
+  { id: 8, name: 'Agua Centro Hielo', address: 'Jalapa esq. Herón Ramírez, Col. Rodríguez, Reynosa, Tamps.', distance: '1.9 km' },
+  { id: 9, name: 'Agua Centro Lomas', address: 'José de Rivera, Lomas de Jarachina Sur, 88730  Reynosa, Tamps.', distance: '8.5 km' },
+  { id: 10, name: 'Agua Centro Cavazos', address: 'Calle Amado Nervo 510, Los Cavazos, 88720 Reynosa, Tamps.', distance: '9.1 km' },
 ];
 
 const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
@@ -258,8 +265,8 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
                   key={center.id}
                   onClick={() => handleSelectLocation(center)}
                   className={`group relative p-6 border rounded-2xl text-left transition-all duration-300 ${pickupLocation?.id === center.id
-                      ? 'border-black bg-gray-50 ring-1 ring-black'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                    ? 'border-black bg-gray-50 ring-1 ring-black'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                     }`}
                 >
                   <div className="flex justify-between items-start mb-2">
