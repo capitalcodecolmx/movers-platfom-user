@@ -50,16 +50,16 @@ const MEXICAN_STATES = [
 ];
 
 const AGUA_CENTROS = [
-  { id: 1, name: 'Agua Centro Río Purificación', address: 'Calle Nueva Ciudad Guerrero esq. #867. Prol. Río Purificación, col. Revolución Obrera, Reynosa, Tamps.', distance: '1.2 km' },
-  { id: 2, name: 'Agua Centro Cumbres', address: 'Av. Mil Cumbres 960, Las Cumbres, 88740 Reynosa, Tamps.', distance: '3.5 km' },
-  { id: 3, name: 'Agua Centro Las Fuentes', address: 'Blvd. Las Fuentes 913, Aztlán, 88740 Reynosa, Tamps.', distance: '4.1 km' },
-  { id: 4, name: 'Agua Centro Calle 20', address: 'Calle 20, Veinte 117, Aztlán, 88740 Reynosa, Tamps.', distance: '2.8 km' },
-  { id: 5, name: 'Agua Centro Petrolera', address: 'Poza Rica 1203, Refinería, 88640 Reynosa, Tamps.', distance: '5.6 km' },
-  { id: 6, name: 'Agua Centro Vista Hermosa', address: 'Av. Vista Hermosa y C. 13, Vista Hermosa, 88710 Reynosa, Tamps.', distance: '6.2 km' },
-  { id: 7, name: 'Agua Centro Pedro J. Méndez', address: 'Enrique Canseco y C. 13, Pedro J. Méndez, 88799 Reynosa, Tamps.', distance: '7.4 km' },
-  { id: 8, name: 'Agua Centro Hielo', address: 'Jalapa esq. Herón Ramírez, Col. Rodríguez, Reynosa, Tamps.', distance: '1.9 km' },
-  { id: 9, name: 'Agua Centro Lomas', address: 'José de Rivera, Lomas de Jarachina Sur, 88730  Reynosa, Tamps.', distance: '8.5 km' },
-  { id: 10, name: 'Agua Centro Cavazos', address: 'Calle Amado Nervo 510, Los Cavazos, 88720 Reynosa, Tamps.', distance: '9.1 km' },
+  { id: 1, name: 'Agua Centro Río Purificación', address: 'Calle Nueva Ciudad Guerrero esq. #867. Prol. Río Purificación, col. Revolución Obrera, Reynosa, Tamps.', distance: '1.2 km', lat: 26.0620, lng: -98.2930 },
+  { id: 2, name: 'Agua Centro Cumbres', address: 'Av. Mil Cumbres 960, Las Cumbres, 88740 Reynosa, Tamps.', distance: '3.5 km', lat: 26.0640, lng: -98.3280 },
+  { id: 3, name: 'Agua Centro Las Fuentes', address: 'Blvd. Las Fuentes 913, Aztlán, 88740 Reynosa, Tamps.', distance: '4.1 km', lat: 26.0710, lng: -98.3150 },
+  { id: 4, name: 'Agua Centro Calle 20', address: 'Calle 20, Veinte 117, Aztlán, 88740 Reynosa, Tamps.', distance: '2.8 km', lat: 26.0750, lng: -98.3090 },
+  { id: 5, name: 'Agua Centro Petrolera', address: 'Poza Rica 1203, Refinería, 88640 Reynosa, Tamps.', distance: '5.6 km', lat: 26.0580, lng: -98.3400 },
+  { id: 6, name: 'Agua Centro Vista Hermosa', address: 'Av. Vista Hermosa y C. 13, Vista Hermosa, 88710 Reynosa, Tamps.', distance: '6.2 km', lat: 26.0510, lng: -98.3520 },
+  { id: 7, name: 'Agua Centro Pedro J. Méndez', address: 'Enrique Canseco y C. 13, Pedro J. Méndez, 88799 Reynosa, Tamps.', distance: '7.4 km', lat: 26.0420, lng: -98.3650 },
+  { id: 8, name: 'Agua Centro Hielo', address: 'Jalapa esq. Herón Ramírez, Col. Rodríguez, Reynosa, Tamps.', distance: '1.9 km', lat: 26.0850, lng: -98.2980 },
+  { id: 9, name: 'Agua Centro Lomas', address: 'José de Rivera, Lomas de Jarachina Sur, 88730  Reynosa, Tamps.', distance: '8.5 km', lat: 26.0350, lng: -98.3800 },
+  { id: 10, name: 'Agua Centro Cavazos', address: 'Calle Amado Nervo 510, Los Cavazos, 88720 Reynosa, Tamps.', distance: '9.1 km', lat: 26.0280, lng: -98.3950 },
 ];
 
 const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
@@ -71,11 +71,9 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
     setPickupLocation,
     setDeliveryAddress,
     pickupLocation,
-    deliveryAddress: storedDeliveryAddress // Assuming string in store for now, but we handle components here locally
+    deliveryAddress: storedDeliveryAddress
   } = useOrderStore();
 
-  // Estados para campos de entrega (Domicilio)
-  // Decompose stored address if needed or just keep local state and update store on Next
   const [deliveryStreet, setDeliveryStreet] = useState('');
   const [deliveryNumber, setDeliveryNumber] = useState('');
   const [deliveryNeighborhood, setDeliveryNeighborhood] = useState('');
@@ -83,10 +81,72 @@ const Step3SimpleRoute: React.FC<Step3SimpleRouteProps> = ({
   const [deliveryState, setDeliveryState] = useState('');
   const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
 
-  // Estados para validación
+  // Search and Sort states
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortedLocations, setSortedLocations] = useState(AGUA_CENTROS);
+  const [isLocating, setIsLocating] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number, lng: number } | null>(null);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Initialize fields if store has data (optional, skipping for simplicity unless persistent)
+  // Filter locations based on search
+  useEffect(() => {
+    let filtered = AGUA_CENTROS.filter(center =>
+      center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      center.address.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (userLocation) {
+      filtered = filtered.sort((a, b) => {
+        const distA = getDistanceFromLatLonInKm(userLocation.lat, userLocation.lng, a.lat, a.lng);
+        const distB = getDistanceFromLatLonInKm(userLocation.lat, userLocation.lng, b.lat, b.lng);
+        return distA - distB;
+      });
+    }
+
+    setSortedLocations(filtered);
+  }, [searchTerm, userLocation]);
+
+  const handleLocateMe = () => {
+    setIsLocating(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setIsLocating(false);
+        },
+        (error) => {
+          console.error("Error obtaining location", error);
+          setIsLocating(false);
+          // Could set an error state here specifically for location
+        }
+      );
+    } else {
+      setIsLocating(false);
+      alert("La geolocalización no es soportada por este navegador.");
+    }
+  };
+
+  const getDistanceFromLatLonInKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  const deg2rad = (deg: number) => {
+    return deg * (Math.PI / 180)
+  }
 
   // Función para construir dirección completa
   const buildAddress = (street: string, number: string, neighborhood: string, city: string, state: string, postalCode?: string) => {
