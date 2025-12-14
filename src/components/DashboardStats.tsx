@@ -15,40 +15,33 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
 
   const statCards = [
     {
-      title: 'Envíos Activos',
-      value: stats.activeOrders,
-      iconName: 'mdi:package-variant',
-      iconColor: 'text-gray-500',
-      change: stats.activeOrders > 0 ? 'Sin envíos activos' : 'Sin envíos activos'
-    },
-    {
-      title: 'En Tránsito',
-      value: stats.inTransit,
-      iconName: 'mdi:truck-delivery',
-      iconColor: 'text-gray-500',
-      change: stats.inTransit > 0 ? 'Ninguno en tránsito' : 'Ninguno en tránsito'
-    },
-    {
-      title: 'Entregados',
+      title: 'Pedidos Entregados',
       value: stats.delivered,
       iconName: 'mdi:check-circle',
-      iconColor: 'text-gray-500',
-      change: `0 completados`
+      iconColor: 'text-green-500',
+      change: 'Total completados'
     },
     {
-      title: 'Pendientes',
-      value: stats.pending,
-      iconName: 'mdi:clock-outline',
-      iconColor: 'text-gray-500',
-      change: stats.pending > 0 ? 'Sin pendientes' : 'Sin pendientes'
+      title: 'Pedidos por Entregar',
+      value: stats.activeOrders,
+      iconName: 'mdi:truck-delivery',
+      iconColor: 'text-blue-500',
+      change: 'En proceso actual'
+    },
+    {
+      title: 'Total del Mes',
+      value: stats.thisMonthOrders,
+      iconName: 'mdi:calendar-month',
+      iconColor: 'text-purple-500',
+      change: 'Pedidos este mes'
     }
   ];
 
   if (isLoading) {
     return (
       /* Simple skeleton for new layout */
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
           <div key={i} className="bg-white rounded-xl p-4 border border-gray-100 animate-pulse shadow-sm">
             <div className="flex items-center justify-between mb-3">
               <div className="p-2 rounded-lg bg-gray-100 w-10 h-10"></div>
@@ -78,7 +71,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {statCards.map((stat, index) => (
         <div
           key={index}
@@ -97,21 +90,9 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ user }) => {
         </div>
       ))}
 
-      {/* "Gastado este mes" moved to a card */}
-      <div className="bg-white rounded-lg p-8 border border-gray-900 md:col-span-2 lg:col-span-1">
-        <div className="flex flex-col h-full justify-between">
-          <div>
-            <p className="text-gray-500 text-sm font-medium mb-2">Gastado este mes</p>
-            <h3 className="text-3xl font-bold text-gray-900">${stats.thisMonthSpent.toFixed(2)}</h3>
-          </div>
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <span className="text-xs text-gray-400">Actualizado recientemente</span>
-          </div>
-        </div>
-      </div>
+      {/* Extra cards removed */}
     </div>
   );
 };
 
 export default DashboardStats;
-

@@ -34,6 +34,7 @@ export interface DashboardStats {
   quoteReady: number;
   paymentPending: number;
   paymentConfirmed: number;
+  thisMonthOrders: number;
 }
 
 export const useDashboardStats = () => {
@@ -65,6 +66,7 @@ export const useDashboardStats = () => {
     quoteReady: 0,
     paymentPending: 0,
     paymentConfirmed: 0,
+    thisMonthOrders: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -198,6 +200,10 @@ export const useDashboardStats = () => {
         quoteReady,
         paymentPending,
         paymentConfirmed,
+        thisMonthOrders: ordersList.filter(order => {
+          const orderDate = new Date(order.created_at);
+          return orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear;
+        }).length,
       });
 
     } catch (err: any) {
