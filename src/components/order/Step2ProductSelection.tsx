@@ -242,13 +242,19 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                     )?.quantity || 0;
 
                     return (
-                      <button
+                      <div
                         key={product.id}
-                        type="button"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => handleCardClick(product)}
-                        className={`relative flex flex-col h-full p-4 rounded-2xl text-left border-2 transition-all duration-300 ${quantity > 0
-                            ? 'bg-gray-900 border-gray-900 text-white shadow-xl scale-[1.01]'
-                            : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md text-gray-900'
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            handleCardClick(product);
+                          }
+                        }}
+                        className={`relative flex flex-col h-full p-4 rounded-2xl text-left border-2 transition-all duration-300 cursor-pointer ${quantity > 0
+                          ? 'bg-gray-900 border-gray-900 text-white shadow-xl scale-[1.01]'
+                          : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md text-gray-900'
                           }`}
                       >
                         <div className="relative aspect-[4/5] mb-4 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center p-4">
@@ -315,7 +321,7 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                             {quantity} en pedido
                           </span>
                         )}
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -408,11 +414,10 @@ const Step2ProductSelection: React.FC<Step2ProductSelectionProps> = ({
                             type="button"
                             key={page}
                             onClick={() => handlePageChange(page)}
-                            className={`w-9 h-9 rounded-full text-sm font-medium transition ${
-                              isActive
-                                ? 'bg-black text-white'
-                                : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
-                            }`}
+                            className={`w-9 h-9 rounded-full text-sm font-medium transition ${isActive
+                              ? 'bg-black text-white'
+                              : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                              }`}
                             aria-current={isActive ? 'page' : undefined}
                           >
                             {page}
