@@ -1,6 +1,6 @@
 import React from 'react';
 import PublicLayout from '../components/PublicLayout';
-import HeroSection from '../components/sections/HeroSection';
+import PremiumHeroSection from '../components/premium-hero/PremiumHeroSection';
 import FeaturesSection from '../components/sections/FeaturesSection';
 import FeaturedProducts from '../components/sections/FeaturedProducts';
 import CTASection from '../components/sections/CTASection';
@@ -8,7 +8,7 @@ import CTASection from '../components/sections/CTASection';
 const HomePage: React.FC = () => {
     return (
         <PublicLayout>
-            <HeroSection />
+            <PremiumHeroSection />
             <FeaturesSection />
             <FeaturedProducts />
             <CTASection />
