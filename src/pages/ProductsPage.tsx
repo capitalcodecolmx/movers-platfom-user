@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, Filter, ChevronRight } from 'lucide-react';
 import PublicLayout from '../components/PublicLayout';
 import ProductCard from '../components/ProductCard';
+import GlassButton from '../components/ui/GlassButton';
 import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
 import { useProductsStore, initializeImageCache } from '../store/useProductsStore';
@@ -87,13 +88,13 @@ const ProductsPage: React.FC = () => {
 
                     {/* Mobile Filter Toggle & Sort */}
                     <div className="lg:hidden flex items-center justify-between mb-6 gap-4">
-                        <button
+                        <GlassButton
+                            label={<span className="flex items-center gap-2"><Filter className="w-4 h-4" /> Filtros</span>}
+                            variant="white"
+                            size="md"
                             onClick={() => setMobileFiltersOpen(true)}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                        >
-                            <Filter className="w-4 h-4" />
-                            Filtros
-                        </button>
+                            className="flex-1"
+                        />
                         <div className="flex-1">
                             <ProductSort />
                         </div>
@@ -117,12 +118,13 @@ const ProductsPage: React.FC = () => {
                                     <ProductFilters />
                                 </div>
                                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
-                                    <button
+                                    <GlassButton
+                                        label="Ver Resultados"
+                                        variant="blue"
+                                        size="md"
                                         onClick={() => setMobileFiltersOpen(false)}
-                                        className="w-full py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 transition-colors"
-                                    >
-                                        Ver Resultados
-                                    </button>
+                                        className="w-full"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -143,12 +145,12 @@ const ProductsPage: React.FC = () => {
                         ) : error ? (
                             <div className="flex flex-col items-center justify-center py-20 bg-red-50 rounded-2xl border border-red-200">
                                 <p className="text-red-600 mb-4">{error}</p>
-                                <button
+                                <GlassButton
+                                    label="Reintentar"
+                                    variant="blue"
+                                    size="md"
                                     onClick={() => fetchProducts()}
-                                    className="px-6 py-2.5 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors"
-                                >
-                                    Reintentar
-                                </button>
+                                />
                             </div>
                         ) : filteredAndSortedProducts.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -165,12 +167,12 @@ const ProductsPage: React.FC = () => {
                                 <p className="text-gray-500 text-center max-w-md mb-6">
                                     Intenta ajustar los filtros o buscar con otros términos.
                                 </p>
-                                <button
+                                <GlassButton
+                                    label="Limpiar todos los filtros"
+                                    variant="blue"
+                                    size="md"
                                     onClick={() => useProductsStore.getState().clearFilters()}
-                                    className="px-6 py-2.5 bg-cyan-600 text-white rounded-full font-medium hover:bg-cyan-700 transition-colors shadow-lg shadow-cyan-200"
-                                >
-                                    Limpiar todos los filtros
-                                </button>
+                                />
                             </div>
                         )}
                     </div>

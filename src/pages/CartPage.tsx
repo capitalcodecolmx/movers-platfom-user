@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
 import { useCartStore } from '../store/useCartStore';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from 'lucide-react';
+import GlassButton from '../components/ui/GlassButton';
 
 const CartPage: React.FC = () => {
     const navigate = useNavigate();
@@ -18,12 +19,7 @@ const CartPage: React.FC = () => {
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h2>
                     <p className="text-gray-500 mb-8">Parece que aún no has agregado productos.</p>
-                    <Link
-                        to="/products"
-                        className="px-8 py-3 bg-cyan-600 text-white rounded-full font-bold hover:bg-cyan-700 transition-colors"
-                    >
-                        Ver Productos
-                    </Link>
+                    <GlassButton to="/products" label="Ver Productos" variant="blue" size="lg" />
                 </div>
             </PublicLayout>
         );
@@ -87,9 +83,12 @@ const CartPage: React.FC = () => {
                             </div>
 
                             <div className="mt-6">
-                                <Link to="/products" className="inline-flex items-center gap-2 text-gray-600 hover:text-cyan-600 font-medium transition-colors">
-                                    <ArrowLeft size={20} /> Continuar Comprando
-                                </Link>
+                                <GlassButton
+                                    to="/products"
+                                    label={<span className="flex items-center gap-2"><ArrowLeft size={20} /> Continuar Comprando</span>}
+                                    variant="white"
+                                    size="md"
+                                />
                             </div>
                         </div>
 
@@ -113,12 +112,13 @@ const CartPage: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <button
+                                <GlassButton
+                                    label="Proceder al Pago"
+                                    variant="blue"
+                                    size="lg"
                                     onClick={() => navigate('/checkout')}
-                                    className="w-full py-4 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                                >
-                                    Proceder al Pago
-                                </button>
+                                    className="w-full"
+                                />
 
                                 <p className="mt-4 text-xs text-center text-gray-400">
                                     Transacciones seguras y encriptadas.

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ProductCard from '../ProductCard';
+import GlassButton from '../ui/GlassButton';
 import { PRODUCTS } from '../../data/mockData';
 
 const FeaturedProducts: React.FC = () => {
@@ -23,13 +24,13 @@ const FeaturedProducts: React.FC = () => {
                             Las presentaciones favoritas de nuestros clientes.
                         </p>
                     </div>
-                    <Link
+                    <GlassButton
                         to="/products"
-                        className="group hidden sm:flex items-center gap-2 text-cyan-700 font-bold hover:text-cyan-800 transition-all text-xs uppercase tracking-wider"
-                    >
-                        Ver todos
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                        label={<span className="flex items-center gap-2">Ver todos <ArrowRight size={14} /></span>}
+                        variant="white"
+                        size="sm"
+                        className="hidden sm:flex"
+                    />
                 </div>
 
                 {/* Grid - Responsive & Enhanced Spacing */}
@@ -41,13 +42,12 @@ const FeaturedProducts: React.FC = () => {
 
                 {/* Mobile View All Link */}
                 <div className="mt-8 text-center sm:hidden">
-                    <Link
+                    <GlassButton
                         to="/products"
-                        className="group inline-flex items-center gap-2 text-cyan-700 font-bold hover:text-cyan-800 transition-colors px-6 py-2.5 bg-cyan-50 rounded-full text-sm hover:bg-cyan-100"
-                    >
-                        Ver todos los productos
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                        label={<span className="flex items-center gap-2">Ver todos los productos <ArrowRight size={14} /></span>}
+                        variant="white"
+                        size="md"
+                    />
                 </div>
             </div>
         </section>

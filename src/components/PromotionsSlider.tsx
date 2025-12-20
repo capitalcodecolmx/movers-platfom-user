@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import GlassButton from './ui/GlassButton';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { COMPANY_INFO } from '../data/mockData';
@@ -196,13 +197,12 @@ const PromotionsSlider: React.FC<PromotionsSliderProps> = ({
                             {/* CTA Button */}
                             {promotion.ctaText && promotion.ctaLink && (
                                 <div className="animate-content">
-                                    <Link
+                                    <GlassButton
                                         to={promotion.ctaLink}
-                                        className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-bold rounded-full hover:bg-cyan-50 transition-all transform hover:scale-105 shadow-xl hover:shadow-cyan-500/20 text-sm sm:text-base"
-                                    >
-                                        <span>{promotion.ctaText}</span>
-                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                    </Link>
+                                        label={promotion.ctaText}
+                                        variant="white"
+                                        size="md"
+                                    />
                                 </div>
                             )}
                         </div>

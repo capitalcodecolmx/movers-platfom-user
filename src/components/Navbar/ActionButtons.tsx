@@ -1,5 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import GlassButton from '../ui/GlassButton';
 import { Icon } from '@iconify/react';
 import { useCartStore } from '../../store/useCartStore';
 import { COMPANY_INFO } from '../../data/mockData';
@@ -16,24 +16,22 @@ const ActionButtons: React.FC = () => {
     return (
         <div className="flex items-center gap-3">
             {/* WhatsApp Button */}
-            <button
+            <GlassButton
+                label="Ayuda"
+                variant="green"
+                size="sm"
                 onClick={handleWhatsAppClick}
-                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded-full transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
-                aria-label="Contactar por WhatsApp"
-            >
-                <Icon icon="ri:whatsapp-fill" width="18" height="18" />
-                <span className="hidden lg:inline">Ayuda</span>
-            </button>
+                className="hidden sm:flex"
+            />
 
             {/* Login Button */}
-            <Link
+            <GlassButton
                 to="/login"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-cyan-600 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-200"
-                aria-label="Iniciar sesión"
-            >
-                <Icon icon="ph:user-circle-fill" width="18" height="18" />
-                <span className="hidden lg:inline">Ingresar</span>
-            </Link>
+                label="Ingresar"
+                variant="white"
+                size="sm"
+                className="hidden sm:flex"
+            />
 
             {/* Cart Button */}
             <Link

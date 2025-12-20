@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GlassButton from '../ui/GlassButton';
 
 const CTASection: React.FC = () => {
     return (
@@ -53,12 +54,12 @@ const CTASection: React.FC = () => {
 
                         {/* CTA Button - Centered */}
                         <div className="pt-1.5 sm:pt-2">
-                            <Link
+                            <GlassButton
                                 to="/products"
-                                className="inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm md:text-base font-semibold text-cyan-900 bg-white rounded-full hover:bg-cyan-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-white/20"
-                            >
-                                Descubre Más
-                            </Link>
+                                label="Descubre Más"
+                                variant="white"
+                                size="lg"
+                            />
                         </div>
                     </div>
 

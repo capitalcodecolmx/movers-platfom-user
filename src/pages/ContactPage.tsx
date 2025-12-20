@@ -2,6 +2,7 @@ import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { COMPANY_INFO } from '../data/mockData';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import GlassButton from '../components/ui/GlassButton';
 import { Icon } from '@iconify/react';
 import mexicoMap from '../assets/images/headers/mexico_map_silhouette.png';
 
@@ -132,12 +133,12 @@ const ContactPage: React.FC = () => {
                                 </div>
 
                                 <div className="pt-2 flex justify-end">
-                                    <button
+                                    <GlassButton
                                         type="submit"
-                                        className="px-8 py-3 bg-slate-900 hover:bg-cyan-600 text-white rounded-lg font-bold transition-all transform hover:scale-[1.02] shadow-lg flex items-center gap-2 text-sm"
-                                    >
-                                        <Send size={16} /> Enviar Mensaje
-                                    </button>
+                                        label={<span className="flex items-center gap-2"><Send size={16} /> Enviar Mensaje</span>}
+                                        variant="blue"
+                                        size="lg"
+                                    />
                                 </div>
                             </form>
                         </div>

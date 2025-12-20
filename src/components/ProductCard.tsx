@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import type { Product } from '../data/mockData';
 import { useCartStore } from '../store/useCartStore';
 import { Check, Plus } from 'lucide-react';
+import GlassButton from './ui/GlassButton';
 
 interface ProductCardProps {
     product: Product;
@@ -143,21 +144,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
                         </span>
                     </div>
 
-                    <button
-                        onClick={handleAddToCart}
-                        disabled={isAdded}
-                        className={`add-btn flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-all duration-300 shadow-sm ${isAdded
-                            ? 'bg-green-500 text-white shadow-green-200'
-                            : 'bg-gray-900 text-white hover:bg-cyan-600 shadow-gray-200 hover:shadow-cyan-200 hover:scale-105'
-                            }`}
-                        aria-label="Agregar al carrito"
-                    >
-                        {isAdded ? (
-                            <Check size={20} className="animate-bounce" />
-                        ) : (
-                            <Plus size={20} strokeWidth={2.5} />
-                        )}
-                    </button>
+                    <GlassButton
+                        label={isAdded ? <Check size={20} className="animate-bounce" /> : <Plus size={20} strokeWidth={2.5} />}
+                        variant={isAdded ? 'green' : 'dark-blue'}
+                        size="md"
+                        isSquare
+                        onClick={() => handleAddToCart({ preventDefault: () => { } } as any)}
+                        className="add-btn"
+                    />
                 </div>
             </div>
         </div>
