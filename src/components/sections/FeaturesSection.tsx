@@ -157,9 +157,8 @@ const FeaturesSection: React.FC = () => {
                                     <p className="text-xs font-bold text-brand-cyan uppercase tracking-widest mb-1">Empieza hoy</p>
                                     <p className="text-slate-900 dark:text-white font-medium">La mejor hidratación para tu familia</p>
                                 </div>
-                                <Link to="/products" className="group flex items-center gap-2 bg-brand-blue hover:bg-brand-dark text-white px-8 py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-brand-blue/30 active:scale-95">
+                                <Link to="/products" className="group flex items-center justify-center gap-3 bg-gradient-to-r from-brand-cyan to-brand-blue text-white px-10 py-5 rounded-full font-bold uppercase tracking-[0.15em] text-xs transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(14,165,233,0.6)] hover:shadow-[0_20px_40px_-5px_rgba(14,165,233,0.8)] active:scale-95 active:shadow-none">
                                     <span>Ver nuestros productos</span>
-                                    <Icon icon="ph:arrow-right-bold" className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
 
