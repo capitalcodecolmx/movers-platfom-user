@@ -1,14 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import { useMediaStore } from '../../store/useMediaStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FeaturesSection: React.FC = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const { getVideo } = useMediaStore();
+    const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadVideo = async () => {
+            const url = await getVideo('/bottles.mp4');
+            setVideoSrc(url);
+        };
+        loadVideo();
+    }, [getVideo]);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -77,14 +88,16 @@ const FeaturesSection: React.FC = () => {
 
                     {/* Video Background */}
                     <div className="absolute inset-0 w-full h-full">
-                        <video
-                            src="/bottles.mp4"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="w-full h-full object-cover"
-                        />
+                        {videoSrc && (
+                            <video
+                                src={videoSrc}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        )}
                         {/* Dramatic Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
