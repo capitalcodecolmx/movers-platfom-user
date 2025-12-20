@@ -8,173 +8,152 @@ import { Icon } from '@iconify/react';
 gsap.registerPlugin(ScrollTrigger);
 
 const FeaturesSection: React.FC = () => {
-    const featuresRef = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        if (!featuresRef.current) return;
+        if (!sectionRef.current) return;
 
-        const featureItems = featuresRef.current.querySelectorAll('.feature-card');
-        const centerImage = featuresRef.current.querySelector('.center-visual');
-        const header = featuresRef.current.querySelector('.section-header');
+        const videoContainer = sectionRef.current.querySelector('.video-container');
+        const overlayCard = sectionRef.current.querySelector('.overlay-card');
+        const header = sectionRef.current.querySelector('.section-header');
+        const features = sectionRef.current.querySelectorAll('.feature-item');
 
-        // Header animation
-        gsap.fromTo(header,
-            { opacity: 0, y: 30 },
-            {
-                opacity: 1,
+        // Initial setup
+        gsap.set(videoContainer, { scale: 0.95, opacity: 0 });
+        gsap.set(overlayCard, { y: 100, opacity: 0 });
+        gsap.set(header, { x: -50, opacity: 0 });
+        gsap.set(features, { y: 20, opacity: 0 });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 70%",
+                end: "bottom 80%",
+            }
+        });
+
+        tl.to(videoContainer, { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out" })
+            .to(header, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.8")
+            .to(overlayCard, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
+            .to(features, {
                 y: 0,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: header,
-                    start: "top 85%",
-                }
-            }
-        );
-
-        // Center visual animation
-        gsap.fromTo(centerImage,
-            { opacity: 0, scale: 0.8 },
-            {
                 opacity: 1,
-                scale: 1,
-                duration: 1.2,
-                ease: "power4.out",
-                scrollTrigger: {
-                    trigger: centerImage,
-                    start: "top 80%",
-                }
-            }
-        );
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "back.out(1.7)"
+            }, "-=0.4");
 
-        // Feature cards animation
-        gsap.fromTo(featureItems,
-            { opacity: 0, x: (i) => (i < 2 ? -50 : 50) },
-            {
-                opacity: 1,
-                x: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: featuresRef.current,
-                    start: "top 70%",
-                }
-            }
-        );
-    }, { scope: featuresRef });
+    }, { scope: sectionRef });
+
+    const features = [
+        {
+            icon: "ph:drop-bold",
+            title: "Máxima Pureza",
+            desc: "Proceso de purificación avanzado de 7 etapas."
+        },
+        {
+            icon: "ph:seal-check-bold",
+            title: "Calidad Garantizada",
+            desc: "Certificaciones internacionales y controles diarios."
+        },
+        {
+            icon: "ph:truck-bold",
+            title: "Entrega Rápida",
+            desc: "Frescura a tu puerta en menos de 24 horas."
+        },
+        {
+            icon: "ph:house-line-bold",
+            title: "Servicio a Domicilio",
+            desc: "Atención personalizada para hogares y empresas."
+        }
+    ];
 
     return (
-        <section ref={featuresRef} className="relative py-24 lg:py-32 overflow-hidden bg-white dark:bg-slate-950 font-display transition-colors duration-300">
-            {/* Ambient Background Decorations */}
-            <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[32rem] h-[32rem] bg-blue-100 dark:bg-blue-900/10 rounded-full blur-[80px] opacity-60 pointer-events-none mix-blend-multiply dark:mix-blend-lighten"></div>
-            <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[28rem] h-[28rem] bg-cyan-100 dark:bg-cyan-900/10 rounded-full blur-[80px] opacity-60 pointer-events-none mix-blend-multiply dark:mix-blend-lighten"></div>
+        <section ref={sectionRef} className="relative py-20 lg:py-32 bg-white dark:bg-slate-950 overflow-hidden font-display">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {/* Section Header */}
-                <div className="section-header text-center max-w-3xl mx-auto mb-20 lg:mb-24">
-                    <span className="text-brand-cyan font-semibold uppercase tracking-widest text-sm mb-3 block">Nuestra Promesa</span>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
-                        ¿Por qué <span className="text-brand-blue relative inline-block">elegirnos
-                            <svg className="absolute w-full h-3 -bottom-2 left-0 text-brand-cyan opacity-60" fill="none" viewBox="0 0 200 9" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.00025 6.99997C2.00025 6.99997 43.5 1.99997 101.5 1.99997C159.5 1.99997 198 7.00003 198 7.00003" stroke="currentColor" strokeLinecap="round" strokeWidth="3"></path>
-                            </svg>
-                        </span>?
-                    </h2>
-                    <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-light mx-auto max-w-2xl">
-                        Desde la pureza absoluta hasta la entrega puntual, nos dedicamos a llevar salud y frescura a tu hogar con un servicio premium en el que puedes confiar plenamente.
-                    </p>
-                </div>
+                {/* Cinematic Frame Container */}
+                <div className="video-container relative w-full h-[85vh] min-h-[600px] max-h-[900px] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden shadow-2xl shadow-slate-200 dark:shadow-slate-900 mx-auto transform-gpu">
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-center">
-                    {/* Left Features */}
-                    <div className="space-y-16 lg:space-y-24 order-2 lg:order-1">
-                        <div className="feature-card group flex flex-col lg:items-end items-center text-center lg:text-right">
-                            <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <Icon icon="hugeicons:water-drop" className="text-3xl" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Máxima Pureza</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
-                                Proceso de purificación avanzado de 7 etapas, libre de cloro y metales pesados para tu total tranquilidad.
-                            </p>
-                        </div>
+                    {/* Video Background */}
+                    <div className="absolute inset-0 w-full h-full">
+                        <video
+                            src="/bottles.mp4"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dramatic Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
+                    </div>
 
-                        <div className="feature-card group flex flex-col lg:items-end items-center text-center lg:text-right">
-                            <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <Icon icon="mdi:shield-check-outline" className="text-3xl" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Calidad Garantizada</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
-                                Certificaciones de calidad internacional y controles diarios rigurosos en cada lote de producción.
+                    {/* Top Left Header "Tab" */}
+                    <div className="section-header absolute top-8 left-8 lg:top-12 lg:left-12 max-w-lg z-20">
+                        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 lg:p-10 rounded-3xl lg:rounded-[2rem] shadow-lg border border-white/20 dark:border-slate-700/50">
+                            <span className="text-brand-cyan font-bold uppercase tracking-[0.2em] text-xs mb-3 block">Nuestra Promesa</span>
+                            <h2 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white leading-tight">
+                                Por qué <span className="text-brand-blue">elegirnos</span>
+                            </h2>
+                            <p className="mt-4 text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+                                Salud y frescura en tu hogar con un servicio premium inigualable.
                             </p>
                         </div>
                     </div>
 
-                    {/* Center Visual */}
-                    <div className="center-visual order-1 lg:order-2 flex justify-center items-center w-full px-4 sm:px-0">
-                        <div className="relative w-full max-w-[360px] mx-auto group">
-                            <div className="absolute inset-0 bg-blue-400/20 blur-3xl rounded-full transform scale-90 group-hover:scale-100 transition-transform duration-700"></div>
-                            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl shadow-blue-900/20 border-4 border-white dark:border-slate-700 bg-white dark:bg-slate-800 aspect-[3/4]">
-                                <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-80"></div>
-                                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                                <img
-                                    src="/LOGO AGUA NUEVO 2.png"
-                                    alt="Logo Agua Purificada Blanquita"
-                                    className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-1000 ease-out p-8"
-                                />
-                                <div className="absolute bottom-0 left-0 w-full p-8 z-30 text-center">
-                                    <div className="flex justify-center mb-4">
-                                        <div className="p-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-                                            <svg className="w-8 h-8 text-white drop-shadow-md" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24">
-                                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="white" fillOpacity="0.1" stroke="none"></path>
-                                                <path d="M12 18V6M12 6L7 11M12 6L17 11" strokeWidth="2"></path>
-                                            </svg>
+                    {/* Decorative Elements */}
+                    <div className="absolute top-8 right-8 z-20 hidden lg:block">
+                        <img src="/LOGO AGUA NUEVO 2.png" alt="Logo" className="w-20 h-20 object-contain brightness-0 invert opacity-80" />
+                    </div>
+
+                    {/* Bottom Right Features Card "Ticket" */}
+                    <div className="overlay-card absolute bottom-0 right-0 w-full lg:w-auto lg:max-w-2xl z-20">
+                        {/* Card Design resembling the "02" card in inspiration */}
+                        <div className="bg-white dark:bg-slate-900 rounded-t-[2.5rem] lg:rounded-tl-[3rem] lg:rounded-br-[3.5rem] p-8 lg:p-12 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative">
+
+                            {/* Visual "cut" or decorative shape */}
+                            <div className="absolute -top-12 right-0 w-24 h-12 bg-transparent hidden lg:block pointer-events-none">
+                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_#fff] dark:shadow-[20px_20px_0_0_#0f172a]"></div>
+                            </div>
+                            <div className="absolute bottom-0 -left-12 w-12 h-24 bg-transparent hidden lg:block pointer-events-none">
+                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_#fff] dark:shadow-[20px_20px_0_0_#0f172a]"></div>
+                            </div>
+
+                            {/* Features Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+                                {features.map((feature, idx) => (
+                                    <div key={idx} className="feature-item group flex items-start gap-4">
+                                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-50 dark:bg-slate-800 flex items-center justify-center text-brand-blue group-hover:scale-110 transition-transform duration-300">
+                                            <Icon icon={feature.icon} className="text-2xl" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 dark:text-white text-lg mb-1 group-hover:text-brand-blue transition-colors">{feature.title}</h4>
+                                            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                                {feature.desc}
+                                            </p>
                                         </div>
                                     </div>
-                                    <h3 className="font-serif italic text-4xl font-bold text-white mb-2 drop-shadow-lg">Blanquita</h3>
-                                    <p className="text-xs tracking-[0.4em] font-bold text-white/90 uppercase drop-shadow-md">Agua Purificada</p>
+                                ))}
+                            </div>
+
+                            {/* CTA inside the card */}
+                            <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+                                <div className="text-left">
+                                    <p className="text-xs font-bold text-brand-cyan uppercase tracking-widest mb-1">Empieza hoy</p>
+                                    <p className="text-slate-900 dark:text-white font-medium">Recibe tu primer pedido en 24h</p>
                                 </div>
+                                <Link to="/products" className="group flex items-center gap-2 bg-brand-blue hover:bg-brand-dark text-white px-8 py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-brand-blue/30 active:scale-95">
+                                    <span>Ver Planes</span>
+                                    <Icon icon="ph:arrow-right-bold" className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
                             </div>
-                        </div>
-                    </div>
 
-                    {/* Right Features */}
-                    <div className="space-y-16 lg:space-y-24 order-3 lg:order-3">
-                        <div className="feature-card group flex flex-col lg:items-start items-center text-center lg:text-left">
-                            <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <Icon icon="mdi:truck-delivery-outline" className="text-3xl" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Entrega Rápida</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
-                                Sistema logístico optimizado para llevar frescura a tu puerta en menos de 24 horas.
-                            </p>
-                        </div>
-
-                        <div className="feature-card group flex flex-col lg:items-start items-center text-center lg:text-left">
-                            <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <Icon icon="mdi:map-marker-radius-outline" className="text-3xl" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Servicio a Domicilio</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
-                                Atención personalizada para hogares y empresas, adaptándonos a tus horarios y necesidades.
-                            </p>
                         </div>
                     </div>
                 </div>
 
-                {/* CTA Action */}
-                <div className="mt-20 lg:mt-24 text-center">
-                    <Link to="/products" className="group relative inline-flex items-center justify-center px-12 py-5 text-base font-bold text-white transition-all duration-300 bg-brand-blue rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-brand-blue/40 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue">
-                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-blue via-blue-600 to-brand-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[length:200%_auto] animate-gradient"></div>
-                        <span className="relative flex items-center gap-3 uppercase tracking-wide">
-                            Obtén tu cotización gratuita
-                            <Icon icon="mdi:arrow-right" className="text-xl group-hover:translate-x-1 transition-transform duration-300" />
-                        </span>
-                    </Link>
-                    <p className="mt-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
-                        Sin compromiso. Respuesta en menos de 1 hora.
-                    </p>
-                </div>
             </div>
         </section>
     );
