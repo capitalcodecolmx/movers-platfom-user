@@ -34,12 +34,12 @@ const GlassButton: React.FC<GlassButtonProps> = ({
             highlight: 'via-white/20'
         },
         'white': {
-            container: 'bg-white border-slate-200 shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)]',
-            glow1: 'bg-brand-cyan/20',
-            glow2: 'bg-brand-blue/10',
+            container: 'bg-white/95 backdrop-blur-sm border-white shadow-[0_8px_20px_-5px_rgba(0,0,0,0.08)]',
+            glow1: 'bg-cyan-400/25',
+            glow2: 'bg-blue-400/15',
             text: 'text-slate-900',
-            shadow: 'hover:shadow-[0_10px_30px_-5px_rgba(14,165,233,0.2)]',
-            highlight: 'via-brand-cyan/20'
+            shadow: 'hover:shadow-[0_15px_35px_-10px_rgba(14,165,233,0.2)]',
+            highlight: 'via-white'
         },
         'blue': {
             container: 'bg-brand-blue border-white/20 shadow-[0_5px_15px_-5px_rgba(0,56,179,0.3)]',
@@ -71,10 +71,10 @@ const GlassButton: React.FC<GlassButtonProps> = ({
 
     const content = (
         <>
-            {/* Internal Liquid Glow */}
-            <div className={`absolute inset-0 opacity-40 ${!disabled ? 'group-hover:opacity-70' : ''} transition-opacity duration-500`}>
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${size === 'sm' ? 'w-20 h-10' : 'w-32 h-20'} ${styles.glow1} blur-[30px] rounded-full`}></div>
-                <div className={`absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 ${size === 'sm' ? 'w-12 h-6' : 'w-20 h-10'} ${styles.glow2} blur-[20px] rounded-full`}></div>
+            {/* Internal Animated Liquid Core */}
+            <div className={`absolute inset-0 opacity-40 ${!disabled ? 'group-hover:opacity-75' : ''} transition-opacity duration-1000 overflow-hidden`}>
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${size === 'sm' ? 'w-24 h-12' : 'w-40 h-24'} ${styles.glow1} blur-[25px] rounded-full animate-liquid-flow`}></div>
+                <div className={`absolute top-1/2 left-[40%] -translate-x-1/2 -translate-y-1/2 ${size === 'sm' ? 'w-16 h-8' : 'w-28 h-14'} ${styles.glow2} blur-[20px] rounded-full animate-liquid-flow-reverse`}></div>
             </div>
 
             {/* Refractive Highlight */}

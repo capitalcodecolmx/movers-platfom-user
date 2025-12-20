@@ -111,6 +111,30 @@ body {
   animation: shimmer 3s infinite;
 }
 
+/* Animación de flujo líquido para GlassButton */
+@keyframes liquidFlow {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(-45%, -55%) rotate(120deg) scale(1.1);
+  }
+  66% {
+    transform: translate(-55%, -45%) rotate(240deg) scale(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+}
+
+.animate-liquid-flow {
+  animation: liquidFlow 8s infinite linear;
+}
+
+.animate-liquid-flow-reverse {
+  animation: liquidFlow 12s infinite linear reverse;
+}
+
 /* Estilos para scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 6px;
