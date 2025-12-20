@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,7 +91,7 @@ const FeaturesSection: React.FC = () => {
                     <div className="space-y-16 lg:space-y-24 order-2 lg:order-1">
                         <div className="feature-card group flex flex-col lg:items-end items-center text-center lg:text-right">
                             <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <span className="material-symbols-outlined text-3xl font-light">water_drop</span>
+                                <Icon icon="hugeicons:water-drop" className="text-3xl" />
                             </div>
                             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Máxima Pureza</h3>
                             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
@@ -100,7 +101,7 @@ const FeaturesSection: React.FC = () => {
 
                         <div className="feature-card group flex flex-col lg:items-end items-center text-center lg:text-right">
                             <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <span className="material-symbols-outlined text-3xl font-light">verified_user</span>
+                                <Icon icon="mdi:shield-check-outline" className="text-3xl" />
                             </div>
                             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Calidad Garantizada</h3>
                             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
@@ -117,9 +118,9 @@ const FeaturesSection: React.FC = () => {
                                 <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-80"></div>
                                 <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                                 <img
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6fO_vLzFOVS0r7Lx08ycZLOeU78MUsIX-1Bb4izW0LkUPphqx6fNMbmiMLmfE4MRSSZ7qDcu-kvl2O2lVNrLfda8mKd0B3G5gVNtKcLuFDM0Dp07B2FqE20fxiFvkv76qlgquonAzL3NmKq5uzEjO2i5c1wFNKJ0D0i-_SEjLLhRh9Aoc2YSyhhmxOr5ECnLjZOxVZqnvMSK5EPKULUkQHcOam-POhUhx3y9BfWOKVkLi09SIqAH1T_jfUhY6r2Vc-c7GkHmalWw4"
-                                    alt="Botella de agua purificada Blanquita"
-                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
+                                    src="/LOGO AGUA NUEVO 2.png"
+                                    alt="Logo Agua Purificada Blanquita"
+                                    className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-1000 ease-out p-8"
                                 />
                                 <div className="absolute bottom-0 left-0 w-full p-8 z-30 text-center">
                                     <div className="flex justify-center mb-4">
@@ -141,7 +142,7 @@ const FeaturesSection: React.FC = () => {
                     <div className="space-y-16 lg:space-y-24 order-3 lg:order-3">
                         <div className="feature-card group flex flex-col lg:items-start items-center text-center lg:text-left">
                             <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <span className="material-symbols-outlined text-3xl font-light">local_shipping</span>
+                                <Icon icon="mdi:truck-delivery-outline" className="text-3xl" />
                             </div>
                             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Entrega Rápida</h3>
                             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
@@ -151,7 +152,7 @@ const FeaturesSection: React.FC = () => {
 
                         <div className="feature-card group flex flex-col lg:items-start items-center text-center lg:text-left">
                             <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-brand-cyan group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:shadow-brand-blue/30 transform group-hover:-translate-y-1">
-                                <span className="material-symbols-outlined text-3xl font-light">home_pin</span>
+                                <Icon icon="mdi:map-marker-radius-outline" className="text-3xl" />
                             </div>
                             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-brand-blue transition-colors duration-300">Servicio a Domicilio</h3>
                             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base lg:max-w-xs">
@@ -167,7 +168,7 @@ const FeaturesSection: React.FC = () => {
                         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-blue via-blue-600 to-brand-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[length:200%_auto] animate-gradient"></div>
                         <span className="relative flex items-center gap-3 uppercase tracking-wide">
                             Obtén tu cotización gratuita
-                            <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+                            <Icon icon="mdi:arrow-right" className="text-xl group-hover:translate-x-1 transition-transform duration-300" />
                         </span>
                     </Link>
                     <p className="mt-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
