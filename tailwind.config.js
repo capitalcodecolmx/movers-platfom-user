@@ -8,8 +8,12 @@ export default {
     extend: {
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'],
+        display: ["Outfit", "sans-serif"],
+        serif: ["Playfair Display", "serif"],
       },
       colors: {
+        'brand-blue': '#0056b3',
+        'brand-cyan': '#0ea5e9',
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',
