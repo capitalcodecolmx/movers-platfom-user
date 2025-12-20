@@ -157,8 +157,27 @@ const FeaturesSection: React.FC = () => {
                                     <p className="text-xs font-bold text-brand-cyan uppercase tracking-widest mb-1">Empieza hoy</p>
                                     <p className="text-slate-900 dark:text-white font-medium">La mejor hidratación para tu familia</p>
                                 </div>
-                                <Link to="/products" className="group flex items-center justify-center gap-3 bg-gradient-to-r from-brand-cyan to-brand-blue text-white px-10 py-5 rounded-full font-bold uppercase tracking-[0.15em] text-xs transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(14,165,233,0.6)] hover:shadow-[0_20px_40px_-5px_rgba(14,165,233,0.8)] active:scale-95 active:shadow-none">
-                                    <span>Ver nuestros productos</span>
+                                <Link
+                                    to="/products"
+                                    className="relative group inline-flex items-center justify-center px-10 py-5 rounded-full bg-[#050b18] border border-white/20 overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_-5px_rgba(14,165,233,0.5)] active:scale-95"
+                                >
+                                    {/* Internal Liquid Glow */}
+                                    <div className="absolute inset-0 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-20 bg-brand-cyan/40 blur-[40px] rounded-full"></div>
+                                        <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-20 h-10 bg-brand-blue/30 blur-[30px] rounded-full"></div>
+                                    </div>
+
+                                    {/* Refractive Highlight */}
+                                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                                    <div className="absolute inset-0 rounded-full border border-white/5 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"></div>
+
+                                    {/* Glass Edge Shine */}
+                                    <div className="absolute -inset-full bg-gradient-to-tr from-transparent via-white/[0.05] to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+
+                                    {/* Button Text */}
+                                    <span className="relative z-10 text-white font-bold uppercase tracking-[0.2em] text-[10px] drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                                        Ver nuestros productos
+                                    </span>
                                 </Link>
                             </div>
 
