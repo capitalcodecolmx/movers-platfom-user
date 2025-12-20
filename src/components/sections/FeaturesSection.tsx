@@ -70,7 +70,7 @@ const FeaturesSection: React.FC = () => {
         {
             icon: "ph:truck-bold",
             title: "Entrega Rápida",
-            desc: "Frescura a tu puerta en menos de 24 horas."
+            desc: "Frescura a tu puerta con el mejor servicio."
         },
         {
             icon: "ph:house-line-bold",
@@ -99,13 +99,13 @@ const FeaturesSection: React.FC = () => {
                             />
                         )}
                         {/* Dramatic Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
                     </div>
 
                     {/* Top Left Header "Tab" */}
                     <div className="section-header absolute top-8 left-8 lg:top-12 lg:left-12 max-w-lg z-20">
-                        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 lg:p-10 rounded-3xl lg:rounded-[2rem] shadow-lg border border-white/20 dark:border-slate-700/50">
+                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm p-6 lg:p-10 rounded-3xl lg:rounded-[2rem] shadow-lg border border-white/20 dark:border-slate-700/50">
                             <span className="text-brand-cyan font-bold uppercase tracking-[0.2em] text-xs mb-3 block">Nuestra Promesa</span>
                             <h2 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white leading-tight">
                                 Por qué <span className="text-brand-blue">elegirnos</span>
@@ -124,14 +124,14 @@ const FeaturesSection: React.FC = () => {
                     {/* Bottom Right Features Card "Ticket" */}
                     <div className="overlay-card absolute bottom-0 right-0 w-full lg:w-auto lg:max-w-2xl z-20">
                         {/* Card Design resembling the "02" card in inspiration */}
-                        <div className="bg-white dark:bg-slate-900 rounded-t-[2.5rem] lg:rounded-tl-[3rem] lg:rounded-br-[3.5rem] p-8 lg:p-12 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative">
+                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm rounded-t-[2.5rem] lg:rounded-tl-[3rem] lg:rounded-br-[3.5rem] p-8 lg:p-12 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative">
 
                             {/* Visual "cut" or decorative shape */}
                             <div className="absolute -top-12 right-0 w-24 h-12 bg-transparent hidden lg:block pointer-events-none">
-                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_#fff] dark:shadow-[20px_20px_0_0_#0f172a]"></div>
+                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_rgba(255,255,255,0.5)] dark:shadow-[20px_20px_0_0_rgba(15,23,42,0.5)]"></div>
                             </div>
                             <div className="absolute bottom-0 -left-12 w-12 h-24 bg-transparent hidden lg:block pointer-events-none">
-                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_#fff] dark:shadow-[20px_20px_0_0_#0f172a]"></div>
+                                <div className="w-full h-full bg-transparent rounded-br-[3rem] shadow-[20px_20px_0_0_rgba(255,255,255,0.5)] dark:shadow-[20px_20px_0_0_rgba(15,23,42,0.5)]"></div>
                             </div>
 
                             {/* Features Grid */}
@@ -155,10 +155,10 @@ const FeaturesSection: React.FC = () => {
                             <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
                                 <div className="text-left">
                                     <p className="text-xs font-bold text-brand-cyan uppercase tracking-widest mb-1">Empieza hoy</p>
-                                    <p className="text-slate-900 dark:text-white font-medium">Recibe tu primer pedido en 24h</p>
+                                    <p className="text-slate-900 dark:text-white font-medium">La mejor hidratación para tu familia</p>
                                 </div>
                                 <Link to="/products" className="group flex items-center gap-2 bg-brand-blue hover:bg-brand-dark text-white px-8 py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-brand-blue/30 active:scale-95">
-                                    <span>Ver Planes</span>
+                                    <span>Ver nuestros productos</span>
                                     <Icon icon="ph:arrow-right-bold" className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
