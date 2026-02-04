@@ -6,7 +6,9 @@ import ProductCard from '../components/ProductCard';
 import GlassButton from '../components/ui/GlassButton';
 import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
+import QuickViewModal from '../components/QuickViewModal';
 import { useProductsStore, initializeImageCache } from '../store/useProductsStore';
+import type { Product } from '../data/mockData';
 
 const ProductsPage: React.FC = () => {
     // Subscribe to all state that affects filtering/sorting to ensure reactivity
@@ -19,6 +21,7 @@ const ProductsPage: React.FC = () => {
     const isLoading = useProductsStore((state) => state.isLoading);
     const error = useProductsStore((state) => state.error);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
     // Compute filtered and sorted products reactively
     const filteredAndSortedProducts = React.useMemo(() => {
@@ -153,9 +156,14 @@ const ProductsPage: React.FC = () => {
                                 />
                             </div>
                         ) : filteredAndSortedProducts.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {filteredAndSortedProducts.map((product, index) => (
-                                    <ProductCard key={product.id} product={product} index={index} />
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        index={index}
+                                        onQuickView={(p) => setQuickViewProduct(p)}
+                                    />
                                 ))}
                             </div>
                         ) : (
@@ -178,7 +186,15 @@ const ProductsPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </PublicLayout>
+
+
+            {/* Quick View Modal */}
+            <QuickViewModal
+                product={quickViewProduct}
+                isOpen={!!quickViewProduct}
+                onClose={() => setQuickViewProduct(null)}
+            />
+        </PublicLayout >
     );
 };
 

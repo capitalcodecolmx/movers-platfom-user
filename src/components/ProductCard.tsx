@@ -3,16 +3,20 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import type { Product } from '../data/mockData';
 import { useCartStore } from '../store/useCartStore';
-import { Check, Plus } from 'lucide-react';
+import { useWishlistStore } from '../store/useWishlistStore';
+import { Check, Plus, Heart, Eye } from 'lucide-react';
 import GlassButton from './ui/GlassButton';
 
 interface ProductCardProps {
     product: Product;
     index?: number;
+    onQuickView?: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0, onQuickView }) => {
     const addItem = useCartStore((state) => state.addItem);
+    const { isInWishlist, toggleItem } = useWishlistStore();
+    const isWishlisted = isInWishlist(product.id);
     const [isAdded, setIsAdded] = React.useState(false);
     const [imageError, setImageError] = React.useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -103,9 +107,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
                         src={imageSrc}
                         alt={product.name}
                         onError={() => setImageError(true)}
-                        className="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-lg transition-transform duration-300"
+                        className="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-lg transition-transform duration-500"
                         loading="lazy"
                     />
+
+                    {/* Quick overlay actions */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-center gap-3">
+                        {onQuickView && (
+                            <button
+                                onClick={(e) => { e.preventDefault(); onQuickView(product); }}
+                                className="bg-white/90 backdrop-blur text-gray-700 hover:text-cyan-600 p-2 rounded-full shadow-lg transform hover:scale-110 transition-all duration-200"
+                                title="Vista Rápida"
+                            >
+                                <Eye size={18} />
+                            </button>
+                        )}
+                        <button
+                            onClick={(e) => { e.preventDefault(); toggleItem(product); }}
+                            className={`bg-white/90 backdrop-blur p-2 rounded-full shadow-lg transform hover:scale-110 transition-all duration-200 ${isWishlisted ? 'text-red-500' : 'text-gray-700 hover:text-red-500'
+                                }`}
+                            title={isWishlisted ? "Quitar de favoritos" : "Agregar a favoritos"}
+                        >
+                            <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Loading placeholder */}
@@ -131,9 +156,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
                 </h3>
 
                 {/* Description */}
-                <p className="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed">
+                <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-relaxed">
                     {product.description}
                 </p>
+
+                {/* Benefits mini-pills (Mock) */}
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                    <span className="text-[10px] text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100">
+                        Premium
+                    </span>
+                    <span className="text-[10px] text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100">
+                        {product.category === 'garrafon' ? 'Retornable' : 'Reciclable'}
+                    </span>
+                </div>
 
                 {/* Price and Action */}
                 <div className="mt-auto flex items-center justify-between gap-3">
