@@ -39,8 +39,7 @@ const ProductFilters: React.FC = () => {
   const { filters, setFilters, clearFilters } = useProductsStore();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     marca: true,
-    submarca: true,
-    sabor: true,
+
     presentacion: true,
     tamaño: false,
     tipoAgua: false,
@@ -71,8 +70,7 @@ const ProductFilters: React.FC = () => {
   const hasActiveFilters = () => {
     return (
       filters.marca.length > 0 ||
-      filters.submarca.length > 0 ||
-      filters.sabor.length > 0 ||
+
       filters.presentacion.length > 0 ||
       filters.tamaño.length > 0 ||
       filters.tipoAgua.length > 0 ||
@@ -136,37 +134,7 @@ const ProductFilters: React.FC = () => {
           ))}
         </FilterSection>
 
-        {/* Submarca */}
-        <FilterSection
-          title="Submarca"
-          isOpen={openSections.submarca}
-          onToggle={() => toggleSection('submarca')}
-        >
-          {FILTER_OPTIONS.submarcas.map((submarca) => (
-            <CheckboxOption
-              key={submarca}
-              label={submarca}
-              checked={filters.submarca.includes(submarca)}
-              onChange={() => handleCheckboxChange('submarca', submarca)}
-            />
-          ))}
-        </FilterSection>
 
-        {/* Sabor */}
-        <FilterSection
-          title="Sabor"
-          isOpen={openSections.sabor}
-          onToggle={() => toggleSection('sabor')}
-        >
-          {FILTER_OPTIONS.sabores.map((sabor) => (
-            <CheckboxOption
-              key={sabor}
-              label={sabor}
-              checked={filters.sabor.includes(sabor)}
-              onChange={() => handleCheckboxChange('sabor', sabor)}
-            />
-          ))}
-        </FilterSection>
 
         {/* Presentación */}
         <FilterSection
