@@ -19,9 +19,9 @@ const AboutPage: React.FC = () => {
             <PageTransition>
                 <div className="min-h-screen bg-white">
                     <AboutHero />
+                    <FleetSlider />
                     <HistoryTimeline />
                     <MissionVisionValues />
-                    <FleetSlider />
                 </div>
             </PageTransition>
         </PublicLayout>
