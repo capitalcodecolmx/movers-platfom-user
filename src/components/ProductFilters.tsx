@@ -42,8 +42,7 @@ const ProductFilters: React.FC = () => {
 
     presentacion: true,
     tamaño: false,
-    tipoAgua: false,
-    tipoProducto: false,
+
     precio: true
   });
 
@@ -73,8 +72,7 @@ const ProductFilters: React.FC = () => {
 
       filters.presentacion.length > 0 ||
       filters.tamaño.length > 0 ||
-      filters.tipoAgua.length > 0 ||
-      filters.tipoProducto.length > 0 ||
+
       filters.priceRange[0] > 0 ||
       filters.priceRange[1] < 1000
     );
@@ -83,8 +81,8 @@ const ProductFilters: React.FC = () => {
   const CheckboxOption = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => (
     <label className="flex items-center space-x-3 cursor-pointer group select-none">
       <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all duration-200 ${checked
-          ? 'bg-cyan-600 border-cyan-600 text-white'
-          : 'bg-white border-gray-300 group-hover:border-cyan-400'
+        ? 'bg-cyan-600 border-cyan-600 text-white'
+        : 'bg-white border-gray-300 group-hover:border-cyan-400'
         }`}>
         {checked && <X className="w-3.5 h-3.5" />}
       </div>
@@ -168,37 +166,7 @@ const ProductFilters: React.FC = () => {
           ))}
         </FilterSection>
 
-        {/* Tipo de agua */}
-        <FilterSection
-          title="Tipo de agua"
-          isOpen={openSections.tipoAgua}
-          onToggle={() => toggleSection('tipoAgua')}
-        >
-          {FILTER_OPTIONS.tiposAgua.map((tipoAgua) => (
-            <CheckboxOption
-              key={tipoAgua}
-              label={tipoAgua}
-              checked={filters.tipoAgua.includes(tipoAgua)}
-              onChange={() => handleCheckboxChange('tipoAgua', tipoAgua)}
-            />
-          ))}
-        </FilterSection>
 
-        {/* Tipo de producto */}
-        <FilterSection
-          title="Tipo de producto"
-          isOpen={openSections.tipoProducto}
-          onToggle={() => toggleSection('tipoProducto')}
-        >
-          {FILTER_OPTIONS.tiposProducto.map((tipoProducto) => (
-            <CheckboxOption
-              key={tipoProducto}
-              label={tipoProducto}
-              checked={filters.tipoProducto.includes(tipoProducto)}
-              onChange={() => handleCheckboxChange('tipoProducto', tipoProducto)}
-            />
-          ))}
-        </FilterSection>
 
         {/* Precio */}
         <FilterSection
